@@ -1,5 +1,6 @@
 import './assets/App.css';
 
+import LanguageSwitch from './components/LanguageSwitch';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
@@ -13,11 +14,33 @@ import NotFound from './pages/NotFound';
 
 import { Route, Routes } from 'react-router-dom';
 
+import { useEffect, useState } from 'react';
+import i18n from './i18n';
 
 function App() {
+
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    const navigatorLanguage = navigator.language;
+    i18n.changeLanguage(navigatorLanguage);
+    document.documentElement.lang = i18n.language;
+    setLanguage(navigatorLanguage);
+  }, [])
+
+  const handleLanguageChange = (newLanguage: string) => {
+    i18n.changeLanguage(newLanguage)
+    document.documentElement.lang = i18n.language;
+    setLanguage(newLanguage)
+  }
+
+
   return (
     <>
-      <Navbar />
+      <header>
+        <LanguageSwitch onClick={handleLanguageChange} />
+        <Navbar />
+      </header>
 
       <main>
         <Routes>
