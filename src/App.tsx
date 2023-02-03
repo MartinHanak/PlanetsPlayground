@@ -4,12 +4,12 @@ import LanguageSwitch from './components/LanguageSwitch';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-import Home from './pages/Home';
-import Import from './pages/Import';
-import Simulation from './pages/Simulation';
-import Contact from './pages/Contact';
-import About from './pages/About';
-import NotFound from './pages/NotFound';
+import Home from './pages/home/Home';
+import Import from './pages/import/Import';
+import Simulation from './pages/simulation/Simulation';
+import Contact from './pages/contact/Contact';
+import About from './pages/about/About';
+import NotFound from './pages/notfound/NotFound';
 
 
 import { Route, Routes } from 'react-router-dom';
