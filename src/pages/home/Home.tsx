@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom";
+import Picture from "../../components/Picture";
 
 import astronaut from '../../assets/astronaut.webp';
 import astronautSmall from '../../assets/astronaut-small.webp';
@@ -11,11 +12,7 @@ export default function Home() {
     return (
         <div>
             <div className="intro">
-                <picture>
-                    <source media="(max-width: 800px)" srcSet={astronautSmall} />
-                    <source media="(min-width: 800px)" srcSet={astronaut} />
-                    <img src={astronaut} alt="Astronaut picture" />
-                </picture>
+                <Picture desktopSource={astronaut} mobileSource={astronautSmall} alt="Astronaut picture" />
                 <h1>Explore planets dynamics</h1>
                 <p>Embark on a journey to explore motion of orbital bodies under unusual circumstances.</p>
                 <Link to="/import">Start exploring</Link>

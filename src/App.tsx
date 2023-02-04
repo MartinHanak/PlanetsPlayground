@@ -1,5 +1,3 @@
-import './assets/App.css';
-
 import LanguageSwitch from './components/LanguageSwitch';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
