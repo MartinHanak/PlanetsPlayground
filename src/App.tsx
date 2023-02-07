@@ -32,9 +32,6 @@ function App() {
     setLanguage(newLanguage)
   }
 
-  const props = {
-    hello: 'hello'
-  }
 
 
   return (

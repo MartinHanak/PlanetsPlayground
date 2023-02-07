@@ -30,6 +30,7 @@ export default function Simulation(props: simulationProps) {
 
     const [massObjectArray, setMassObjectArray] = useState([]);
 
+    // load in data
     useEffect(() => {
         if (props.actionType === 'nodata') {
             console.log("no data to fetch or load");

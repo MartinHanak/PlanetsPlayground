@@ -6,11 +6,16 @@ import MercuryTextureImage from "../../assets/textures/1k_textures/Mercury_textu
 import VenusTextureImage from "../../assets/textures/1k_textures/Venus_texture.jpg"
 import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture.jpg"
 import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg"
+import { useEffect } from "react"
 
 
 export default function Scene() {
     const [SunTexture, MercuryTexture, VenusTexture, EarthTexture, MarsTexture]
         = useLoader(TextureLoader, [SunTextureImage, MercuryTextureImage, VenusTextureImage, EarthTextureImage, MarsTextureImage])
+
+    useEffect(() => {
+        console.log("log inside suspense")
+    }, [])
 
     return (
         <>
