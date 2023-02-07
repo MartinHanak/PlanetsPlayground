@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 import HOME_EN from './data/translations/en/home.json';
 import HOME_CS from './data/translations/cs/home.json';
@@ -27,6 +28,7 @@ const resources = {
 
 
 i18n
+  .use(LanguageDetector)
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     debug:true,

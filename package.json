@@ -6,6 +6,7 @@
     "@react-three/drei": "^9.56.18",
     "@react-three/fiber": "^8.10.4",
     "i18next": "^22.4.9",
+    "i18next-browser-languagedetector": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.1.4",

@@ -17,19 +17,16 @@ import i18n from './i18n';
 
 function App() {
 
-  const [language, setLanguage] = useState("en");
-
-  useEffect(() => {
-    const navigatorLanguage = navigator.language;
-    i18n.changeLanguage(navigatorLanguage);
+  const [language, setLanguage] = useState(() => {
     document.documentElement.lang = i18n.language;
-    setLanguage(navigatorLanguage);
-  }, [])
+    return i18n.language
+  });
 
   const handleLanguageChange = (newLanguage: string) => {
-    i18n.changeLanguage(newLanguage)
+    i18n.changeLanguage(newLanguage);
+    // i18n can default to different language other that the navigator language
     document.documentElement.lang = i18n.language;
-    setLanguage(newLanguage)
+    setLanguage(i18n.language)
   }
 
 
