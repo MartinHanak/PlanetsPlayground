@@ -32,6 +32,10 @@ function App() {
     setLanguage(newLanguage)
   }
 
+  const props = {
+    hello: 'hello'
+  }
+
 
   return (
     <>
@@ -44,7 +48,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/import" element={<Import />}></Route>
-          <Route path="/simulation" element={<Simulation />}></Route>
+          <Route path="/simulation" element={<Simulation actionType='import' date='today' />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/about" element={<About />}></Route>
           <Route path="*" element={<NotFound />}></Route>
