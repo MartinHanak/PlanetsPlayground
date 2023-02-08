@@ -10,6 +10,23 @@ import NoData from "./NoData"
 import Scene from "./Scene"
 import { OrbitControls } from "@react-three/drei"
 
+interface massObjectData {
+    name: string,
+    position: [number, number, number],
+    velocity: [number, number, number]
+}
+
+const modelData = [{
+    name: "Earth",
+    position: [0, 0, 0],
+    velocity: [1, 1, 1]
+}, {
+    name: "Sun",
+    position: [10, 0, 0],
+    velocity: [0, 0, 0]
+}
+] as massObjectData[]
+
 interface loadType {
     actionType: "load",
     data: "default" | "storage"
@@ -26,9 +43,8 @@ interface nodataType {
 
 type simulationProps = loadType | importType | nodataType;
 
-export default function Simulation(props: simulationProps) {
 
-    const [massObjectArray, setMassObjectArray] = useState([]);
+export default function Simulation(props: simulationProps) {
 
     // load in data
     useEffect(() => {
@@ -48,12 +64,8 @@ export default function Simulation(props: simulationProps) {
     }, [])
 
 
-
-
     if (props.actionType === 'nodata') {
         return (<NoData />)
-    } else if (props.actionType === 'load') {
-        return <h1>Loading....</h1>
     } else {
 
 
@@ -63,10 +75,17 @@ export default function Simulation(props: simulationProps) {
                 <div className={styles.canvasContainer}>
                     <Suspense fallback={<Loading />}>
                         <Canvas orthographic camera={{ left: -4, right: 4, top: 4, bottom: 4, zoom: 10, near: -8, far: 8 }}>
-                            < OrbitControls />
-                            <Scene />
+                            <ambientLight intensity={0.2} />
+                            <directionalLight />
+                            <OrbitControls />
+                            <Scene massObjectDataArray={modelData} />
                         </Canvas>
                     </Suspense>
+                </div>
+
+                <div>
+                    <h1>Controls</h1>
+                    <button>Test</button>
                 </div>
             </div >
         )
