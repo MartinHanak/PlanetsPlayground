@@ -1,0 +1,22 @@
+:root{
+    --canvas-width: 90%; // with respect to its container, has to be split with controls and rendering screen
+    --controls-width: 10%;
+    --controls-overlap: 0%; // how much do controls overlap the rendering screen
+}
+
+// styles to override default Drei styles
+// styles is set on a div above canvas
+//      parent div
+//          div with canvas
+//          div with controls
+.canvas-render-screen > div:first-child {
+    width: var(--canvas-width) !important;
+}
+
+// set on div with controls
+.canvas-controls {
+    width: var(--controls-width) !important;
+    left: calc(var(--canvas-width) - var(--controls-overlap)) !important;
+    transform: none !important; 
+    display: block !important;
+}

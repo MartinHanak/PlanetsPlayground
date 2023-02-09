@@ -1,0 +1,12 @@
+.wrapper {
+    height: 100%;
+    width: var(--controls-width);
+    background-color: grey;
+    transform: none !important; // override default from Drei library
+    left: calc(var(--canvas-width) - var(--controls-overlap)) !important;
+    display: block !important;
+}
+
+.start {
+    
+}

@@ -1,5 +1,8 @@
 import { useLoader, useFrame, ThreeElements } from "@react-three/fiber"
 import { TextureLoader } from "three/src/loaders/TextureLoader"
+import { Canvas } from "@react-three/fiber"
+import { OrbitControls } from "@react-three/drei"
+
 
 import SunTextureImage from "../../assets/textures/1k_textures/Sun_texture.jpg"
 import MercuryTextureImage from "../../assets/textures/1k_textures/Mercury_texture.jpg"
@@ -10,6 +13,8 @@ import React, { useEffect, useRef, useState } from "react"
 
 import MassObject from "./MassObject"
 import { Mesh } from "three"
+
+import Controls from "./Controls"
 
 
 interface massObjectData {
@@ -35,24 +40,29 @@ export default function Scene({ massObjectDataArray }: sceneProps) {
 
     }, [])
 
-    useFrame(() => {
-        console.log("updating frame")
+    useFrame((state, delta: number) => {
+
         if (massObjectsRef.current !== null) {
             massObjectsRef.current.map((mesh: Mesh) => {
-                mesh.position.x = mesh.position.x + 1;
+                mesh.position.x = mesh.position.x + (Math.random() - 0.5);
             })
         }
     })
 
     return (
         <>
+            <ambientLight intensity={0.2} />
+            <directionalLight />
+
+            <OrbitControls />
+
             {massObjectDataArray.map(({ name, position, velocity }: massObjectData, index: number) => {
                 return (
                     <MassObject key={name} ref={(meshRef: Mesh) => massObjectsRef.current.push(meshRef)} position={position} args={[10, 32, 32]} texture={EarthTexture} />
                 )
             })}
 
-
+            <Controls />
         </>
     )
 

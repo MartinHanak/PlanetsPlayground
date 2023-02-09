@@ -1,6 +1,4 @@
 import { Suspense, useEffect } from "react"
-import { useState } from "react"
-import { Canvas } from "@react-three/fiber"
 
 import styles from "./Simulation.module.scss"
 
@@ -8,7 +6,7 @@ import Loading from "../../components/Loading"
 import NoData from "./NoData"
 
 import Scene from "./Scene"
-import { OrbitControls } from "@react-three/drei"
+import { Canvas } from "@react-three/fiber"
 
 interface massObjectData {
     name: string,
@@ -74,19 +72,12 @@ export default function Simulation(props: simulationProps) {
                 <h1>Simulation</h1>
                 <div className={styles.canvasContainer}>
                     <Suspense fallback={<Loading />}>
-                        <Canvas orthographic camera={{ left: -4, right: 4, top: 4, bottom: 4, zoom: 10, near: -8, far: 8 }}>
-                            <ambientLight intensity={0.2} />
-                            <directionalLight />
-                            <OrbitControls />
+                        <Canvas orthographic camera={{ left: -4, right: 4, top: 4, bottom: 4, zoom: 10, near: -8, far: 8 }} className="canvas-render-screen">
                             <Scene massObjectDataArray={modelData} />
                         </Canvas>
                     </Suspense>
                 </div>
 
-                <div>
-                    <h1>Controls</h1>
-                    <button>Test</button>
-                </div>
             </div >
         )
     }
