@@ -1,20 +1,20 @@
 import { Html } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
+import { prepare } from "@react-three/fiber/dist/declarations/src/core/renderer";
 import styles from "./Controls.module.scss"
 
-export default function Controls() {
+
+interface controlsProps {
+    toggleMoving: () => void,
+}
+
+export default function Controls({ toggleMoving }: controlsProps) {
 
     const state = useThree();
     console.log(state)
 
     const handleClick = () => {
-        const currentFrameLoop = state.frameloop;
-        if (currentFrameLoop === "always") {
-            state.setFrameloop("never")
-        } else {
-            state.setFrameloop("always")
-        }
-
+        toggleMoving();
     }
 
     return (

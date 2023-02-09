@@ -30,6 +30,15 @@ interface sceneProps {
 
 export default function Scene({ massObjectDataArray }: sceneProps) {
 
+    // state rerenders from the initial
+    //const [moving, setMoving] = useState<boolean>(false);
+
+    const moving = useRef<boolean>(false);
+
+    const toggleMoving = () => {
+        moving.current = !moving.current;
+    }
+
     const massObjectsRef = useRef<Mesh[]>([]);
 
     const [SunTexture, MercuryTexture, VenusTexture, EarthTexture, MarsTexture]
@@ -42,10 +51,14 @@ export default function Scene({ massObjectDataArray }: sceneProps) {
 
     useFrame((state, delta: number) => {
 
-        if (massObjectsRef.current !== null) {
-            massObjectsRef.current.map((mesh: Mesh) => {
-                mesh.position.x = mesh.position.x + (Math.random() - 0.5);
-            })
+        if (moving.current) {
+            if (massObjectsRef.current !== null) {
+                massObjectsRef.current.map((mesh: Mesh | null) => {
+                    if (mesh !== null) {
+                        mesh.position.x = mesh.position.x + (Math.random() - 0.5);
+                    }
+                })
+            }
         }
     })
 
@@ -62,7 +75,7 @@ export default function Scene({ massObjectDataArray }: sceneProps) {
                 )
             })}
 
-            <Controls />
+            <Controls toggleMoving={toggleMoving} />
         </>
     )
 
