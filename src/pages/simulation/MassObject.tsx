@@ -9,7 +9,7 @@ import { forwardRef } from 'react';
 interface massObjectProps {
     position: [number, number, number],
     args: [number, number, number],
-    texture: Texture
+    texture: Texture | null
 }
 
 

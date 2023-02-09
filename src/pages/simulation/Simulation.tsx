@@ -72,8 +72,8 @@ export default function Simulation(props: simulationProps) {
                 <h1>Simulation</h1>
                 <div className={styles.canvasContainer}>
                     <Suspense fallback={<Loading />}>
-                        <Canvas frameloop="always" orthographic camera={{ left: -4, right: 4, top: 4, bottom: 4, zoom: 10, near: -8, far: 8 }} className="canvas-render-screen">
-                            <Scene massObjectDataArray={modelData} />
+                        <Canvas frameloop="demand" orthographic camera={{ left: -4, right: 4, top: 4, bottom: 4, zoom: 10, near: -8, far: 8 }} className="canvas-render-screen">
+                            <Scene initialMassObjectDataArray={modelData} />
                         </Canvas>
                     </Suspense>
                 </div>

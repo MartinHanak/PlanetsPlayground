@@ -16,8 +16,11 @@ import { Mesh } from "three"
 
 import Controls from "./Controls"
 
+import MassObjectData from "./computation/MassObjectData";
+import initializeMassObjectArray from "./computation/initializeMassObjectArray"
 
-interface massObjectData {
+
+export interface initialMassObjectData {
     name: string,
     position: [number, number, number],
     velocity: [number, number, number]
@@ -25,41 +28,49 @@ interface massObjectData {
 
 
 interface sceneProps {
-    massObjectDataArray: massObjectData[]
+    initialMassObjectDataArray: initialMassObjectData[]
 }
 
-export default function Scene({ massObjectDataArray }: sceneProps) {
+export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
-    // state rerenders from the initial
-    //const [moving, setMoving] = useState<boolean>(false);
 
     const moving = useRef<boolean>(false);
 
     const toggleMoving = () => {
         moving.current = !moving.current;
+        return moving.current;
     }
-
-    const massObjectsRef = useRef<Mesh[]>([]);
 
     const [SunTexture, MercuryTexture, VenusTexture, EarthTexture, MarsTexture]
         = useLoader(TextureLoader, [SunTextureImage, MercuryTextureImage, VenusTextureImage, EarthTextureImage, MarsTextureImage])
 
-    useEffect(() => {
-        console.log("log inside suspense")
+    const textureDictionary = {
+        "Sun": SunTexture,
+        "Mercury": MercuryTexture,
+        "Venus": VenusTexture,
+        "Earth": EarthTexture,
+        "Mars": MarsTexture,
+        "Default": MarsTexture
+    }
 
+    const massObjectArray = useRef<MassObjectData[]>([]);
+    initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary)
+
+    useEffect(() => {
+        console.log("log from use effects")
     }, [])
 
     useFrame((state, delta: number) => {
 
         if (moving.current) {
-            if (massObjectsRef.current !== null) {
-                massObjectsRef.current.map((mesh: Mesh | null) => {
-                    if (mesh !== null) {
-                        mesh.position.x = mesh.position.x + (Math.random() - 0.5);
-                    }
-                })
-            }
+            massObjectArray.current.map((massObject: MassObjectData) => {
+                massObject.position[0] = massObject.position[0] + (Math.random() - 0.5)
+                if (massObject.meshRef !== null) {
+                    massObject.meshRef.position.x = massObject.position[0];
+                }
+            })
         }
+
     })
 
     return (
@@ -69,9 +80,16 @@ export default function Scene({ massObjectDataArray }: sceneProps) {
 
             <OrbitControls />
 
-            {massObjectDataArray.map(({ name, position, velocity }: massObjectData, index: number) => {
+            {massObjectArray.current.map((massObject: MassObjectData) => {
+                console.log(massObject);
                 return (
-                    <MassObject key={name} ref={(meshRef: Mesh) => massObjectsRef.current.push(meshRef)} position={position} args={[10, 32, 32]} texture={EarthTexture} />
+                    <MassObject
+                        key={massObject.name}
+                        ref={(meshRef: Mesh) => massObject.meshRef = meshRef}
+                        position={massObject.position}
+                        args={[10, 32, 32]}
+                        texture={massObject.texture}
+                    />
                 )
             })}
 

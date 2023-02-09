@@ -5,16 +5,20 @@ import styles from "./Controls.module.scss"
 
 
 interface controlsProps {
-    toggleMoving: () => void,
+    toggleMoving: () => boolean,
 }
 
 export default function Controls({ toggleMoving }: controlsProps) {
 
     const state = useThree();
-    console.log(state)
 
     const handleClick = () => {
-        toggleMoving();
+        const isMovingAfterToggle = toggleMoving();
+        if (isMovingAfterToggle) {
+            state.setFrameloop("always");
+        } else {
+            state.setFrameloop("demand");
+        }
     }
 
     return (
