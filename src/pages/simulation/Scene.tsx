@@ -1,6 +1,5 @@
 import { useLoader, useFrame, ThreeElements, ThreeEvent } from "@react-three/fiber"
 import { TextureLoader } from "three/src/loaders/TextureLoader"
-import { Canvas } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import { RootState } from "@react-three/fiber"
 
@@ -10,7 +9,7 @@ import MercuryTextureImage from "../../assets/textures/1k_textures/Mercury_textu
 import VenusTextureImage from "../../assets/textures/1k_textures/Venus_texture.jpg"
 import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture.jpg"
 import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
 import MassObject from "./MassObject"
 import { Mesh } from "three"
@@ -58,8 +57,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary)
 
 
-    const handleMassObjectClick = (event: ThreeEvent<MouseEvent>) => {
-        console.log(event)
+    const handleMassObjectClick = (object: MassObjectData) => {
+        console.log(object)
     }
 
     useEffect(() => {
@@ -79,12 +78,15 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
     })
 
+
+
     return (
         <>
+            <OrbitControls />
+
             <ambientLight intensity={0.2} />
             <directionalLight />
 
-            <OrbitControls />
 
             {massObjectArray.current.map((massObject: MassObjectData) => {
                 console.log(massObject);
@@ -93,9 +95,9 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                         key={massObject.name}
                         ref={(meshRef: Mesh) => massObject.meshRef = meshRef}
                         position={massObject.position}
-                        args={[10, 32, 32]}
+                        args={[0.5, 32, 32]}
                         texture={massObject.texture}
-                        onClick={handleMassObjectClick}
+                        onClick={() => handleMassObjectClick(massObject)}
                     />
                 )
             })}

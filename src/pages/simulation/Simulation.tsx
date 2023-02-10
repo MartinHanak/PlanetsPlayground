@@ -7,6 +7,7 @@ import NoData from "./NoData"
 
 import Scene from "./Scene"
 import { Canvas } from "@react-three/fiber"
+import { Vector3 } from "three"
 
 interface massObjectData {
     name: string,
@@ -20,7 +21,7 @@ const modelData = [{
     velocity: [1, 1, 1]
 }, {
     name: "Sun",
-    position: [10, 0, 0],
+    position: [1, 0, 0],
     velocity: [0, 0, 0]
 }
 ] as massObjectData[]
@@ -40,6 +41,16 @@ interface nodataType {
 }
 
 type simulationProps = loadType | importType | nodataType;
+
+const cameraProps = {
+    left: -2,
+    right: 2,
+    top: 2,
+    bottom: -2,
+    near: 0.1,
+    far: 10,
+    zoom: 100
+}
 
 
 export default function Simulation(props: simulationProps) {
@@ -72,7 +83,7 @@ export default function Simulation(props: simulationProps) {
                 <h1>Simulation</h1>
                 <div className={styles.canvasContainer}>
                     <Suspense fallback={<Loading />}>
-                        <Canvas frameloop="demand" orthographic camera={{ left: -4, right: 4, top: 4, bottom: 4, zoom: 10, near: -8, far: 8 }} className="canvas-render-screen" onPointerMissed={() => console.log("miss")}>
+                        <Canvas frameloop="demand" orthographic camera={{ ...cameraProps }} className="canvas-render-screen" onPointerMissed={() => console.log("miss")}>
                             <Scene initialMassObjectDataArray={modelData} />
                         </Canvas>
                     </Suspense>

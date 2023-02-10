@@ -1,5 +1,4 @@
-import { Args } from '@react-three/drei'
-import React, { ForwardedRef } from 'react';
+import { ForwardedRef } from 'react';
 import { Mesh, Vector3 } from 'three'
 import { Texture } from 'three'
 

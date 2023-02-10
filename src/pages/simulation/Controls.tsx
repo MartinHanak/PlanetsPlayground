@@ -1,6 +1,5 @@
 import { Html } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
-import { prepare } from "@react-three/fiber/dist/declarations/src/core/renderer";
 import styles from "./Controls.module.scss"
 import { useState } from "react";
 
@@ -17,6 +16,7 @@ export default function Controls({ toggleMoving }: controlsProps) {
 
     const handleClick = () => {
         const isMovingAfterToggle = toggleMoving();
+        console.log(state.camera)
         if (isMovingAfterToggle) {
             state.setFrameloop("always");
         } else {
