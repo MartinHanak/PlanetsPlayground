@@ -10,6 +10,7 @@ export default class MassObjectData {
     acceleration: vector;
     meshRef: Mesh | null;
     texture: Texture | null;
+    radius: number;
     mass: number;
     trajectory: vector[];
 
@@ -28,6 +29,7 @@ export default class MassObjectData {
 
         this.meshRef = null;
         this.texture = null;
+        this.radius = 0.5;
 
         this.trajectory = [];
     }

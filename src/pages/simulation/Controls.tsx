@@ -16,7 +16,6 @@ export default function Controls({ toggleMoving }: controlsProps) {
 
     const handleClick = () => {
         const isMovingAfterToggle = toggleMoving();
-        console.log(state.camera)
         if (isMovingAfterToggle) {
             state.setFrameloop("always");
         } else {

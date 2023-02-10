@@ -4,6 +4,7 @@ import { Texture } from 'three'
 
 import { forwardRef } from 'react';
 import { ThreeEvent } from '@react-three/fiber';
+import MassObjectData from './computation/MassObjectData';
 
 
 interface massObjectProps {
