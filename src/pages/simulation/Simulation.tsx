@@ -72,7 +72,7 @@ export default function Simulation(props: simulationProps) {
                 <h1>Simulation</h1>
                 <div className={styles.canvasContainer}>
                     <Suspense fallback={<Loading />}>
-                        <Canvas frameloop="demand" orthographic camera={{ left: -4, right: 4, top: 4, bottom: 4, zoom: 10, near: -8, far: 8 }} className="canvas-render-screen">
+                        <Canvas frameloop="demand" orthographic camera={{ left: -4, right: 4, top: 4, bottom: 4, zoom: 10, near: -8, far: 8 }} className="canvas-render-screen" onPointerMissed={() => console.log("miss")}>
                             <Scene initialMassObjectDataArray={modelData} />
                         </Canvas>
                     </Suspense>

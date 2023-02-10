@@ -1,7 +1,8 @@
-import { useLoader, useFrame, ThreeElements } from "@react-three/fiber"
+import { useLoader, useFrame, ThreeElements, ThreeEvent } from "@react-three/fiber"
 import { TextureLoader } from "three/src/loaders/TextureLoader"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
+import { RootState } from "@react-three/fiber"
 
 
 import SunTextureImage from "../../assets/textures/1k_textures/Sun_texture.jpg"
@@ -56,11 +57,16 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     const massObjectArray = useRef<MassObjectData[]>([]);
     initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary)
 
+
+    const handleMassObjectClick = (event: ThreeEvent<MouseEvent>) => {
+        console.log(event)
+    }
+
     useEffect(() => {
         console.log("log from use effects")
     }, [])
 
-    useFrame((state, delta: number) => {
+    useFrame((state: RootState, delta: number) => {
 
         if (moving.current) {
             massObjectArray.current.map((massObject: MassObjectData) => {
@@ -89,6 +95,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                         position={massObject.position}
                         args={[10, 32, 32]}
                         texture={massObject.texture}
+                        onClick={handleMassObjectClick}
                     />
                 )
             })}

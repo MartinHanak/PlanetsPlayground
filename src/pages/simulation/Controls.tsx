@@ -2,6 +2,7 @@ import { Html } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
 import { prepare } from "@react-three/fiber/dist/declarations/src/core/renderer";
 import styles from "./Controls.module.scss"
+import { useState } from "react";
 
 
 interface controlsProps {
@@ -11,6 +12,8 @@ interface controlsProps {
 export default function Controls({ toggleMoving }: controlsProps) {
 
     const state = useThree();
+
+    const selectedMassObjects = useState([]);
 
     const handleClick = () => {
         const isMovingAfterToggle = toggleMoving();
@@ -26,6 +29,11 @@ export default function Controls({ toggleMoving }: controlsProps) {
             <div className={styles.start}>
                 <h1>Start simulation fjaf anejfn jejfwan j</h1>
                 <button onClick={handleClick} >Start/Stop</button>
+            </div>
+
+            <div className={styles.objectInfo}>
+                <h1>Mass Object Info</h1>
+
             </div>
         </Html>
     )
