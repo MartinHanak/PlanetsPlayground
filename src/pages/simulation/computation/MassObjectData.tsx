@@ -13,6 +13,7 @@ export default class MassObjectData {
     radius: number;
     mass: number;
     trajectory: vector[];
+    selected: boolean;
 
 
     constructor(name: string, position: vector, velocity: vector, mass?: number | undefined) {
@@ -30,6 +31,7 @@ export default class MassObjectData {
         this.meshRef = null;
         this.texture = null;
         this.radius = 0.5;
+        this.selected = false;
 
         this.trajectory = [];
     }

@@ -1,7 +1,8 @@
-import { useLoader, useFrame, ThreeElements, ThreeEvent, useThree } from "@react-three/fiber"
+import { useLoader, useFrame, useThree } from "@react-three/fiber"
 import { TextureLoader } from "three/src/loaders/TextureLoader"
 import { OrbitControls } from "@react-three/drei"
 import { RootState } from "@react-three/fiber"
+import { ThreeEvent } from "@react-three/fiber"
 
 
 import SunTextureImage from "../../assets/textures/1k_textures/Sun_texture.jpg"
@@ -9,16 +10,15 @@ import MercuryTextureImage from "../../assets/textures/1k_textures/Mercury_textu
 import VenusTextureImage from "../../assets/textures/1k_textures/Venus_texture.jpg"
 import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture.jpg"
 import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, Dispatch, SetStateAction } from "react"
 
 import MassObject from "./MassObject"
-import { Camera, Mesh, Vector3 } from "three"
+import { Mesh } from "three"
 
 import Controls from "./Controls"
 
 import MassObjectData from "./computation/MassObjectData";
 import initializeMassObjectArray from "./computation/initializeMassObjectArray"
-import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer"
 
 
 export interface initialMassObjectData {
@@ -65,13 +65,38 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     }
 
     const massObjectArray = useRef<MassObjectData[]>([]);
-    initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary)
+    initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary);
 
 
+
+    // for updating child component without rerendering parent scene
+    type childControlsStateSetter = Dispatch<SetStateAction<string[]>> | (() => void);
+    type childControlsState = string[];
+
+    let controlsState: childControlsState = [];
+    let setControlsState: childControlsStateSetter = () => { console.log("controls not yet mounted") }
+
+    const onControlsMount = ([controlsSelected, setControlsSelected]: [childControlsState, childControlsStateSetter]) => {
+        controlsState = controlsSelected;
+        setControlsState = setControlsSelected;
+    }
 
     function createMassObjectClickHandler(object: MassObjectData) {
+
         return (event: ThreeEvent<MouseEvent>) => {
-            console.log(object);
+
+            // update object selected property
+            object.selected = !object.selected;
+
+            // set child Controls state from here
+            setControlsState((previousState: string[]) => {
+                if (previousState.includes(object.name)) {
+                    return previousState.filter((element: string) => element !== object.name);
+                } else {
+                    return previousState.concat(object.name);
+                }
+            })
+
         }
     }
 
@@ -128,7 +153,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                 )
             })}
 
-            <Controls toggleMoving={toggleMoving} />
+            <Controls toggleMoving={toggleMoving} massObjectArray={massObjectArray} onMount={onControlsMount} />
         </>
     )
 
