@@ -13,6 +13,7 @@ import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg
 import { useEffect, useRef, Dispatch, SetStateAction } from "react"
 
 import MassObject from "./MassObject"
+import Grid from "./Grid"
 import { Mesh } from "three"
 
 import Controls from "./Controls"
@@ -72,13 +73,16 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     // for updating child component without rerendering parent scene
     type childControlsStateSetter = Dispatch<SetStateAction<string[]>> | (() => void);
     type childControlsState = string[];
+    type childControlsUpdate = () => void;
 
     let controlsState: childControlsState = [];
     let setControlsState: childControlsStateSetter = () => { console.log("controls not yet mounted") }
+    let forceControlsRender: childControlsUpdate = () => { console.log("controls not yet mounted and cannot be updated") }
 
-    const onControlsMount = ([controlsSelected, setControlsSelected]: [childControlsState, childControlsStateSetter]) => {
+    function onControlsMount([controlsSelected, setControlsSelected, updateControls]: [childControlsState, childControlsStateSetter, childControlsUpdate]) {
         controlsState = controlsSelected;
         setControlsState = setControlsSelected;
+        forceControlsRender = updateControls;
     }
 
     function createMassObjectClickHandler(object: MassObjectData) {
@@ -120,6 +124,9 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     useFrame((state: RootState, delta: number) => {
 
         if (moving.current) {
+
+            forceControlsRender();
+
             massObjectArray.current.map((massObject: MassObjectData) => {
                 massObject.position[0] = massObject.position[0] + (Math.random() * 0.1 - 0.05)
                 if (massObject.meshRef !== null) {
@@ -139,6 +146,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
             <ambientLight intensity={0.2} />
             <directionalLight />
 
+            <Grid unitConversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
 
             {massObjectArray.current.map((massObject: MassObjectData) => {
                 return (

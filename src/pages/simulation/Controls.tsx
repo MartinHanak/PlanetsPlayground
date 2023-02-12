@@ -6,25 +6,31 @@ import MassObjectData from "./computation/MassObjectData";
 import { RootState } from "@react-three/fiber";
 import { useState } from "react";
 import { Dispatch } from "react";
+import { StaticReadUsage } from "three";
 
 
 interface controlsProps {
     toggleMoving: () => boolean,
     massObjectArray: MutableRefObject<MassObjectData[]>,
-    onMount: ([controlsState, setControlsState]: [string[], Dispatch<SetStateAction<string[]>>]) => void
+    onMount: ([controlsState, setControlsState, updateControls]: [string[], Dispatch<SetStateAction<string[]>>, () => void]) => void
 }
 
 export default function Controls({ toggleMoving, massObjectArray, onMount }: controlsProps) {
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
+    const frameloop = useThree((state: RootState) => state.frameloop);
 
     const [selectedObjects, setSelectedObjects] = useState<string[]>([]);
+
+    // for forcing render
+    const [forcedCounter, setForcedCounter] = useState<number>(0);
+    const forceUpdate = () => setForcedCounter((previous: number) => previous + 1);
 
 
     useEffect(() => {
         console.log("controls state changed")
-        onMount([selectedObjects, setSelectedObjects])
-    }, [onMount, selectedObjects])
+        onMount([selectedObjects, setSelectedObjects, forceUpdate])
+    }, [onMount, selectedObjects, frameloop])
 
     const handleClick = () => {
         const isMovingAfterToggle = toggleMoving();
