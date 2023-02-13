@@ -1,5 +1,9 @@
+import { Dispatch } from "react";
 import { Mesh } from "three";
-import { Texture } from "three";
+import { Texture, Line, Vector3 } from "three";
+import { actionTypes } from "../MassObjectTrajectory";
+
+
 
 type vector = [number, number, number];
 
@@ -12,7 +16,9 @@ export default class MassObjectData {
     texture: Texture | null;
     radius: number;
     mass: number;
-    trajectory: vector[];
+    trajLineRef: Line | null;
+    trajectory: Vector3[];
+    trajectoryStateDispatch: Dispatch<actionTypes> | (() => void);
     selected: boolean;
 
 
@@ -33,7 +39,9 @@ export default class MassObjectData {
         this.radius = 0.5;
         this.selected = false;
 
+        this.trajLineRef = null;
         this.trajectory = [];
+        this.trajectoryStateDispatch = () => console.log("trajectory not yet initialized");
     }
 }
 

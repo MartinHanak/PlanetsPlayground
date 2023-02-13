@@ -10,16 +10,18 @@ import MercuryTextureImage from "../../assets/textures/1k_textures/Mercury_textu
 import VenusTextureImage from "../../assets/textures/1k_textures/Venus_texture.jpg"
 import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture.jpg"
 import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg"
-import { useEffect, useRef, Dispatch, SetStateAction } from "react"
+import { useEffect, useRef, Dispatch, SetStateAction, useState } from "react"
 
 import MassObject from "./MassObject"
 import Grid from "./Grid"
-import { Mesh } from "three"
+import { Group, Mesh, Vector3 } from "three"
+import { Line } from "three"
 
 import Controls from "./Controls"
 
 import MassObjectData from "./computation/MassObjectData";
 import initializeMassObjectArray from "./computation/initializeMassObjectArray"
+import MassObjectTrajectory from "./MassObjectTrajectory"
 
 
 export interface initialMassObjectData {
@@ -85,12 +87,16 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         forceControlsRender = updateControls;
     }
 
+
     function createMassObjectClickHandler(object: MassObjectData) {
 
         return (event: ThreeEvent<MouseEvent>) => {
 
             // update object selected property
             object.selected = !object.selected;
+
+            console.log(object.trajLineRef)
+
 
             // set child Controls state from here
             setControlsState((previousState: string[]) => {
@@ -121,6 +127,10 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
     }, [])
 
+    useEffect(() => {
+        console.log("scene rerendered")
+    })
+
     useFrame((state: RootState, delta: number) => {
 
         if (moving.current) {
@@ -128,15 +138,22 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
             forceControlsRender();
 
             massObjectArray.current.map((massObject: MassObjectData) => {
-                massObject.position[0] = massObject.position[0] + (Math.random() * 0.1 - 0.05)
+                massObject.position[0] = massObject.position[0] + 2 * (Math.random() * 0.1 - 0.05)
+                massObject.position[1] = massObject.position[1] + 2 * (Math.random() * 0.1 - 0.05)
+                massObject.position[2] = massObject.position[2] + 2 * (Math.random() * 0.1 - 0.05)
                 if (massObject.meshRef !== null) {
                     massObject.meshRef.position.x = massObject.position[0] * conversionFactorBetweenCanvasUnitsAndAU.current;
+                    massObject.meshRef.position.y = massObject.position[1] * conversionFactorBetweenCanvasUnitsAndAU.current;
+                    massObject.meshRef.position.z = massObject.position[2] * conversionFactorBetweenCanvasUnitsAndAU.current;
+
+                    massObject.trajectoryStateDispatch({ type: 'add', payload: new Vector3(massObject.meshRef.position.x, massObject.meshRef.position.y, massObject.meshRef.position.z) })
                 }
+
+
             })
         }
 
     })
-
 
 
     return (
@@ -148,20 +165,32 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
             <Grid unitConversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
 
+            {/* spheres */}
             {massObjectArray.current.map((massObject: MassObjectData) => {
                 return (
-                    <MassObject
-                        key={massObject.name}
-                        ref={(meshRef: Mesh) => massObject.meshRef = meshRef}
-                        position={convertVectorUnits(massObject.position)}
-                        args={[massObject.radius * conversionFactorBetweenCanvasUnitsAndAU.current, 32, 32]}
-                        texture={massObject.texture}
-                        onClick={createMassObjectClickHandler(massObject)}
-                    />
+                    <group key={`${massObject.name}_group`}>
+                        <MassObject
+                            key={massObject.name}
+                            ref={(meshRef: Mesh) => massObject.meshRef = meshRef}
+                            position={convertVectorUnits(massObject.position)}
+                            args={[massObject.radius * conversionFactorBetweenCanvasUnitsAndAU.current, 32, 32]}
+                            texture={massObject.texture}
+                            onClick={createMassObjectClickHandler(massObject)}
+                        />
+
+                        <MassObjectTrajectory
+                            key={`${massObject.name}_traj`}
+                            trajectory={massObject.trajectory}
+                            massObject={massObject.name}
+                            massObjectArray={massObjectArray}
+                        />
+                    </group>
                 )
             })}
 
-            <Controls toggleMoving={toggleMoving} massObjectArray={massObjectArray} onMount={onControlsMount} />
+
+            <Controls toggleMoving={toggleMoving} massObjectArray={massObjectArray} onMount={onControlsMount} conversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
+
         </>
     )
 

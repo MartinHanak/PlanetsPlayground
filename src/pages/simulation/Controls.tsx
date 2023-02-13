@@ -7,15 +7,17 @@ import { RootState } from "@react-three/fiber";
 import { useState } from "react";
 import { Dispatch } from "react";
 import { StaticReadUsage } from "three";
+import { Vector3 } from "three";
 
 
 interface controlsProps {
     toggleMoving: () => boolean,
     massObjectArray: MutableRefObject<MassObjectData[]>,
-    onMount: ([controlsState, setControlsState, updateControls]: [string[], Dispatch<SetStateAction<string[]>>, () => void]) => void
+    onMount: ([controlsState, setControlsState, updateControls]: [string[], Dispatch<SetStateAction<string[]>>, () => void]) => void,
+    conversionFactor: number
 }
 
-export default function Controls({ toggleMoving, massObjectArray, onMount }: controlsProps) {
+export default function Controls({ toggleMoving, massObjectArray, onMount, conversionFactor }: controlsProps) {
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
@@ -42,27 +44,50 @@ export default function Controls({ toggleMoving, massObjectArray, onMount }: con
     }
 
     return (
-        <Html as="div" wrapperClass={`${styles.wrapper} canvas-controls`} occlude >
-            <div className={styles.start}>
-                <h1>Start simulation fjaf anejfn jejfwan j</h1>
-                <button onClick={handleClick} >Start/Stop</button>
-            </div>
+        <>
+            <Html as="div" wrapperClass={`${styles.wrapper} canvas-controls`} occlude >
+                <div className={styles.start}>
+                    <h1>Start simulation fjaf anejfn jejfwan j</h1>
+                    <button onClick={handleClick} >Start/Stop</button>
+                </div>
 
-            <div className={styles.objectInfo}>
-                <h1>Mass Object Info</h1>
-                {massObjectArray.current.map((object: MassObjectData) => {
+                <div className={styles.objectInfo}>
+                    <h1>Mass Object Info</h1>
+                    {massObjectArray.current.map((object: MassObjectData) => {
+                        if (selectedObjects.includes(object.name)) {
+                            return (
+                                <div key={object.name}>
+                                    <h1>{object.name}</h1>
+                                    <p>x coor: {object.position[0]} </p>
+                                </div>
+                            )
+                        } else {
+                            return null;
+                        }
+                    })}
+                </div>
+
+            </Html>
+
+            {/* annotations for selected planets */}
+            {
+                massObjectArray.current.map((object: MassObjectData) => {
                     if (selectedObjects.includes(object.name)) {
-                        return (
-                            <div key={object.name}>
-                                <h1>{object.name}</h1>
-                                <p>x coor: {object.position[0]} </p>
-                            </div>
+
+                        const convertedPosition = new Vector3(
+                            object.position[0] * conversionFactor,
+                            object.position[1] * conversionFactor,
+                            object.position[2] * conversionFactor
                         )
-                    } else {
-                        return null;
+
+                        return (
+                            <Html key={`${object.name}_annotation`} position={convertedPosition}>
+                                <div>{object.name}</div>
+                            </Html>
+                        )
                     }
-                })}
-            </div>
-        </Html>
+                })
+            }
+        </>
     )
 }
