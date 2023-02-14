@@ -115,8 +115,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
         // initial camera setup
         camera.position.set(0, 0, 2 * conversionFactorBetweenCanvasUnitsAndAU.current);
-        camera.near = 0.1;
-        camera.far = 1000;
+        camera.near = - 10 * conversionFactorBetweenCanvasUnitsAndAU.current;
+        camera.far = 10 * conversionFactorBetweenCanvasUnitsAndAU.current;
         camera.zoom = 1;
 
 

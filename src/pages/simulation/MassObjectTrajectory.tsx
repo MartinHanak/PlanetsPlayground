@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from "react"
+import { useEffect, useMemo, useReducer, useState } from "react"
 import { Vector3 } from "three"
 import MassObjectData from "./computation/MassObjectData"
 import { Html } from "@react-three/drei"
@@ -32,6 +32,8 @@ function reducer(state: Array<Vector3>, action: actionTypes) {
         case 'add':
             console.log("adding point")
             return [...state, action.payload]
+        case 'reset':
+            return []
         default:
             return state
     }
@@ -43,6 +45,7 @@ export default function MassObjectTrajectory({ trajectory, massObject, massObjec
     const frameloop = useThree((state: RootState) => state.frameloop)
 
     const [trajectoryState, dispatch] = useReducer(reducer, []);
+    const [color, setColor] = useState("black")
 
 
     useEffect(() => {
@@ -51,12 +54,13 @@ export default function MassObjectTrajectory({ trajectory, massObject, massObjec
             console.log(object)
             if (object.name === massObject) {
                 object.trajectoryStateDispatch = dispatch;
+                setColor(object.color)
             }
         })
     }, [frameloop])
 
     return (
-        trajectoryState.length > 2 ? < Line points={trajectoryState} /> : null
+        trajectoryState.length > 2 ? < Line points={trajectoryState} lineWidth={4} color={color} /> : null
 
     )
 }

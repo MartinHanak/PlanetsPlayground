@@ -20,6 +20,7 @@ export default class MassObjectData {
     trajectory: Vector3[];
     trajectoryStateDispatch: Dispatch<actionTypes> | (() => void);
     selected: boolean;
+    color: string;
 
 
     constructor(name: string, position: vector, velocity: vector, mass?: number | undefined) {
@@ -42,6 +43,8 @@ export default class MassObjectData {
         this.trajLineRef = null;
         this.trajectory = [];
         this.trajectoryStateDispatch = () => console.log("trajectory not yet initialized");
+
+        this.color = assignColor(name)
     }
 }
 
@@ -65,4 +68,24 @@ function assignMass(name: string) {
     }
 
 
+}
+
+
+function assignColor(name: string) {
+
+    const nameColorDictionary: { [key: string]: string } = {
+        "Sun": "rgb(255, 255, 0)",
+        "Mercury": "rgb(255, 191, 0)",
+        "Venus": "rgb(255, 191, 0)",
+        "Earth": "rgb(0, 191, 255)",
+        "Mars": "rgb(255, 191, 0)",
+        "Default": "rgb(0, 0, 0)"
+    }
+
+
+    if (name in nameColorDictionary) {
+        return nameColorDictionary[name]
+    } else {
+        return nameColorDictionary["Default"];
+    }
 }
