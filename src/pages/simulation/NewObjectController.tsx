@@ -7,7 +7,8 @@ type vector = [number, number, number];
 
 interface newObjectControllerProps {
     hide: () => void,
-    addMassObject: (name: string, position: vector, velocity: vector, mass: number) => void
+    addMassObject: (name: string, position: vector, velocity: vector, mass: number) => void,
+    setErrorMessage: Dispatch<SetStateAction<string>>
 }
 
 interface formValues {
@@ -21,7 +22,7 @@ interface formValues {
     mass: number,
 }
 
-export default function NewObjectController({ hide, addMassObject }: newObjectControllerProps) {
+export default function NewObjectController({ hide, addMassObject, setErrorMessage }: newObjectControllerProps) {
 
     const [formValues, setFormValues] = useState<formValues>({
         name: '',
@@ -55,6 +56,7 @@ export default function NewObjectController({ hide, addMassObject }: newObjectCo
 
         addMassObject(formValues.name, position, velocity, mass)
         hide()
+        setErrorMessage("hello")
     }
 
     return (

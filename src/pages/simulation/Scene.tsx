@@ -10,7 +10,7 @@ import MercuryTextureImage from "../../assets/textures/1k_textures/Mercury_textu
 import VenusTextureImage from "../../assets/textures/1k_textures/Venus_texture.jpg"
 import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture.jpg"
 import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg"
-import { useEffect, useRef, Dispatch, SetStateAction, useState } from "react"
+import { useEffect, useRef, Dispatch, SetStateAction, useState, useLayoutEffect } from "react"
 
 import MassObject from "./MassObject"
 import Grid from "./Grid"
@@ -121,8 +121,6 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
             object.trajectoryStateDispatch({ type: "reset" })
 
-            console.log(object.trajLineRef)
-
 
             // set child Controls state from here
             setControlsState((previousState: string[]) => {
@@ -136,11 +134,11 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         }
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         console.log("log from use effects")
-
+        console.log(camera)
         // initial camera setup
-        camera.position.set(0, 0, 6 * conversionFactorBetweenCanvasUnitsAndAU.current);
+        camera.position.set(0, 6 * conversionFactorBetweenCanvasUnitsAndAU.current, 6 * conversionFactorBetweenCanvasUnitsAndAU.current);
         camera.lookAt(new Vector3(0, 0, 0))
         camera.near = 0.1 * conversionFactorBetweenCanvasUnitsAndAU.current;
         camera.far = 12 * conversionFactorBetweenCanvasUnitsAndAU.current;
@@ -168,9 +166,9 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
             forceControlsRender();
 
             massObjectArray.current.map((massObject: MassObjectData) => {
-                massObject.position[0] = massObject.position[0] + 2 * (Math.random() * 0.1 - 0.05)
-                massObject.position[1] = massObject.position[1] + 2 * (Math.random() * 0.1 - 0.05)
-                massObject.position[2] = massObject.position[2] + 2 * (Math.random() * 0.1 - 0.05)
+                massObject.position[0] = massObject.position[0] + timestep.current * (Math.random() * 0.1 - 0.05)
+                massObject.position[1] = massObject.position[1] + timestep.current * (Math.random() * 0.1 - 0.05)
+                massObject.position[2] = massObject.position[2] + timestep.current * (Math.random() * 0.1 - 0.05)
                 if (massObject.meshRef !== null) {
                     massObject.meshRef.position.x = massObject.position[0] * conversionFactorBetweenCanvasUnitsAndAU.current;
                     massObject.meshRef.position.y = massObject.position[1] * conversionFactorBetweenCanvasUnitsAndAU.current;

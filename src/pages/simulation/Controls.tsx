@@ -6,10 +6,10 @@ import MassObjectData from "./computation/MassObjectData";
 import { RootState } from "@react-three/fiber";
 import { useState } from "react";
 import { Dispatch } from "react";
-import { StaticReadUsage } from "three";
 import { Vector3 } from "three";
 import MassObjectController from "./MassObjectController";
 import NewObjectController from "./NewObjectController";
+import ErrorNotification from "./ErrorNotification";
 
 type vector = [number, number, number];
 
@@ -36,6 +36,8 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
     // for forcing render
     const [forcedCounter, setForcedCounter] = useState<number>(0);
     const forceUpdate = () => setForcedCounter((previous: number) => previous + 1);
+
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
 
     useEffect(() => {
@@ -96,7 +98,11 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
 
                     <button onClick={() => setShowNewObject((show: boolean) => !show)}>Add Object</button>
 
-                    {showNewObject ? <NewObjectController hide={() => setShowNewObject(false)} addMassObject={addMassObject} /> : null}
+                    {showNewObject ? <NewObjectController
+                        hide={() => setShowNewObject(false)}
+                        addMassObject={addMassObject}
+                        setErrorMessage={setErrorMessage}
+                    /> : null}
 
                     {massObjectArray.current.map((object: MassObjectData) => {
                         if (selectedObjects.includes(object.name)) {
@@ -134,6 +140,11 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
                     }
                 })
             }
+
+
+            {/* error notification */}
+
+            {errorMessage !== '' ? <ErrorNotification message={errorMessage} setErrorMessage={setErrorMessage} /> : null}
         </>
     )
 }
