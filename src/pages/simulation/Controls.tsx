@@ -9,23 +9,29 @@ import { Dispatch } from "react";
 import { StaticReadUsage } from "three";
 import { Vector3 } from "three";
 import MassObjectController from "./MassObjectController";
+import NewObjectController from "./NewObjectController";
 
+type vector = [number, number, number];
 
 interface controlsProps {
     toggleMoving: () => boolean,
     stopMoving: () => void,
     setCenter: (center: string) => void,
+    setTimestep: (timestep: number) => number,
     massObjectArray: MutableRefObject<MassObjectData[]>,
     onMount: ([controlsState, setControlsState, updateControls]: [string[], Dispatch<SetStateAction<string[]>>, () => void]) => void,
-    conversionFactor: number
+    conversionFactor: number,
+    addMassObject: (name: string, position: vector, velocity: vector, mass: number) => void
 }
 
-export default function Controls({ toggleMoving, stopMoving, setCenter, massObjectArray, onMount, conversionFactor }: controlsProps) {
+export default function Controls({ toggleMoving, stopMoving, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject }: controlsProps) {
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
 
     const [selectedObjects, setSelectedObjects] = useState<string[]>([]);
+
+    const [showNewObject, setShowNewObject] = useState<boolean>(false);
 
     // for forcing render
     const [forcedCounter, setForcedCounter] = useState<number>(0);
@@ -53,12 +59,25 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, massObje
         setCenter(event.target.value)
     }
 
+    const handleTimestepChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const inputValue = Number(event.target.value);
+
+        if (!isNaN(inputValue) && inputValue > 0) {
+            setTimestep(inputValue) // in days
+        }
+    }
+
     return (
         <>
             <Html as="div" wrapperClass={`${styles.wrapper} canvas-controls`} occlude >
                 <div className={styles.start}>
-                    <h1>Start / stop</h1>
-                    <button onClick={handleClick}> Start/Stop </button>
+
+
+                    <h1>Timestep</h1>
+                    <label htmlFor="timestep">
+                        <input name="timestep" id="timestep" type="text" placeholder="1.0" onChange={handleTimestepChange} />
+                    </label>
+
 
 
                     <h1>Center</h1>
@@ -67,10 +86,18 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, massObje
                         <option value="Sun">Sun</option>
                         <option value="Earth">Earth</option>
                     </select>
+
+                    <h1>Start / stop</h1>
+                    <button onClick={handleClick}> Start/Stop </button>
                 </div>
 
                 <div className={styles.objectInfo}>
                     <h1>Mass Object Info</h1>
+
+                    <button onClick={() => setShowNewObject((show: boolean) => !show)}>Add Object</button>
+
+                    {showNewObject ? <NewObjectController hide={() => setShowNewObject(false)} addMassObject={addMassObject} /> : null}
+
                     {massObjectArray.current.map((object: MassObjectData) => {
                         if (selectedObjects.includes(object.name)) {
                             return (

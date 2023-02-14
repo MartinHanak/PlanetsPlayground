@@ -24,6 +24,8 @@ import initializeMassObjectArray from "./computation/initializeMassObjectArray"
 import MassObjectTrajectory from "./MassObjectTrajectory"
 
 
+type vector = [number, number, number]
+
 export interface initialMassObjectData {
     name: string,
     position: [number, number, number],
@@ -37,11 +39,20 @@ interface sceneProps {
 
 export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
+    const [numberOfObjects, setNumberOfObjects] = useState(0)
+
     const camera = useThree((state: RootState) => state.camera)
     const canvasSize = useThree((state: RootState) => state.size)
 
     const center = useRef('SSB');
     const setCenter = (value: string) => { center.current = value };
+
+    const timestep = useRef(1.0);
+    const setTimestep = (value: number) => {
+        timestep.current = value
+        console.log(`new timestep: ${timestep.current}`)
+        return timestep.current;
+    };
 
     // set 4 AU units = minimum out of canvas width and canvas height
     const conversionFactorBetweenCanvasUnitsAndAU = useRef(Math.min(canvasSize.height, canvasSize.width) / 4);
@@ -75,7 +86,13 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     }
 
     const massObjectArray = useRef<MassObjectData[]>([]);
-    initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary);
+
+    const addMassObject = (name: string, position: vector, velocity: vector, mass: number) => {
+        const newObject = new MassObjectData(name, position, velocity, mass);
+        newObject.texture = textureDictionary['Default'];
+        massObjectArray.current.push(newObject);
+        setNumberOfObjects((num: number) => num + 1);
+    }
 
 
 
@@ -123,14 +140,18 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         console.log("log from use effects")
 
         // initial camera setup
-        camera.position.set(0, 0, 2 * conversionFactorBetweenCanvasUnitsAndAU.current);
-        camera.near = - 10 * conversionFactorBetweenCanvasUnitsAndAU.current;
-        camera.far = 10 * conversionFactorBetweenCanvasUnitsAndAU.current;
+        camera.position.set(0, 0, 6 * conversionFactorBetweenCanvasUnitsAndAU.current);
+        camera.lookAt(new Vector3(0, 0, 0))
+        camera.near = 0.1 * conversionFactorBetweenCanvasUnitsAndAU.current;
+        camera.far = 12 * conversionFactorBetweenCanvasUnitsAndAU.current;
         camera.zoom = 1;
-
 
         console.log(camera);
         console.log(`shorter: ${conversionFactorBetweenCanvasUnitsAndAU.current}`);
+
+        // initial object values
+        initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary);
+        setNumberOfObjects(massObjectArray.current.length);
 
 
 
@@ -198,7 +219,16 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
             })}
 
 
-            <Controls toggleMoving={toggleMoving} stopMoving={stopMoving} setCenter={setCenter} massObjectArray={massObjectArray} onMount={onControlsMount} conversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
+            <Controls
+                toggleMoving={toggleMoving}
+                stopMoving={stopMoving}
+                setCenter={setCenter}
+                setTimestep={setTimestep}
+                massObjectArray={massObjectArray}
+                onMount={onControlsMount}
+                conversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current}
+                addMassObject={addMassObject}
+            />
 
         </>
     )
