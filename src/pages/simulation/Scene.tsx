@@ -40,6 +40,9 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     const camera = useThree((state: RootState) => state.camera)
     const canvasSize = useThree((state: RootState) => state.size)
 
+    const center = useRef('SSB');
+    const setCenter = (value: string) => { center.current = value };
+
     // set 4 AU units = minimum out of canvas width and canvas height
     const conversionFactorBetweenCanvasUnitsAndAU = useRef(Math.min(canvasSize.height, canvasSize.width) / 4);
 
@@ -53,6 +56,10 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     const toggleMoving = () => {
         moving.current = !moving.current;
         return moving.current;
+    }
+
+    const stopMoving = () => {
+        moving.current = false;
     }
 
     const [SunTexture, MercuryTexture, VenusTexture, EarthTexture, MarsTexture]
@@ -94,6 +101,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
             // update object selected property
             object.selected = !object.selected;
+
+            object.trajectoryStateDispatch({ type: "reset" })
 
             console.log(object.trajLineRef)
 
@@ -189,7 +198,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
             })}
 
 
-            <Controls toggleMoving={toggleMoving} massObjectArray={massObjectArray} onMount={onControlsMount} conversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
+            <Controls toggleMoving={toggleMoving} stopMoving={stopMoving} setCenter={setCenter} massObjectArray={massObjectArray} onMount={onControlsMount} conversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
 
         </>
     )
