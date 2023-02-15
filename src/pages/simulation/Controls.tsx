@@ -1,12 +1,12 @@
 import { Html } from "@react-three/drei"
-import { useThree } from "@react-three/fiber"
+import { Camera, useThree } from "@react-three/fiber"
 import styles from "./Controls.module.scss"
 import { ChangeEvent, MutableRefObject, SetStateAction, useEffect } from "react";
 import MassObjectData from "./computation/MassObjectData";
 import { RootState } from "@react-three/fiber";
 import { useState } from "react";
 import { Dispatch } from "react";
-import { Vector3 } from "three";
+import { Object3D, Vector3 } from "three";
 import MassObjectController from "./MassObjectController";
 import NewObjectController from "./NewObjectController";
 import ErrorNotification from "./ErrorNotification";
@@ -28,6 +28,8 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
+    const camera = useThree((state: RootState) => state.camera);
+    const cameraPositionX = useThree((state: RootState) => state.camera.position.x) // state change for label position update
 
     const [selectedObjects, setSelectedObjects] = useState<string[]>([]);
 
@@ -70,6 +72,7 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
             setErrorMessage('Timestep has to be a positive number')
         }
     }
+
 
     return (
         <>
@@ -125,18 +128,33 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
 
             {/* annotations for selected planets */}
             {
-                massObjectArray.current.map((object: MassObjectData) => {
-                    if (selectedObjects.includes(object.name)) {
+                massObjectArray.current.map((massObject: MassObjectData) => {
+                    if (selectedObjects.includes(massObject.name)) {
 
                         const convertedPosition = new Vector3(
-                            object.position[0] * conversionFactor,
-                            object.position[1] * conversionFactor,
-                            object.position[2] * conversionFactor
+                            massObject.position[0] * conversionFactor,
+                            massObject.position[1] * conversionFactor,
+                            massObject.position[2] * conversionFactor
                         )
 
+
+                        const cameraUpVector = new Vector3(0, 1, 0);
+
+                        const transformedCameraUpVector = cameraUpVector
+                            .applyMatrix4(camera.matrixWorld)
+
+                        const finalUpVector = transformedCameraUpVector.sub(camera.position).normalize().multiplyScalar(massObject.radius * conversionFactor);
+
+                        convertedPosition.add(finalUpVector);
+
+
                         return (
-                            <Html key={`${object.name}_annotation`} position={convertedPosition}>
-                                <div>{object.name}</div>
+                            <Html
+                                key={`${massObject.name}_annotation`}
+                                center
+                                position={convertedPosition}
+                            >
+                                <div className={styles.label}>{massObject.name}</div>
                             </Html>
                         )
                     }

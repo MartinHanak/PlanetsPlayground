@@ -138,10 +138,11 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         console.log("log from use effects")
         console.log(camera)
         // initial camera setup
-        camera.position.set(6 * conversionFactorBetweenCanvasUnitsAndAU.current, 6 * conversionFactorBetweenCanvasUnitsAndAU.current, 6 * conversionFactorBetweenCanvasUnitsAndAU.current);
+        // camera.position.set(6 * conversionFactorBetweenCanvasUnitsAndAU.current, 6 * conversionFactorBetweenCanvasUnitsAndAU.current, 6 * conversionFactorBetweenCanvasUnitsAndAU.current);
+        camera.position.set(0, 0, 6 * conversionFactorBetweenCanvasUnitsAndAU.current);
         camera.lookAt(new Vector3(0, 0, 0))
         camera.near = 0.1 * conversionFactorBetweenCanvasUnitsAndAU.current;
-        camera.far = 12 * conversionFactorBetweenCanvasUnitsAndAU.current;
+        camera.far = 20 * conversionFactorBetweenCanvasUnitsAndAU.current;
         camera.zoom = 1;
 
         console.log(camera);
