@@ -10,7 +10,7 @@ interface ErrorNotificationProps {
 export default function ErrorNotification({ message, setErrorMessage }: ErrorNotificationProps) {
 
     useEffect(() => {
-        setTimeout(() => setErrorMessage(''), 10000)
+        setTimeout(() => setErrorMessage(''), 5000)
     }, [])
 
     return (

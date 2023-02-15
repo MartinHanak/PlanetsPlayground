@@ -66,6 +66,8 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
 
         if (!isNaN(inputValue) && inputValue > 0) {
             setTimestep(inputValue) // in days
+        } else {
+            setErrorMessage('Timestep has to be a positive number')
         }
     }
 

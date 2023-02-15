@@ -50,13 +50,30 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
 
     const handleConfirm = () => {
 
-        const position: vector = [Number(formValues.positionX), Number(formValues.positionY), Number(formValues.positionZ)]
-        const velocity: vector = [Number(formValues.velocityX), Number(formValues.velocityY), Number(formValues.velocityZ)]
-        const mass = Number(formValues.mass)
+        if (formValues.name === '') {
+            setErrorMessage('Name of the object cannot be empty');
+        } else if (formValues.name === 'Sun' || formValues.name === 'Mercury' || formValues.name === 'Venus' ||
+            formValues.name === 'Earth' || formValues.name === 'Mars') {
+            setErrorMessage('Name of the object has to be unique');
+        } else if (
+            isNaN(Number(formValues.positionX)) ||
+            isNaN(Number(formValues.positionY)) ||
+            isNaN(Number(formValues.positionZ)) ||
+            isNaN(Number(formValues.velocityX)) ||
+            isNaN(Number(formValues.velocityY)) ||
+            isNaN(Number(formValues.velocityZ)) ||
+            isNaN(Number(formValues.mass))
+        ) {
+            setErrorMessage("Position, velocity and mass has to be valid numbers.")
+        } else {
 
-        addMassObject(formValues.name, position, velocity, mass)
-        hide()
-        setErrorMessage("hello")
+            const position: vector = [Number(formValues.positionX), Number(formValues.positionY), Number(formValues.positionZ)]
+            const velocity: vector = [Number(formValues.velocityX), Number(formValues.velocityY), Number(formValues.velocityZ)]
+            const mass = Number(formValues.mass)
+
+            addMassObject(formValues.name, position, velocity, mass)
+            hide()
+        }
     }
 
     return (
