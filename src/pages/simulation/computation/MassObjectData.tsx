@@ -37,7 +37,7 @@ export default class MassObjectData {
 
         this.meshRef = null;
         this.texture = null;
-        this.radius = 0.5;
+        this.radius = 7479893535; // in meters
         this.selected = false;
 
         this.trajLineRef = null;

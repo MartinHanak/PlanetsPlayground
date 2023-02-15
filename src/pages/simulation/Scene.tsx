@@ -1,6 +1,6 @@
 import { useLoader, useFrame, useThree } from "@react-three/fiber"
 import { TextureLoader } from "three/src/loaders/TextureLoader"
-import { OrbitControls } from "@react-three/drei"
+import { Html, OrbitControls, TrackballControls } from "@react-three/drei"
 import { RootState } from "@react-three/fiber"
 import { ThreeEvent } from "@react-three/fiber"
 
@@ -55,7 +55,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     };
 
     // set 4 AU units = minimum out of canvas width and canvas height
-    const conversionFactorBetweenCanvasUnitsAndAU = useRef(Math.min(canvasSize.height, canvasSize.width) / 4);
+    const conversionFactorBetweenCanvasUnitsAndAU = useRef(Math.min(canvasSize.height, canvasSize.width) / (4 * 149597870700));
 
     const convertVectorUnits = (vector: [number, number, number]): [number, number, number] => {
         const multiplier = conversionFactorBetweenCanvasUnitsAndAU.current;
@@ -138,11 +138,13 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         console.log("log from use effects")
         console.log(camera)
         // initial camera setup
-        // camera.position.set(6 * conversionFactorBetweenCanvasUnitsAndAU.current, 6 * conversionFactorBetweenCanvasUnitsAndAU.current, 6 * conversionFactorBetweenCanvasUnitsAndAU.current);
-        camera.position.set(0, 0, 6 * conversionFactorBetweenCanvasUnitsAndAU.current);
+        const cameraAUDistInCanvasUnits = 4 * 149597870700 * conversionFactorBetweenCanvasUnitsAndAU.current; // 4 AU in meters converted to canvas units
+        camera.position.set(cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits);
+        //camera.position.set(0, 0, -300);
+        camera.up.set(0, 0, 1);
         camera.lookAt(new Vector3(0, 0, 0))
-        camera.near = 0.1 * conversionFactorBetweenCanvasUnitsAndAU.current;
-        camera.far = 20 * conversionFactorBetweenCanvasUnitsAndAU.current;
+        camera.near = 0; //0.1 * 149597870700 * conversionFactorBetweenCanvasUnitsAndAU.current;
+        camera.far = cameraAUDistInCanvasUnits * 10;
         camera.zoom = 1;
 
         console.log(camera);
@@ -183,7 +185,6 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         }
 
     })
-
 
     return (
         <>
@@ -231,5 +232,6 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
         </>
     )
+
 
 }
