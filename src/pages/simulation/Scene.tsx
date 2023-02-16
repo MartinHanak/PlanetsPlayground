@@ -164,7 +164,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         if (cameraControlsRef.current) {
             console.log("orbit controls")
 
-            cameraControlsRef.current.setPosition(cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits)
+            cameraControlsRef.current.setPosition(-cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits)
 
             cameraControlsRef.current.setTarget(0, 0, 0);
 
@@ -194,6 +194,18 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         }
     }
 
+    const getSunPosition: (() => [number, number, number]) = () => {
+        const sunData = massObjectArray.current.filter((massObject: MassObjectData) => {
+            return massObject.name === "Sun"
+        })
+
+        if (sunData.length > 0 && sunData[0].meshRef) {
+            return sunData[0].meshRef.position.toArray();
+        } else {
+            return [0, 0, 0]
+        }
+    }
+
 
     useEffect(() => {
         console.log("scene rerendered")
@@ -207,9 +219,9 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
             forceControlsRender();
 
             massObjectArray.current.map((massObject: MassObjectData) => {
-                massObject.position[0] = massObject.position[0] + timestep.current * (Math.random() * 0.1 - 0.05)
-                massObject.position[1] = massObject.position[1] + timestep.current * (Math.random() * 0.1 - 0.05)
-                massObject.position[2] = massObject.position[2] + timestep.current * (Math.random() * 0.1 - 0.05)
+                massObject.position[0] = massObject.position[0] + timestep.current * 1.496e+11 * (Math.random() * 0.1 - 0.05)
+                massObject.position[1] = massObject.position[1] + timestep.current * 1.496e+11 * (Math.random() * 0.1 - 0.05)
+                massObject.position[2] = massObject.position[2] + timestep.current * 1.496e+11 * (Math.random() * 0.1 - 0.05)
                 if (massObject.meshRef !== null) {
                     massObject.meshRef.position.x = massObject.position[0] * conversionFactorBetweenCanvasUnitsAndAU.current;
                     massObject.meshRef.position.y = massObject.position[1] * conversionFactorBetweenCanvasUnitsAndAU.current;
@@ -230,8 +242,11 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
             <CameraControls ref={cameraControlsRef} enabled={false} onStart={handleCameraControlsChangeStart} />
 
-            <ambientLight intensity={0.2} />
-            <directionalLight />
+            <ambientLight intensity={0.1} />
+
+            <pointLight color="white" intensity={2}
+                position={getSunPosition()}
+            />
 
             <Grid unitConversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
 
@@ -241,6 +256,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                     <group key={`${massObject.name}_group`}>
                         <MassObject
                             key={massObject.name}
+                            name={massObject.name}
                             ref={(meshRef: Mesh) => massObject.meshRef = meshRef}
                             position={convertVectorUnits(massObject.position)}
                             args={[massObject.radius * conversionFactorBetweenCanvasUnitsAndAU.current, 32, 32]}
