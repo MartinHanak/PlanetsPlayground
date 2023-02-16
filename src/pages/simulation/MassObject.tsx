@@ -20,7 +20,7 @@ export default forwardRef(function MassObject({ position, args, texture, onClick
     const positionVector = new Vector3(...position)
 
     return (
-        <mesh position={positionVector} ref={ref} onClick={onClick}  >
+        <mesh position={positionVector} ref={ref} onClick={onClick} rotation={[Math.PI / 2, 0, 0]}  >
             < sphereGeometry args={args} />
             < meshStandardMaterial map={texture} />
         </mesh>

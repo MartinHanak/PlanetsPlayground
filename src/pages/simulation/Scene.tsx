@@ -1,6 +1,6 @@
 import { useLoader, useFrame, useThree } from "@react-three/fiber"
 import { TextureLoader } from "three/src/loaders/TextureLoader"
-import { Html, OrbitControls, TrackballControls } from "@react-three/drei"
+import { Html, TrackballControls, OrbitControls, ArcballControls, FlyControls, CameraControls } from "@react-three/drei"
 import { RootState } from "@react-three/fiber"
 import { ThreeEvent } from "@react-three/fiber"
 
@@ -10,7 +10,7 @@ import MercuryTextureImage from "../../assets/textures/1k_textures/Mercury_textu
 import VenusTextureImage from "../../assets/textures/1k_textures/Venus_texture.jpg"
 import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture.jpg"
 import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg"
-import { useEffect, useRef, Dispatch, SetStateAction, useState, useLayoutEffect } from "react"
+import { useEffect, useRef, Dispatch, SetStateAction, useState, useLayoutEffect, MutableRefObject } from "react"
 
 import MassObject from "./MassObject"
 import Grid from "./Grid"
@@ -22,6 +22,7 @@ import Controls from "./Controls"
 import MassObjectData from "./computation/MassObjectData";
 import initializeMassObjectArray from "./computation/initializeMassObjectArray"
 import MassObjectTrajectory from "./MassObjectTrajectory"
+import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer"
 
 
 type vector = [number, number, number]
@@ -43,6 +44,10 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
     const camera = useThree((state: RootState) => state.camera)
     const canvasSize = useThree((state: RootState) => state.size)
+    const rendererDOM = useThree((state: RootState) => state.gl.domElement)
+    const frameloop = useThree((state: RootState) => state.frameloop)
+    const invalidate = useThree((state: RootState) => state.invalidate)
+    const setFrameloop = useThree((state: RootState) => state.setFrameloop)
 
     const center = useRef('SSB');
     const setCenter = (value: string) => { center.current = value };
@@ -84,6 +89,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         "Mars": MarsTexture,
         "Default": MarsTexture
     }
+
+    const cameraControlsRef = useRef<CameraControls | null>(null);
 
     const massObjectArray = useRef<MassObjectData[]>([]);
 
@@ -139,28 +146,59 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         console.log(camera)
         // initial camera setup
         const cameraAUDistInCanvasUnits = 4 * 149597870700 * conversionFactorBetweenCanvasUnitsAndAU.current; // 4 AU in meters converted to canvas units
-        camera.position.set(cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits);
+        //camera.position.set(cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits);
+        //orbitControls.current.target.set(cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits);
+        //orbitControls.current.target.set(0, 0, 0)
         //camera.position.set(0, 0, -300);
         camera.up.set(0, 0, 1);
-        camera.lookAt(new Vector3(0, 0, 0))
+        //camera.lookAt(new Vector3(0, 0, 0))
         camera.near = 0; //0.1 * 149597870700 * conversionFactorBetweenCanvasUnitsAndAU.current;
         camera.far = cameraAUDistInCanvasUnits * 10;
         camera.zoom = 1;
+        camera.updateProjectionMatrix();
 
         console.log(camera);
         console.log(`shorter: ${conversionFactorBetweenCanvasUnitsAndAU.current}`);
+
+        //update controls
+        if (cameraControlsRef.current) {
+            console.log("orbit controls")
+
+            cameraControlsRef.current.setPosition(cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits)
+
+            cameraControlsRef.current.setTarget(0, 0, 0);
+
+
+
+            //orbitControls.current.updateCameraUp()
+            cameraControlsRef.current.enabled = true;
+            cameraControlsRef.current.updateCameraUp()
+            console.log(cameraControlsRef)
+
+        }
 
         // initial object values
         initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary);
         setNumberOfObjects(massObjectArray.current.length);
 
 
-
     }, [])
+
+    const handleCameraControlsChange = () => {
+        invalidate()
+    }
+
+    const handleCameraControlsChangeStart = () => {
+        if (frameloop !== "always") {
+            setFrameloop("always")
+        }
+    }
+
 
     useEffect(() => {
         console.log("scene rerendered")
     })
+
 
     useFrame((state: RootState, delta: number) => {
 
@@ -188,7 +226,9 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
     return (
         <>
-            <OrbitControls />
+            {/* <OrbitControls makeDefault ref={orbitControls} enabled={false} /> */}
+
+            <CameraControls ref={cameraControlsRef} enabled={false} onStart={handleCameraControlsChangeStart} />
 
             <ambientLight intensity={0.2} />
             <directionalLight />

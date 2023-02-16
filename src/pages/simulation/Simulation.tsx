@@ -109,11 +109,13 @@ export default function Simulation(props: simulationProps) {
             <div>
                 <h1>Simulation</h1>
                 <div className={styles.canvasContainer}>
-                    <Suspense fallback={<Loading />}>
-                        <Canvas frameloop="demand" orthographic className="canvas-render-screen" >
-                            <Scene initialMassObjectDataArray={initialPositionsVelocities} />
-                        </Canvas>
-                    </Suspense>
+                    {initialPositionsVelocities.length === 0 ? <Loading /> :
+                        <Suspense fallback={<Loading />}>
+                            <Canvas frameloop="demand" orthographic className="canvas-render-screen" >
+                                <Scene initialMassObjectDataArray={initialPositionsVelocities} />
+                            </Canvas>
+                        </Suspense>
+                    }
                 </div>
 
             </div >
