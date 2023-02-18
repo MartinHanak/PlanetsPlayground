@@ -2,6 +2,8 @@ import { match } from 'assert'
 import { SetStateAction, Dispatch, useState, ChangeEvent } from 'react'
 import styles from './MassObjectController.module.scss'
 
+import { convertDisplayedToSI } from '../../utils/convertVectorSI';
+
 type vector = [number, number, number];
 
 
@@ -67,9 +69,17 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
             setErrorMessage("Position, velocity and mass has to be valid numbers.")
         } else {
 
-            const position: vector = [Number(formValues.positionX), Number(formValues.positionY), Number(formValues.positionZ)]
-            const velocity: vector = [Number(formValues.velocityX), Number(formValues.velocityY), Number(formValues.velocityZ)]
-            const mass = Number(formValues.mass)
+            const position: vector = [
+                convertDisplayedToSI({ type: 'position', component: Number(formValues.positionX) }),
+                convertDisplayedToSI({ type: 'position', component: Number(formValues.positionY) }),
+                convertDisplayedToSI({ type: 'position', component: Number(formValues.positionZ) })
+            ]
+            const velocity: vector = [
+                convertDisplayedToSI({ type: 'velocity', component: Number(formValues.velocityX) }),
+                convertDisplayedToSI({ type: 'velocity', component: Number(formValues.velocityY) }),
+                convertDisplayedToSI({ type: 'velocity', component: Number(formValues.velocityZ) }),
+            ]
+            const mass = convertDisplayedToSI({ type: "mass", component: Number(formValues.mass) })
 
             addMassObject(formValues.name, position, velocity, mass)
             hide()

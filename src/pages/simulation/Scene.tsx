@@ -18,14 +18,16 @@ import { Group, Mesh, Vector3 } from "three"
 import { Line } from "three"
 
 import Controls from "./Controls"
+import CurrentDay from "./CurrentDay"
 
 import MassObjectData from "./computation/MassObjectData";
 import initializeMassObjectArray from "./computation/initializeMassObjectArray"
 import MassObjectTrajectory from "./MassObjectTrajectory"
 import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer"
+import updatePosition from "./computation/updatePosition"
 
 
-type vector = [number, number, number]
+export type vector = [number, number, number]
 
 export interface initialMassObjectData {
     name: string,
@@ -52,12 +54,18 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     const center = useRef('SSB');
     const setCenter = (value: string) => { center.current = value };
 
-    const timestep = useRef(1.0);
+    const timestep = useRef<number>(1.0);
     const setTimestep = (value: number) => {
         timestep.current = value
         console.log(`new timestep: ${timestep.current}`)
         return timestep.current;
     };
+
+    const currentDayRef = useRef(new Date());
+
+    const increaseCurrentDay = () => {
+        currentDayRef.current = new Date(currentDayRef.current.getTime() + timestep.current * 86400000) // timestep in days
+    }
 
     // set 4 AU units = minimum out of canvas width and canvas height
     const conversionFactorBetweenCanvasUnitsAndAU = useRef(Math.min(canvasSize.height, canvasSize.width) / (4 * 149597870700));
@@ -92,15 +100,28 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
     const cameraControlsRef = useRef<CameraControls | null>(null);
 
+    const forces = useRef<vector[][]>([]);
+    const positionDifferences = useRef<vector[][]>([])
+    const distances = useRef<number[][]>([]);
+
+    const resetForces = () => forces.current = [];
+    const resetPositionDifferences = () => positionDifferences.current = [];
+    const resetDistances = () => distances.current = [];
+    const resetAll = () => {
+        resetForces();
+        resetPositionDifferences();
+        resetDistances();
+    }
+
     const massObjectArray = useRef<MassObjectData[]>([]);
 
     const addMassObject = (name: string, position: vector, velocity: vector, mass: number) => {
         const newObject = new MassObjectData(name, position, velocity, mass);
         newObject.texture = textureDictionary['Default'];
         massObjectArray.current.push(newObject);
+        resetAll();
         setNumberOfObjects((num: number) => num + 1);
     }
-
 
 
     // for updating child component without rerendering parent scene
@@ -218,20 +239,30 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
             forceControlsRender();
 
+            updatePosition({
+                timestepRef: timestep,
+                massObjectsRef: massObjectArray,
+                forcesRef: forces,
+                positionDifferencesRef: positionDifferences,
+                distancesRef: distances
+            });
+
             massObjectArray.current.map((massObject: MassObjectData) => {
-                massObject.position[0] = massObject.position[0] + timestep.current * 1.496e+11 * (Math.random() * 0.1 - 0.05)
-                massObject.position[1] = massObject.position[1] + timestep.current * 1.496e+11 * (Math.random() * 0.1 - 0.05)
-                massObject.position[2] = massObject.position[2] + timestep.current * 1.496e+11 * (Math.random() * 0.1 - 0.05)
+
                 if (massObject.meshRef !== null) {
                     massObject.meshRef.position.x = massObject.position[0] * conversionFactorBetweenCanvasUnitsAndAU.current;
                     massObject.meshRef.position.y = massObject.position[1] * conversionFactorBetweenCanvasUnitsAndAU.current;
                     massObject.meshRef.position.z = massObject.position[2] * conversionFactorBetweenCanvasUnitsAndAU.current;
 
-                    massObject.trajectoryStateDispatch({ type: 'add', payload: new Vector3(massObject.meshRef.position.x, massObject.meshRef.position.y, massObject.meshRef.position.z) })
+                    if (massObject.selected) {
+                        massObject.trajectoryStateDispatch({ type: 'add', payload: new Vector3(massObject.meshRef.position.x, massObject.meshRef.position.y, massObject.meshRef.position.z) })
+                    }
                 }
 
 
             })
+
+            increaseCurrentDay()
         }
 
     })
@@ -244,9 +275,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
             <ambientLight intensity={0.1} />
 
-            <pointLight color="white" intensity={2}
-                position={getSunPosition()}
-            />
+            <pointLight color="white" intensity={2} position={getSunPosition()} />
 
             <Grid unitConversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
 
@@ -284,7 +313,10 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                 onMount={onControlsMount}
                 conversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current}
                 addMassObject={addMassObject}
+                currentDayRef={currentDayRef}
             />
+
+
 
         </>
     )

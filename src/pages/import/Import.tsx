@@ -1,9 +1,17 @@
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import styles from './Import.module.scss';
 
 export default function Import() {
 
+    const inputRegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/;
+
+
     const [errorMessage, setErrorMessage] = useState('');
     const [inputValue, setInputValue] = useState('');
+
+    const navigate = useNavigate();
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -12,6 +20,12 @@ export default function Import() {
             setErrorMessage(potentialError)
         } else {
             console.log("submit")
+            navigate('/simulation', {
+                state: {
+                    actionType: 'import',
+                    date: getMillisecondsDateFromInputValue(inputValue)
+                }
+            })
         }
     }
 
@@ -39,7 +53,6 @@ export default function Import() {
 
     const isCorrectFormat = (input: string): boolean => {
         let result = false;
-        const inputRegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/;
 
         result = inputRegExp.test(input);
 
@@ -48,7 +61,6 @@ export default function Import() {
 
     const isCorrectRange = (input: string): boolean => {
         let result = false;
-        const inputRegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/;
 
         const [inputMatch, dayMatch, monthMatch, yearMatch] = input.match(inputRegExp) as RegExpMatchArray;
         if (Number(dayMatch) > 0 && Number(dayMatch) < 32 && Number(monthMatch) > 0 && Number(monthMatch) < 13) {
@@ -58,6 +70,14 @@ export default function Import() {
         return result;
     }
 
+    const getMillisecondsDateFromInputValue = (inputValue: string): number => {
+        const [inputMatch, dayMatch, monthMatch, yearMatch] = inputValue.match(inputRegExp) as RegExpMatchArray;
+
+        const dateObject = new Date(Number(yearMatch), Number(monthMatch) - 1, Number(dayMatch))
+
+        return dateObject.getTime()
+    }
+
     return (
         <>
             <h1>Import</h1>
@@ -65,7 +85,9 @@ export default function Import() {
             <form onSubmit={handleSubmit}>
 
                 <label htmlFor="date">Choose when to start the simulation:</label><br />
-                <input id="date" type="text" value={inputValue} placeholder="dd/mm/yyyy" onChange={(e) => setInputValue(e.target.value)} /><br />
+                <input id="date" type="text" value={inputValue} placeholder="dd/mm/yyyy" autoComplete="off"
+                    className={styles.dateInput}
+                    onChange={(e) => setInputValue(e.target.value)} /><br />
 
                 <button type="submit">Start Simulation</button>
             </form>

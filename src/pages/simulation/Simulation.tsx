@@ -1,4 +1,5 @@
 import { Suspense, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useLocation } from "react-router-dom"
 
 import styles from "./Simulation.module.scss"
 
@@ -31,94 +32,90 @@ interface loadType {
 
 interface importType {
     actionType: "import",
-    date: string
+    date: number
 }
 
 interface nodataType {
     actionType: "nodata"
 }
 
-type simulationProps = loadType | importType | nodataType;
+type locationStateType = loadType | importType | nodataType;
 
-export default function Simulation(props: simulationProps) {
+export default function Simulation() {
 
     const fetchAlreadySent = useRef(false);
     const [initialPositionsVelocities, setInitialPositionsVelocities] = useState<initialMassObjectData[]>([])
 
+    const location = useLocation();
+
     // load in data
     useEffect(() => {
-        if (props.actionType === 'nodata') {
-            console.log("no data to fetch or load");
 
-        } else if (props.actionType === 'load') {
-            if (props.data === 'default') {
-                console.log("loading default data");
-            } else if (props.data === 'storage') {
-                console.log("loading data from the local storage");
+        if (location.state !== null && location.state.actionType) {
+
+            if (location.state.actionType === "load") {
+                console.log("load default or storage data")
+            } else if (location.state.actionType === "import" && !isNaN(Number(location.state.date))) {
+                console.log("import data")
+
+                if (!fetchAlreadySent.current) {
+
+                    (async () => {
+                        try {
+                            const fetchResponses = await nasaFetchData(Number(location.state.date));
+
+                            fetchResponses.forEach((response: Response) => {
+                                if (!response.ok) {
+                                    throw new Error('One of the fetch api calls failed.')
+                                }
+                            })
+
+                            const jsonData = await Promise.all(fetchResponses.map(
+                                (response: Response) => response.json()
+                            ))
+                            console.log(jsonData)
+
+                            // data returned as a block of text, has to be extracted
+                            const extractedData = await Promise.all(jsonData.map((jsonInstance) => {
+                                return nasaExtractData(jsonInstance.result)
+                            }))
+
+                            setInitialPositionsVelocities(extractedData);
+
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    })();
+
+                }
+
+                return () => {
+                    console.log("preventing second api call")
+                    fetchAlreadySent.current = true;
+                }
+            } else {
+                console.log('NoData')
             }
+
         } else {
-            //import
-            console.log("importing data from NASA API");
-
-            if (!fetchAlreadySent.current) {
-
-                (async () => {
-                    try {
-                        const fetchResponses = await nasaFetchData(Date.now());
-
-                        fetchResponses.forEach((response: Response) => {
-                            if (!response.ok) {
-                                throw new Error('One of the fetch api calls failed.')
-                            }
-                        })
-
-                        const jsonData = await Promise.all(fetchResponses.map(
-                            (response: Response) => response.json()
-                        ))
-                        console.log(jsonData)
-
-                        // data returned as a block of text, has to be extracted
-                        const extractedData = await Promise.all(jsonData.map((jsonInstance) => {
-                            return nasaExtractData(jsonInstance.result)
-                        }))
-
-                        setInitialPositionsVelocities(extractedData);
-
-                    } catch (error) {
-                        console.log(error)
-                    }
-                })();
-
-            }
-
-
-            return () => {
-                console.log("preventing second api call")
-                fetchAlreadySent.current = true;
-            }
+            console.log('NoData')
         }
-    }, [])
+    }, []);
 
 
-    if (props.actionType === 'nodata') {
-        return (<NoData />)
-    } else {
+    return (
+        <div>
+            <h1>Simulation</h1>
+            <div className={styles.canvasContainer}>
+                {initialPositionsVelocities.length === 0 ? <Loading /> :
+                    <Suspense fallback={<Loading />}>
+                        <Canvas frameloop="demand" orthographic className="canvas-render-screen" >
+                            <Scene initialMassObjectDataArray={initialPositionsVelocities} />
+                        </Canvas>
+                    </Suspense>
+                }
+            </div>
 
-
-        return (
-            <div>
-                <h1>Simulation</h1>
-                <div className={styles.canvasContainer}>
-                    {initialPositionsVelocities.length === 0 ? <Loading /> :
-                        <Suspense fallback={<Loading />}>
-                            <Canvas frameloop="demand" orthographic className="canvas-render-screen" >
-                                <Scene initialMassObjectDataArray={initialPositionsVelocities} />
-                            </Canvas>
-                        </Suspense>
-                    }
-                </div>
-
-            </div >
-        )
-    }
+        </div >
+    )
 }

@@ -11,7 +11,7 @@ export default class MassObjectData {
     name: string;
     position: vector;
     velocity: vector;
-    acceleration: vector;
+    force: vector;
     meshRef: Mesh | null;
     texture: Texture | null;
     radius: number;
@@ -27,7 +27,7 @@ export default class MassObjectData {
         this.name = name;
         this.position = position;
         this.velocity = velocity;
-        this.acceleration = [0, 0, 0];
+        this.force = [0, 0, 0];
 
         if (mass === undefined) {
             this.mass = assignMass(name);
@@ -53,12 +53,12 @@ export default class MassObjectData {
 function assignMass(name: string) {
 
     const nameMassDictionary: { [key: string]: number } = {
-        "Sun": 1.0,
-        "Mercury": 1.0,
-        "Venus": 1.0,
-        "Earth": 1.0,
-        "Mars": 1.0,
-        "Default": 1.0
+        "Sun": 1.98847e30,
+        "Mercury": 3.285e23,
+        "Venus": 4.867e24,
+        "Earth": 5.9722e24,
+        "Mars": 6.39e23,
+        "Default": 5.9722e24
     }
 
     if (name in nameMassDictionary) {

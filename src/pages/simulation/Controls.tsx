@@ -10,6 +10,7 @@ import { Object3D, Vector3 } from "three";
 import MassObjectController from "./MassObjectController";
 import NewObjectController from "./NewObjectController";
 import ErrorNotification from "./ErrorNotification";
+import CurrentDay from "./CurrentDay";
 
 type vector = [number, number, number];
 
@@ -21,10 +22,11 @@ interface controlsProps {
     massObjectArray: MutableRefObject<MassObjectData[]>,
     onMount: ([controlsState, setControlsState, updateControls]: [string[], Dispatch<SetStateAction<string[]>>, () => void]) => void,
     conversionFactor: number,
-    addMassObject: (name: string, position: vector, velocity: vector, mass: number) => void
+    addMassObject: (name: string, position: vector, velocity: vector, mass: number) => void,
+    currentDayRef: MutableRefObject<Date>
 }
 
-export default function Controls({ toggleMoving, stopMoving, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject }: controlsProps) {
+export default function Controls({ toggleMoving, stopMoving, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject, currentDayRef }: controlsProps) {
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
@@ -165,6 +167,10 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
             {/* error notification */}
 
             {errorMessage !== '' ? <ErrorNotification message={errorMessage} setErrorMessage={setErrorMessage} /> : null}
+
+
+            {/* current day */}
+            <CurrentDay day={currentDayRef} />
         </>
     )
 }
