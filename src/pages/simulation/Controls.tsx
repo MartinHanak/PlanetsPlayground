@@ -11,6 +11,7 @@ import MassObjectController from "./MassObjectController";
 import NewObjectController from "./NewObjectController";
 import ErrorNotification from "./ErrorNotification";
 import CurrentDay from "./CurrentDay";
+import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer";
 
 type vector = [number, number, number];
 
@@ -30,6 +31,7 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
+    const invalidate = useThree((state: RootState) => state.invalidate)
     const camera = useThree((state: RootState) => state.camera);
     const cameraPositionX = useThree((state: RootState) => state.camera.position.x) // state change for label position update
 
@@ -62,7 +64,12 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
         massObjectArray.current.forEach((object: MassObjectData) => {
             object.trajectoryStateDispatch({ type: 'reset' })
         })
+
         setCenter(event.target.value)
+
+        if (frameloop !== "always") {
+            setFrameloop("always")
+        }
     }
 
     const handleTimestepChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -134,9 +141,9 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
                     if (selectedObjects.includes(massObject.name)) {
 
                         const convertedPosition = new Vector3(
-                            massObject.position[0] * conversionFactor,
-                            massObject.position[1] * conversionFactor,
-                            massObject.position[2] * conversionFactor
+                            massObject.shiftedPosition[0] * conversionFactor,
+                            massObject.shiftedPosition[1] * conversionFactor,
+                            massObject.shiftedPosition[2] * conversionFactor
                         )
 
 

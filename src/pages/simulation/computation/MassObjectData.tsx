@@ -10,6 +10,7 @@ type vector = [number, number, number];
 export default class MassObjectData {
     name: string;
     position: vector;
+    shiftedPosition: vector;
     velocity: vector;
     force: vector;
     meshRef: Mesh | null;
@@ -26,6 +27,7 @@ export default class MassObjectData {
     constructor(name: string, position: vector, velocity: vector, mass?: number | undefined) {
         this.name = name;
         this.position = position;
+        this.shiftedPosition = position;
         this.velocity = velocity;
         this.force = [0, 0, 0];
 

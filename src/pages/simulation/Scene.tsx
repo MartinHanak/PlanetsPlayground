@@ -14,7 +14,7 @@ import { useEffect, useRef, Dispatch, SetStateAction, useState, useLayoutEffect,
 
 import MassObject from "./MassObject"
 import Grid from "./Grid"
-import { Group, Mesh, Vector3 } from "three"
+import { Group, Mesh, PointLight, Vector3 } from "three"
 import { Line } from "three"
 
 import Controls from "./Controls"
@@ -25,6 +25,10 @@ import initializeMassObjectArray from "./computation/initializeMassObjectArray"
 import MassObjectTrajectory from "./MassObjectTrajectory"
 import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer"
 import updatePosition from "./computation/updatePosition"
+import displayShiftedPosition from "./computation/displayShiftedPosition"
+import updateMeshPosition from "./computation/updateMeshPosition"
+import updateTrajectory from "./computation/updateTrajectory"
+import updateLight from "./computation/updateLight"
 
 
 export type vector = [number, number, number]
@@ -51,8 +55,11 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     const invalidate = useThree((state: RootState) => state.invalidate)
     const setFrameloop = useThree((state: RootState) => state.setFrameloop)
 
+    /*
     const center = useRef('SSB');
     const setCenter = (value: string) => { center.current = value };
+    */
+    const [center, setCenter] = useState<string>('SSB')
 
     const timestep = useRef<number>(1.0);
     const setTimestep = (value: number) => {
@@ -85,6 +92,11 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     const stopMoving = () => {
         moving.current = false;
     }
+
+    const loopCounter = useRef<number>(0)
+    const increaseLoopCounter = () => {
+        loopCounter.current = loopCounter.current + 1
+    };
 
     const [SunTexture, MercuryTexture, VenusTexture, EarthTexture, MarsTexture]
         = useLoader(TextureLoader, [SunTextureImage, MercuryTextureImage, VenusTextureImage, EarthTextureImage, MarsTextureImage])
@@ -215,6 +227,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         }
     }
 
+    const pointLightRef = useRef<PointLight>(null);
+
     const getSunPosition: (() => [number, number, number]) = () => {
         const sunData = massObjectArray.current.filter((massObject: MassObjectData) => {
             return massObject.name === "Sun"
@@ -237,6 +251,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
         if (moving.current) {
 
+            increaseLoopCounter();
+
             forceControlsRender();
 
             updatePosition({
@@ -247,19 +263,25 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                 distancesRef: distances
             });
 
-            massObjectArray.current.map((massObject: MassObjectData) => {
+            displayShiftedPosition({
+                massObjectsRef: massObjectArray,
+                shiftCOM: true,
+                center: center
+            })
 
-                if (massObject.meshRef !== null) {
-                    massObject.meshRef.position.x = massObject.position[0] * conversionFactorBetweenCanvasUnitsAndAU.current;
-                    massObject.meshRef.position.y = massObject.position[1] * conversionFactorBetweenCanvasUnitsAndAU.current;
-                    massObject.meshRef.position.z = massObject.position[2] * conversionFactorBetweenCanvasUnitsAndAU.current;
+            updateMeshPosition({
+                massObjectsRef: massObjectArray,
+                conversionFactor: conversionFactorBetweenCanvasUnitsAndAU.current
+            })
 
-                    if (massObject.selected) {
-                        massObject.trajectoryStateDispatch({ type: 'add', payload: new Vector3(massObject.meshRef.position.x, massObject.meshRef.position.y, massObject.meshRef.position.z) })
-                    }
-                }
+            updateLight({
+                massObjectsRef: massObjectArray,
+                pointLightRef: pointLightRef
+            })
 
-
+            updateTrajectory({
+                massObjectsRef: massObjectArray,
+                loopCount: loopCounter.current
             })
 
             increaseCurrentDay()
@@ -275,7 +297,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
             <ambientLight intensity={0.1} />
 
-            <pointLight color="white" intensity={2} position={getSunPosition()} />
+            <pointLight ref={pointLightRef} color="white" intensity={2} />
 
             <Grid unitConversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current} />
 
@@ -287,7 +309,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                             key={massObject.name}
                             name={massObject.name}
                             ref={(meshRef: Mesh) => massObject.meshRef = meshRef}
-                            position={convertVectorUnits(massObject.position)}
+                            position={convertVectorUnits(massObject.shiftedPosition)}
                             args={[massObject.radius * conversionFactorBetweenCanvasUnitsAndAU.current, 32, 32]}
                             texture={massObject.texture}
                             onClick={createMassObjectClickHandler(massObject)}

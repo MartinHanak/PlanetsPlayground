@@ -1,11 +1,9 @@
-import { ResultType } from "@remix-run/router/dist/utils";
-import { machine } from "os";
 import { MutableRefObject } from "react"
 import MassObjectData from "./MassObjectData"
 
 const gravitationConstant = 6.6743e-11;
 
-type vector = [number, number, number];
+export type vector = [number, number, number];
 
 interface updatePositionInterface {
     timestepRef: MutableRefObject<number>,
@@ -113,13 +111,8 @@ function calculateForces({ massObjectsRef, forcesRef, positionDifferencesRef, di
 
             const prefactor = gravitationConstant * massObjectsRef.current[i].mass * massObjectsRef.current[j].mass * Math.pow(distancesRef.current[i][j], -1.5)
 
-            console.log("before")
-            console.log(forcesRef.current[i][j])
 
             forcesRef.current[i][j] = multiplyVectorWithScalar(positionDifferencesRef.current[i][j], prefactor);
-
-            console.log("after")
-            console.log(forcesRef.current[i][j])
         }
     }
 
@@ -150,7 +143,7 @@ function getDistance(vector1: vector, vector2: vector): number {
     return Math.sqrt(scalarProduct(vector1, vector2))
 }
 
-function scalarProduct(vector1: vector, vector2: vector): number {
+export function scalarProduct(vector1: vector, vector2: vector): number {
 
     let result = 0;
 
@@ -161,7 +154,7 @@ function scalarProduct(vector1: vector, vector2: vector): number {
     return result
 }
 
-function subtractVector(vector1: vector, vector2: vector): vector {
+export function subtractVector(vector1: vector, vector2: vector): vector {
     const result: vector = [0, 0, 0];
 
     for (let index = 0; index < 3; index++) {
@@ -171,7 +164,7 @@ function subtractVector(vector1: vector, vector2: vector): vector {
     return result
 }
 
-function addVector(vector1: vector, vector2: vector): vector {
+export function addVector(vector1: vector, vector2: vector): vector {
     const result: vector = [0, 0, 0];
 
     for (let index = 0; index < 3; index++) {
@@ -181,7 +174,7 @@ function addVector(vector1: vector, vector2: vector): vector {
     return result
 }
 
-function multiplyVectorWithScalar(vector: vector, scalar: number): vector {
+export function multiplyVectorWithScalar(vector: vector, scalar: number): vector {
     const result: vector = [scalar, scalar, scalar];
 
     for (let index = 0; index < 3; index++) {

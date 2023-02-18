@@ -26,12 +26,17 @@ interface resetType {
 
 export type actionTypes = addType | resetType;
 
+const removeFirstElement = ([x, ...rest]: Array<Vector3>) => [...rest]
+
 
 function reducer(state: Array<Vector3>, action: actionTypes) {
     switch (action.type) {
         case 'add':
-            console.log("adding point")
-            return [...state, action.payload]
+            if (state.length > 200) {
+                return [...removeFirstElement(state), action.payload]
+            } else {
+                return [...state, action.payload]
+            }
         case 'reset':
             return []
         default:
@@ -51,7 +56,6 @@ export default function MassObjectTrajectory({ trajectory, massObject, massObjec
     useEffect(() => {
         // bind trajectory updater to the massObject on first render
         massObjectArray.current.forEach((object: MassObjectData) => {
-            console.log(object)
             if (object.name === massObject) {
                 object.trajectoryStateDispatch = dispatch;
                 setColor(object.color)
