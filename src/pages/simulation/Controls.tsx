@@ -1,7 +1,7 @@
-import { Html } from "@react-three/drei"
+import { CameraControls, Html } from "@react-three/drei"
 import { Camera, useThree } from "@react-three/fiber"
 import styles from "./Controls.module.scss"
-import { ChangeEvent, MutableRefObject, SetStateAction, useEffect } from "react";
+import { ChangeEvent, MouseEventHandler, MutableRefObject, RefObject, SetStateAction, useEffect } from "react";
 import MassObjectData from "./computation/MassObjectData";
 import { RootState } from "@react-three/fiber";
 import { useState } from "react";
@@ -12,22 +12,30 @@ import NewObjectController from "./NewObjectController";
 import ErrorNotification from "./ErrorNotification";
 import CurrentDay from "./CurrentDay";
 import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer";
+import { updateCamera } from "@react-three/fiber/dist/declarations/src/core/utils";
+import resetCamera from "./resetCamera";
+import displayShiftedPosition from "./computation/displayShiftedPosition";
+import updateMeshPosition from "./computation/updateMeshPosition";
+import updateLight from "./computation/updateLight";
+import { PointLight } from "three";
 
 type vector = [number, number, number];
 
 interface controlsProps {
     toggleMoving: () => boolean,
     stopMoving: () => void,
-    setCenter: (center: string) => void,
+    setCenter: (center: string) => string,// Dispatch<SetStateAction<string>>,  (center: string) => void,
     setTimestep: (timestep: number) => number,
     massObjectArray: MutableRefObject<MassObjectData[]>,
     onMount: ([controlsState, setControlsState, updateControls]: [string[], Dispatch<SetStateAction<string[]>>, () => void]) => void,
     conversionFactor: number,
     addMassObject: (name: string, position: vector, velocity: vector, mass: number) => void,
-    currentDayRef: MutableRefObject<Date>
+    currentDayRef: MutableRefObject<Date>,
+    cameraControlsRef: RefObject<CameraControls>,
+    pointLightRef: RefObject<PointLight>
 }
 
-export default function Controls({ toggleMoving, stopMoving, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject, currentDayRef }: controlsProps) {
+export default function Controls({ toggleMoving, stopMoving, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject, currentDayRef, cameraControlsRef, pointLightRef }: controlsProps) {
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
@@ -60,16 +68,39 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
         }
     }
 
-    const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    const handleSelect: MouseEventHandler<HTMLButtonElement> = (event) => {
         massObjectArray.current.forEach((object: MassObjectData) => {
             object.trajectoryStateDispatch({ type: 'reset' })
         })
 
-        setCenter(event.target.value)
+        const newCenter = setCenter('Earth');
+
+        displayShiftedPosition({
+            massObjectsRef: massObjectArray,
+            shiftCOM: true,
+            center: newCenter
+        })
+
+        updateMeshPosition({
+            massObjectsRef: massObjectArray,
+            conversionFactor: conversionFactor
+        })
+
+        updateLight({ massObjectsRef: massObjectArray, pointLightRef: pointLightRef })
+
+        forceUpdate()
 
         if (frameloop !== "always") {
+
             setFrameloop("always")
         }
+        /*
+                resetCamera({
+                    conversionFactor: conversionFactor,
+                    cameraControlsRef: cameraControlsRef,
+                    camera: camera
+                })
+                */
     }
 
     const handleTimestepChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -97,11 +128,17 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
 
 
                     <h1>Center</h1>
+                    <button onClick={handleSelect}>
+                        SSB / Earth
+                    </button>
+                    {/*
+
                     <select name="center" id="center" onChange={handleSelect}>
                         <option value="SSB">SSB</option>
                         <option value="Sun">Sun</option>
                         <option value="Earth">Earth</option>
                     </select>
+                    */}
 
                     <h1>Start / stop</h1>
                     <button onClick={handleClick}> Start/Stop </button>

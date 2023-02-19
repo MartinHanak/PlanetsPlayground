@@ -29,6 +29,7 @@ import displayShiftedPosition from "./computation/displayShiftedPosition"
 import updateMeshPosition from "./computation/updateMeshPosition"
 import updateTrajectory from "./computation/updateTrajectory"
 import updateLight from "./computation/updateLight"
+import resetCamera from "./resetCamera"
 
 
 export type vector = [number, number, number]
@@ -55,11 +56,21 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     const invalidate = useThree((state: RootState) => state.invalidate)
     const setFrameloop = useThree((state: RootState) => state.setFrameloop)
 
-    /*
+
     const center = useRef('SSB');
-    const setCenter = (value: string) => { center.current = value };
-    */
+    const setCenter = (value: string) => {
+
+        if (center.current !== value) {
+            center.current = value
+        } else {
+            center.current = 'SSB'
+        }
+        return center.current
+    };
+
+    /*
     const [center, setCenter] = useState<string>('SSB')
+    */
 
     const timestep = useRef<number>(1.0);
     const setTimestep = (value: number) => {
@@ -110,7 +121,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         "Default": MarsTexture
     }
 
-    const cameraControlsRef = useRef<CameraControls | null>(null);
+    const cameraControlsRef = useRef<CameraControls>(null);
 
     const forces = useRef<vector[][]>([]);
     const positionDifferences = useRef<vector[][]>([])
@@ -156,6 +167,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
         return (event: ThreeEvent<MouseEvent>) => {
 
+            console.log(event)
+
             // update object selected property
             object.selected = !object.selected;
 
@@ -175,40 +188,13 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     }
 
     useLayoutEffect(() => {
-        console.log("log from use effects")
-        console.log(camera)
-        // initial camera setup
-        const cameraAUDistInCanvasUnits = 4 * 149597870700 * conversionFactorBetweenCanvasUnitsAndAU.current; // 4 AU in meters converted to canvas units
-        //camera.position.set(cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits);
-        //orbitControls.current.target.set(cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits, cameraAUDistInCanvasUnits);
-        //orbitControls.current.target.set(0, 0, 0)
-        //camera.position.set(0, 0, -300);
-        camera.up.set(0, 0, 1);
-        //camera.lookAt(new Vector3(0, 0, 0))
-        camera.near = 0; //0.1 * 149597870700 * conversionFactorBetweenCanvasUnitsAndAU.current;
-        camera.far = cameraAUDistInCanvasUnits * 10;
-        camera.zoom = 1;
-        camera.updateProjectionMatrix();
+        console.log("log grom use layout effect")
 
-        console.log(camera);
-        console.log(`shorter: ${conversionFactorBetweenCanvasUnitsAndAU.current}`);
-
-        //update controls
-        if (cameraControlsRef.current) {
-            console.log("orbit controls")
-
-            cameraControlsRef.current.setPosition(-cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits)
-
-            cameraControlsRef.current.setTarget(0, 0, 0);
-
-
-
-            //orbitControls.current.updateCameraUp()
-            cameraControlsRef.current.enabled = true;
-            cameraControlsRef.current.updateCameraUp()
-            console.log(cameraControlsRef)
-
-        }
+        resetCamera({
+            conversionFactor: conversionFactorBetweenCanvasUnitsAndAU.current,
+            cameraControlsRef: cameraControlsRef,
+            camera: camera
+        })
 
         // initial object values
         initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary);
@@ -247,13 +233,13 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     })
 
 
+    // main render loop
     useFrame((state: RootState, delta: number) => {
 
         if (moving.current) {
 
             increaseLoopCounter();
 
-            forceControlsRender();
 
             updatePosition({
                 timestepRef: timestep,
@@ -266,7 +252,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
             displayShiftedPosition({
                 massObjectsRef: massObjectArray,
                 shiftCOM: true,
-                center: center
+                center: center.current
             })
 
             updateMeshPosition({
@@ -283,6 +269,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                 massObjectsRef: massObjectArray,
                 loopCount: loopCounter.current
             })
+
+            forceControlsRender();
 
             increaseCurrentDay()
         }
@@ -336,6 +324,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                 conversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current}
                 addMassObject={addMassObject}
                 currentDayRef={currentDayRef}
+                cameraControlsRef={cameraControlsRef}
+                pointLightRef={pointLightRef}
             />
 
 

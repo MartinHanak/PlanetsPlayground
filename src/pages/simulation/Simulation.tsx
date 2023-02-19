@@ -109,7 +109,7 @@ export default function Simulation() {
             <div className={styles.canvasContainer}>
                 {initialPositionsVelocities.length === 0 ? <Loading /> :
                     <Suspense fallback={<Loading />}>
-                        <Canvas frameloop="demand" orthographic className="canvas-render-screen" >
+                        <Canvas frameloop="demand" orthographic className="canvas-render-screen" onPointerMissed={(e) => { console.log(e) }} >
                             <Scene initialMassObjectDataArray={initialPositionsVelocities} />
                         </Canvas>
                     </Suspense>

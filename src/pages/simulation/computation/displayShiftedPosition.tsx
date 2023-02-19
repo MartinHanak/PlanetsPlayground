@@ -20,7 +20,9 @@ export default function displayShiftedPosition({ massObjectsRef, shiftCOM, cente
             totalMass = totalMass + massObject.mass;
         }
 
-        shiftVector = multiplyVectorWithScalar(shiftVector, -1 / totalMass);
+        if (totalMass > 0) {
+            shiftVector = multiplyVectorWithScalar(shiftVector, -1 / totalMass);
+        }
     }
 
     if (allowedCenters.includes(center)) {
