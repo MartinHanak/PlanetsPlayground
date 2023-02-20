@@ -1,5 +1,6 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "./DatePicker";
 
 import styles from './Import.module.scss';
 
@@ -7,9 +8,11 @@ export default function Import() {
 
     const inputRegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/;
 
+    const currentDate = new Date();
+
 
     const [errorMessage, setErrorMessage] = useState('');
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`);
 
     const navigate = useNavigate();
 
@@ -85,10 +88,13 @@ export default function Import() {
             <form onSubmit={handleSubmit}>
 
                 <label htmlFor="date">Choose when to start the simulation:</label><br />
+
+                <DatePicker id="date" value={inputValue} setValue={setInputValue} onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)} /> <br />
+                {/*
                 <input id="date" type="text" value={inputValue} placeholder="dd/mm/yyyy" autoComplete="off"
                     className={styles.dateInput}
                     onChange={(e) => setInputValue(e.target.value)} /><br />
-
+                */}
                 <button type="submit">Start Simulation</button>
             </form>
 

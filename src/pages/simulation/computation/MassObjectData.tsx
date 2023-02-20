@@ -76,11 +76,11 @@ function assignMass(name: string) {
 function assignColor(name: string) {
 
     const nameColorDictionary: { [key: string]: string } = {
-        "Sun": "rgb(255, 255, 0)",
-        "Mercury": "rgb(255, 191, 0)",
-        "Venus": "rgb(255, 191, 0)",
-        "Earth": "rgb(0, 191, 255)",
-        "Mars": "rgb(255, 191, 0)",
+        "Sun": "rgb(234, 193, 85)",
+        "Mercury": "rgb(169, 169, 169)",
+        "Venus": "rgb(198, 156, 93)",
+        "Earth": "rgb(102, 139, 182)",
+        "Mars": "rgb(157, 116, 100)",
         "Default": "rgb(0, 0, 0)"
     }
 

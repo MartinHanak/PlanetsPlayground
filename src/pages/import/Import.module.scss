@@ -1,2 +1,19 @@
 .dateInput {
 }
+
+.datePickerTable td:hover {
+    background-color: yellow;
+}
+
+
+.previousMonth {
+    background-color: red;
+}
+
+.currentMonth {
+    background-color: blue;
+}
+
+.nextMonth {
+    background-color: green;
+}
