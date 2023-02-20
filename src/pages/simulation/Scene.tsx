@@ -8,8 +8,9 @@ import { ThreeEvent } from "@react-three/fiber"
 import SunTextureImage from "../../assets/textures/1k_textures/Sun_texture.jpg"
 import MercuryTextureImage from "../../assets/textures/1k_textures/Mercury_texture.jpg"
 import VenusTextureImage from "../../assets/textures/1k_textures/Venus_texture.jpg"
-import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture.jpg"
+import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture_unmodified.jpg"
 import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg"
+import DefaultTextureImage from "../../assets/textures/1k_textures/Default_texture.jpg"
 import { useEffect, useRef, Dispatch, SetStateAction, useState, useLayoutEffect, MutableRefObject } from "react"
 
 import MassObject from "./MassObject"
@@ -24,12 +25,14 @@ import MassObjectData from "./computation/MassObjectData";
 import initializeMassObjectArray from "./computation/initializeMassObjectArray"
 import MassObjectTrajectory from "./MassObjectTrajectory"
 import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer"
-import updatePosition from "./computation/updatePosition"
+import updatePosition, { addVector, multiplyVectorWithScalar } from "./computation/updatePosition"
 import displayShiftedPosition from "./computation/displayShiftedPosition"
 import updateMeshPosition from "./computation/updateMeshPosition"
 import updateTrajectory from "./computation/updateTrajectory"
 import updateLight from "./computation/updateLight"
 import resetCamera from "./resetCamera"
+import { getCOM } from "./computation/displayShiftedPosition"
+import saveLocalStorage from "./computation/saveLocalStorage"
 
 
 export type vector = [number, number, number]
@@ -42,10 +45,11 @@ export interface initialMassObjectData {
 
 
 interface sceneProps {
-    initialMassObjectDataArray: initialMassObjectData[]
+    initialMassObjectDataArray: initialMassObjectData[],
+    initialDate: number
 }
 
-export default function Scene({ initialMassObjectDataArray }: sceneProps) {
+export default function Scene({ initialMassObjectDataArray, initialDate }: sceneProps) {
 
     const [numberOfObjects, setNumberOfObjects] = useState(0)
 
@@ -79,7 +83,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         return timestep.current;
     };
 
-    const currentDayRef = useRef(new Date());
+    const currentDayRef = useRef(new Date(initialDate));
 
     const increaseCurrentDay = () => {
         currentDayRef.current = new Date(currentDayRef.current.getTime() + timestep.current * 86400000) // timestep in days
@@ -109,8 +113,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         loopCounter.current = loopCounter.current + 1
     };
 
-    const [SunTexture, MercuryTexture, VenusTexture, EarthTexture, MarsTexture]
-        = useLoader(TextureLoader, [SunTextureImage, MercuryTextureImage, VenusTextureImage, EarthTextureImage, MarsTextureImage])
+    const [SunTexture, MercuryTexture, VenusTexture, EarthTexture, MarsTexture, DefaultTexture]
+        = useLoader(TextureLoader, [SunTextureImage, MercuryTextureImage, VenusTextureImage, EarthTextureImage, MarsTextureImage, DefaultTextureImage])
 
     const textureDictionary = {
         "Sun": SunTexture,
@@ -118,7 +122,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         "Venus": VenusTexture,
         "Earth": EarthTexture,
         "Mars": MarsTexture,
-        "Default": MarsTexture
+        "Default": DefaultTexture
     }
 
     const cameraControlsRef = useRef<CameraControls>(null);
@@ -139,11 +143,76 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     const massObjectArray = useRef<MassObjectData[]>([]);
 
     const addMassObject = (name: string, position: vector, velocity: vector, mass: number) => {
-        const newObject = new MassObjectData(name, position, velocity, mass);
+
+        // shift input position by the current center
+        const [centerObject] = massObjectArray.current.filter((massObject: MassObjectData) => massObject.name === center.current)
+
+        let shift: vector = [0, 0, 0]
+
+        if (centerObject && centerObject !== null) {
+            shift = multiplyVectorWithScalar(centerObject.position, 1);
+        } else {
+            shift = getCOM({ massObjectsRef: massObjectArray })
+        }
+
+        const shiftedPosition = addVector(position, shift)
+
+        const newObject = new MassObjectData(name, shiftedPosition, velocity, mass);
+        newObject.shiftedPosition = [...position];
         newObject.texture = textureDictionary['Default'];
         massObjectArray.current.push(newObject);
         resetAll();
         setNumberOfObjects((num: number) => num + 1);
+    }
+
+    const deleteMassObject = (name: string) => {
+        massObjectArray.current = massObjectArray.current.filter((massObject: MassObjectData) => massObject.name !== name);
+        resetAll();
+        setNumberOfObjects(massObjectArray.current.length);
+    }
+
+    const modifyMassObject = (modifiedObject: MassObjectData, name: string, position: vector, velocity: vector, mass: number) => {
+        // shift input position by the current center
+        const [centerObject] = massObjectArray.current.filter((massObject: MassObjectData) => massObject.name === center.current)
+
+        let shift: vector = [0, 0, 0]
+
+        if (centerObject && centerObject !== null) {
+            shift = multiplyVectorWithScalar(centerObject.position, 1);
+        } else {
+            shift = getCOM({ massObjectsRef: massObjectArray })
+        }
+
+        const shiftedPosition = addVector(position, shift)
+
+        modifiedObject.position = [...shiftedPosition]; // position in SSB coordinates
+        modifiedObject.shiftedPosition = [...position];
+
+        modifiedObject.velocity = [...velocity];
+        modifiedObject.mass = mass;
+        modifiedObject.name = name;
+
+        resetAll();
+
+        displayShiftedPosition({
+            massObjectsRef: massObjectArray,
+            shiftCOM: true,
+            center: center.current
+        })
+
+        updateMeshPosition({
+            massObjectsRef: massObjectArray,
+            conversionFactor: conversionFactorBetweenCanvasUnitsAndAU.current
+        })
+
+        updateLight({
+            massObjectsRef: massObjectArray,
+            pointLightRef: pointLightRef
+        })
+
+        setNumberOfObjects(massObjectArray.current.length);
+        invalidate();
+        forceControlsRender();
     }
 
 
@@ -188,7 +257,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
     }
 
     useLayoutEffect(() => {
-        console.log("log grom use layout effect")
+        console.log("log from use layout effect")
 
         resetCamera({
             conversionFactor: conversionFactorBetweenCanvasUnitsAndAU.current,
@@ -199,7 +268,7 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
         // initial object values
         initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary);
         setNumberOfObjects(massObjectArray.current.length);
-
+        saveLocalStorage({ date: currentDayRef.current.getTime(), massObjectsRef: massObjectArray })
 
     }, [])
 
@@ -272,7 +341,12 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
 
             forceControlsRender();
 
-            increaseCurrentDay()
+            increaseCurrentDay();
+
+            // save to local storage every x seconds, 1 second = 60 frames (approximately)
+            if (loopCounter.current % 600 === 0) {
+                saveLocalStorage({ date: currentDayRef.current.getTime(), massObjectsRef: massObjectArray })
+            }
         }
 
     })
@@ -323,6 +397,8 @@ export default function Scene({ initialMassObjectDataArray }: sceneProps) {
                 onMount={onControlsMount}
                 conversionFactor={conversionFactorBetweenCanvasUnitsAndAU.current}
                 addMassObject={addMassObject}
+                deleteMassObject={deleteMassObject}
+                modifyMassObject={modifyMassObject}
                 currentDayRef={currentDayRef}
                 cameraControlsRef={cameraControlsRef}
                 pointLightRef={pointLightRef}

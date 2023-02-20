@@ -30,6 +30,24 @@ export function convertSItoDisplayed(props: vectorOrScalar) {
 
 }
 
+interface convertSIComponentToDisplayed {
+    type: 'mass' | 'position' | 'velocity',
+    component: number
+}
+
+
+export function convertSIComponentToDisplayed({ type, component }: convertSIComponentToDisplayed): string {
+    if (type === 'mass') {
+        return (component / EarthMass).toFixed(1)
+    } else if (type === 'position') {
+        return (component / positionFactor).toFixed(3)
+    } else if (type === 'velocity') {
+        return (component / velocityFactor).toFixed(1)
+    } else {
+        return component.toFixed(1)
+    }
+}
+
 type vectorComponentOrScalar = {
     component: number,
     type: 'velocity' | 'position' | 'mass'

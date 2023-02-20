@@ -1,6 +1,6 @@
 import { MutableRefObject } from "react"
 import MassObjectData from "./MassObjectData"
-import { multiplyVectorWithScalar, addVector, vector } from "./updatePosition"
+import { multiplyVectorWithScalar, addVector, vector, subtractVector } from "./updatePosition"
 
 const allowedCenters = ['Sun', 'Earth']
 
@@ -26,12 +26,13 @@ export default function displayShiftedPosition({ massObjectsRef, shiftCOM, cente
     }
 
     if (allowedCenters.includes(center)) {
-        // shiftVector = COM initially
-
         const [centerMassObject] = massObjectsRef.current.filter((massObject: MassObjectData) => massObject.name === center)
 
         if (centerMassObject) {
-            shiftVector = addVector(shiftVector, multiplyVectorWithScalar(centerMassObject.position, -1))
+            // shiftVector =  (- COM) initially
+            const centerFromCOM = addVector(centerMassObject.position, shiftVector)
+
+            shiftVector = addVector(shiftVector, multiplyVectorWithScalar(centerFromCOM, -1))
         }
     } else {
         // default case = no center shift = COM = SSB in center
@@ -44,4 +45,24 @@ export default function displayShiftedPosition({ massObjectsRef, shiftCOM, cente
         massObject.shiftedPosition = addVector(massObject.position, shiftVector)
     }
 
+}
+
+interface getCOMInterface {
+    massObjectsRef: MutableRefObject<MassObjectData[]>,
+}
+
+export function getCOM({ massObjectsRef }: getCOMInterface): vector {
+    let shiftVector: vector = [0, 0, 0]
+    let totalMass = 0;
+
+    for (const massObject of massObjectsRef.current) {
+        shiftVector = addVector(shiftVector, multiplyVectorWithScalar(massObject.position, massObject.mass))
+        totalMass = totalMass + massObject.mass;
+    }
+
+    if (totalMass > 0) {
+        shiftVector = multiplyVectorWithScalar(shiftVector, -1 / totalMass);
+    }
+
+    return shiftVector
 }

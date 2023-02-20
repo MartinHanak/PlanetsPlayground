@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import styles from "./Simulation.module.scss"
 
@@ -12,18 +12,13 @@ import { Canvas } from "@react-three/fiber"
 import nasaFetchData from "./nasaFetchData"
 import nasaExtractData from "./nasaExtractData"
 import { initialMassObjectData } from "./Scene"
+import initializeMassObjectArray from "./computation/initializeMassObjectArray"
 
 
-const modelData = [{
-    name: "Earth",
-    position: [1, 0, 0],
-    velocity: [1, 1, 1]
-}, {
-    name: "Sun",
-    position: [0, 0, 0],
-    velocity: [0, 0, 0]
-}
-] as initialMassObjectData[]
+import defaultInitialData from "../../assets/initialData.json"
+import defaultInitialDate from "../../assets/initialDate.json"
+import MassObjectData from "./computation/MassObjectData"
+
 
 interface loadType {
     actionType: "load",
@@ -36,7 +31,7 @@ interface importType {
 }
 
 interface nodataType {
-    actionType: "nodata"
+    actionType: "noData"
 }
 
 type locationStateType = loadType | importType | nodataType;
@@ -45,16 +40,53 @@ export default function Simulation() {
 
     const fetchAlreadySent = useRef(false);
     const [initialPositionsVelocities, setInitialPositionsVelocities] = useState<initialMassObjectData[]>([])
+    const [initialDate, setInitialDate] = useState<number>(0)
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     // load in data
     useEffect(() => {
 
-        if (location.state !== null && location.state.actionType) {
+        if (location.state && location.state !== null && location.state.actionType) {
 
             if (location.state.actionType === "load") {
-                console.log("load default or storage data")
+
+                if (location.state.data === "storage") {
+                    console.log("load storage data")
+
+                    const initialStorageData = localStorage.getItem("initialMassObjectData")
+                    const initialStorageDate = localStorage.getItem("initialDate")
+
+                    if (initialStorageData && initialStorageDate) {
+                        const parsedInitialData = JSON.parse(initialStorageData);
+                        const parsedInitialDate = Number(initialStorageDate);
+
+                        if (parsedInitialData.length > 1) {
+                            setInitialPositionsVelocities(parsedInitialData)
+                            setInitialDate(parsedInitialDate)
+                        } else {
+                            // redirect to noData
+                            navigate('/nodata')
+                        }
+                    } else {
+                        // redirect to noData
+                        navigate('/nodata')
+                    }
+                } else if (location.state.data === "default") {
+                    // load default
+                    console.log("loading default values")
+
+                    const parsedData = defaultInitialData as MassObjectData[];
+                    const { date } = defaultInitialDate;
+
+                    setInitialPositionsVelocities(parsedData);
+                    setInitialDate(date)
+
+                } else {
+                    navigate('/nodata')
+                }
+
             } else if (location.state.actionType === "import" && !isNaN(Number(location.state.date))) {
                 console.log("import data")
 
@@ -73,7 +105,6 @@ export default function Simulation() {
                             const jsonData = await Promise.all(fetchResponses.map(
                                 (response: Response) => response.json()
                             ))
-                            console.log(jsonData)
 
                             // data returned as a block of text, has to be extracted
                             const extractedData = await Promise.all(jsonData.map((jsonInstance) => {
@@ -81,9 +112,16 @@ export default function Simulation() {
                             }))
 
                             setInitialPositionsVelocities(extractedData);
+                            setInitialDate(Number(location.state.date))
 
                         } catch (error) {
                             console.log(error)
+                            // redirect to default 
+                            console.log("loading default values")
+                            const parsedData = defaultInitialData as MassObjectData[];
+                            const { date } = defaultInitialDate;
+                            setInitialPositionsVelocities(parsedData);
+                            setInitialDate(date)
                         }
                     })();
 
@@ -95,10 +133,12 @@ export default function Simulation() {
                 }
             } else {
                 console.log('NoData')
+                navigate('/nodata')
             }
 
         } else {
             console.log('NoData')
+            navigate('/nodata')
         }
     }, []);
 
@@ -110,7 +150,7 @@ export default function Simulation() {
                 {initialPositionsVelocities.length === 0 ? <Loading /> :
                     <Suspense fallback={<Loading />}>
                         <Canvas frameloop="demand" orthographic className="canvas-render-screen" onPointerMissed={(e) => { console.log(e) }} >
-                            <Scene initialMassObjectDataArray={initialPositionsVelocities} />
+                            <Scene initialMassObjectDataArray={initialPositionsVelocities} initialDate={initialDate} />
                         </Canvas>
                     </Suspense>
                 }

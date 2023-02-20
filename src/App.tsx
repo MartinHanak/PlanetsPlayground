@@ -8,6 +8,7 @@ import Simulation from './pages/simulation/Simulation';
 import Contact from './pages/contact/Contact';
 import About from './pages/about/About';
 import NotFound from './pages/notfound/NotFound';
+import NoData from './pages/simulation/NoData';
 
 
 import { Route, Routes } from 'react-router-dom';
@@ -45,6 +46,7 @@ function App() {
           <Route path="/simulation" element={<Simulation />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/about" element={<About />}></Route>
+          <Route path="/nodata" element={<NoData />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </main>

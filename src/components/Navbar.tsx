@@ -12,7 +12,7 @@ export default function Navbar() {
             <ul>
                 <li><Link className={styles.link} to="/">{t('home')}</Link></li>
                 <li><Link to="/import">{t('import')}</Link></li>
-                <li><Link to="/simulation">{t('simulation')}</Link></li>
+                <li><Link to="/simulation" state={{ actionType: 'load', data: "storage" }}>{t('simulation')}</Link></li>
                 <li><Link to="/contact">{t('contact')}</Link></li>
                 <li><Link to="/about">{t('about')}</Link></li>
             </ul>

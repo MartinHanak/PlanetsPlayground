@@ -30,12 +30,14 @@ interface controlsProps {
     onMount: ([controlsState, setControlsState, updateControls]: [string[], Dispatch<SetStateAction<string[]>>, () => void]) => void,
     conversionFactor: number,
     addMassObject: (name: string, position: vector, velocity: vector, mass: number) => void,
+    deleteMassObject: (name: string) => void,
+    modifyMassObject: (modifiedObject: MassObjectData, name: string, position: vector, velocity: vector, mass: number) => void,
     currentDayRef: MutableRefObject<Date>,
     cameraControlsRef: RefObject<CameraControls>,
     pointLightRef: RefObject<PointLight>
 }
 
-export default function Controls({ toggleMoving, stopMoving, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject, currentDayRef, cameraControlsRef, pointLightRef }: controlsProps) {
+export default function Controls({ toggleMoving, stopMoving, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject, deleteMassObject, modifyMassObject, currentDayRef, cameraControlsRef, pointLightRef }: controlsProps) {
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
@@ -162,6 +164,11 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
                                     key={`${object.name}_controls`}
                                     name={object.name}
                                     massObject={object}
+                                    massObjectsRef={massObjectArray}
+                                    deleteMassObject={deleteMassObject}
+                                    modifyMassObject={modifyMassObject}
+                                    setSelectedObjects={setSelectedObjects}
+                                    setErrorMessage={setErrorMessage}
                                 />
                             )
                         } else {
