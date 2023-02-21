@@ -4,9 +4,11 @@ import DatePicker from "./DatePicker";
 
 import styles from './Import.module.scss';
 
-export default function Import() {
 
-    const inputRegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/;
+export const inputRegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/;
+
+
+export default function Import() {
 
     const currentDate = new Date();
 
@@ -89,7 +91,10 @@ export default function Import() {
 
                 <label htmlFor="date">Choose when to start the simulation:</label><br />
 
-                <DatePicker id="date" value={inputValue} setValue={setInputValue} onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)} /> <br />
+                <DatePicker id="date" value={inputValue} setValue={setInputValue}
+                    validateInput={validateInput}
+                    setErrorMessage={setErrorMessage}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)} /> <br />
                 {/*
                 <input id="date" type="text" value={inputValue} placeholder="dd/mm/yyyy" autoComplete="off"
                     className={styles.dateInput}

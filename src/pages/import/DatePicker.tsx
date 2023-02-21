@@ -2,10 +2,14 @@ import { ChangeEvent, ReactElement, useEffect, useState, useRef, EventHandler, M
 
 import styles from './Import.module.scss';
 
+import { inputRegExp } from "./Import";
+
 interface datePickerInterface {
     id: string;
     value: string;
     setValue: Dispatch<SetStateAction<string>>,
+    validateInput: (input: string | null) => string,
+    setErrorMessage: Dispatch<SetStateAction<string>>,
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -16,12 +20,30 @@ const msPerDay = 24 * 60 * 60 * 1000;
 const msPerMonth = msPerDay * 30;
 const msPerYear = msPerDay * 365;
 
-export default function DatePicker({ id, value, setValue, onChange }: datePickerInterface) {
+export default function DatePicker({ id, value, setValue, validateInput, setErrorMessage, onChange }: datePickerInterface) {
 
     const [displayCalendar, setDisplayCalendar] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState(new Date())
 
     const [tableRows, setTableRows] = useState<ReactElement[][]>([])
+
+    // change by typing or selecting table data
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+
+        // try to parse data
+        const error = validateInput(event.target.value)
+        // update selected date if valid
+        if (error === '') {
+            const [inputMatch, dayMatch, monthMatch, yearMatch] = event.target.value.match(inputRegExp) as RegExpMatchArray;
+            const dateObject = new Date(Number(yearMatch), Number(monthMatch) - 1, Number(dayMatch))
+            setSelectedDate(new Date(dateObject.getTime()))
+            setErrorMessage('')
+        } else {
+            setErrorMessage(error)
+        }
+
+        onChange(event)
+    }
 
     const handleTableDataClick: MouseEventHandler<HTMLTableElement> = (event: MouseEvent) => {
         if (event.target instanceof HTMLTableCellElement) {
@@ -120,7 +142,7 @@ export default function DatePicker({ id, value, setValue, onChange }: datePicker
     return (
         <>
             <input id={id} name={id} type="text" value={value} placeholder="dd/mm/yyyy"
-                onChange={onChange}
+                onChange={handleChange}
                 onFocus={() => setDisplayCalendar(true)}
             />
             {displayCalendar ?
