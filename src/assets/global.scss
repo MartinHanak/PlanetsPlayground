@@ -1,5 +1,10 @@
 @use 'reset';
 
+
 @use 'colors';
 
 @use 'canvasLayout';
+
+* {
+    box-sizing: border-box;
+}

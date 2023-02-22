@@ -1,0 +1,39 @@
+.svgContainer {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 0 auto;
+}
+
+.svgImage {
+   
+}
+
+.Sun {
+    
+}
+
+.allPlanets {
+    transform-origin:  41.83006536% 41.83006536%; // 50% - (50/612)*100 %, set by the viewBox
+    animation: rotation 4s infinite linear;
+}
+
+.firstPlanet {
+
+}
+
+.secondPlanet {
+
+}
+
+.thirdPlanet {
+
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}

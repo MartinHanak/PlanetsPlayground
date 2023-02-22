@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import hamburger from "../assets/images/hamburgerMenu.svg"
+
 import styles from './Navbar.module.scss';
 
 export default function Navbar() {
@@ -9,6 +11,9 @@ export default function Navbar() {
 
     return (
         <nav>
+            <div className={styles.hamburgerDiv}>
+                <img src={hamburger} alt="hamburger-menu" />
+            </div>
             <ul>
                 <li><Link className={styles.link} to="/">{t('home')}</Link></li>
                 <li><Link to="/import">{t('import')}</Link></li>
