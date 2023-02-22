@@ -1,10 +1,45 @@
+@use '../assets/breakpoints';
+
+
+.hamburgerDiv {
+    display: none;
+    width: 2rem;
+    height: 2rem;
+}
+
+.linkList {
+    display: flex;
+
+}
+
 .link {
     display: block;
     padding: 1em;
-    background-color: var(--primary-orange);
 }
 
-.hamburgerDiv {
-    width: 2rem;
-    height: 2rem;
+.link:hover {
+    background-color: var(--orange);
+}
+
+@media (max-width: breakpoints.$mobile-breakpoint) {
+    .hamburgerDiv {
+        display: block;
+    }
+
+    .linkList {
+        display: block;
+        position: absolute;
+        right: 0;
+        z-index: 99999999;
+    }
+
+    .link {
+        display: none;
+        background-color: var(--blue-vibrant);
+    }
+
+    .display {
+        display: block;
+    }
+
 }

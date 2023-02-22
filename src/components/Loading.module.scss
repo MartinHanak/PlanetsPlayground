@@ -1,7 +1,17 @@
+.loadingContainer {
+    height: calc(100vh - 166px); // all vh except navbar and footer
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .svgContainer {
-    max-width: 200px;
+    flex-grow: 1;
+    min-height: 100px;
     max-height: 200px;
-    margin: 0 auto;
+    aspect-ratio: 1/1;
+    min-width: 100px;
 }
 
 .svgImage {

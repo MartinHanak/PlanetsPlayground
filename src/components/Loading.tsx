@@ -2,7 +2,7 @@ import styles from './Loading.module.scss'
 
 export default function Loading() {
     return (
-        <>
+        <div className={styles.loadingContainer}>
             <div className={styles.svgContainer}>
                 {/*<?xml version="1.0" encoding="iso-8859-1"?>*/}
                 {/*<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->*/}
@@ -94,6 +94,6 @@ export default function Loading() {
                 </svg>
             </div>
             <h1>Loading....</h1>
-        </>
+        </div>
     )
 }

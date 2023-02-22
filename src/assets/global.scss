@@ -1,10 +1,15 @@
 @use 'reset';
 
-
 @use 'colors';
+
+@use 'breakpoints';
 
 @use 'canvasLayout';
 
 * {
     box-sizing: border-box;
+}
+
+body {
+
 }

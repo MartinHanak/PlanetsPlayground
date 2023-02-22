@@ -14,6 +14,8 @@ import Loading from './components/Loading';
 
 import { Route, Routes } from 'react-router-dom';
 
+import styles from "./App.module.scss"
+
 import { useEffect, useState } from 'react';
 import i18n from './i18n';
 
@@ -35,9 +37,10 @@ function App() {
 
   return (
     <>
-      <header>
-        <LanguageSwitch onClick={handleLanguageChange} />
+      <header className={styles.header}>
+        <div className={styles.logo}>Name</div>
         <Navbar />
+        <LanguageSwitch onClick={handleLanguageChange} />
       </header>
 
       <main>

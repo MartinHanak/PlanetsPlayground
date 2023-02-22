@@ -2,8 +2,10 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom";
 import Picture from "../../components/Picture";
 
-import astronaut from '../../assets/astronaut.webp';
+import astronaut from '../../assets/astronaut_transparent.webp';
 import astronautSmall from '../../assets/astronaut-small.webp';
+
+import styles from './Home.module.scss'
 
 export default function Home() {
 
@@ -11,7 +13,7 @@ export default function Home() {
 
     return (
         <div>
-            <div className="intro">
+            <div className={styles.intro}>
                 <Picture desktopSource={astronaut} mobileSource={astronautSmall} alt="Astronaut picture" />
                 <h1>Explore planets dynamics</h1>
                 <p>Embark on a journey to explore motion of orbital bodies under unusual circumstances.</p>
