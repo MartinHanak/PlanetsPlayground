@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0cc1de4d.css",
+    "main.js": "/static/js/main.8215c643.js",
+    "static/media/Sun_texture.jpg": "/static/media/Sun_texture.f37efa46da6cbd1c9601.jpg",
+    "static/media/Venus_texture.jpg": "/static/media/Venus_texture.4b6958d11ff7878fb414.jpg",
+    "static/media/astronaut.webp": "/static/media/astronaut.485bfa32815fa8344122.webp",
+    "static/media/Mars_texture.jpg": "/static/media/Mars_texture.b1f6c1b6798ec9ba54ab.jpg",
+    "static/media/Mercury_texture.jpg": "/static/media/Mercury_texture.355e25b8fdeb5e01366f.jpg",
+    "static/media/Earth_texture.jpg": "/static/media/Earth_texture.326476b778bc50d46f15.jpg",
+    "static/media/astronaut-small.webp": "/static/media/astronaut-small.b88c47200223aa10d194.webp",
+    "index.html": "/index.html",
+    "main.0cc1de4d.css.map": "/static/css/main.0cc1de4d.css.map",
+    "main.8215c643.js.map": "/static/js/main.8215c643.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0cc1de4d.css",
+    "static/js/main.8215c643.js"
+  ]
+}

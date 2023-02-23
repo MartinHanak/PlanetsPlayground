@@ -38,7 +38,7 @@ function App() {
   return (
     <>
       <header className={styles.header}>
-        <div className={styles.logo}>Name</div>
+        <div className={styles.logo}>Gravitorium</div>
         <Navbar />
         <LanguageSwitch onClick={handleLanguageChange} />
       </header>
