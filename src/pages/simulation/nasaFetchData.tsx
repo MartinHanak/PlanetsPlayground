@@ -23,7 +23,11 @@ export default async function nasaFetchData(time: number) {
 }
 
 function createFetchPromise(name: string, time: number) {
-    return fetch(generateApiUrl(name, time));
+    return fetch('http://localhost:5000/nasaAPI', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: generateApiUrl(name, time) })
+    });
 }
 
 
