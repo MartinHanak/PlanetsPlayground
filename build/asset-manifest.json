@@ -1,20 +1,28 @@
 {
   "files": {
-    "main.css": "/static/css/main.0cc1de4d.css",
-    "main.js": "/static/js/main.8215c643.js",
+    "main.css": "/static/css/main.3eaaa4fd.css",
+    "main.js": "/static/js/main.6e1309cb.js",
+    "static/media/sun_large.png": "/static/media/sun_large.7fd4b970f53447592998.png",
+    "static/media/Earth_texture_unmodified.jpg": "/static/media/Earth_texture_unmodified.981cc3e3660e809249a3.jpg",
+    "static/media/sun_small.png": "/static/media/sun_small.bf33bbd8ebd6e255d101.png",
+    "static/media/Default_texture.jpg": "/static/media/Default_texture.16f8ef10b1013236596b.jpg",
     "static/media/Sun_texture.jpg": "/static/media/Sun_texture.f37efa46da6cbd1c9601.jpg",
     "static/media/Venus_texture.jpg": "/static/media/Venus_texture.4b6958d11ff7878fb414.jpg",
-    "static/media/astronaut.webp": "/static/media/astronaut.485bfa32815fa8344122.webp",
     "static/media/Mars_texture.jpg": "/static/media/Mars_texture.b1f6c1b6798ec9ba54ab.jpg",
     "static/media/Mercury_texture.jpg": "/static/media/Mercury_texture.355e25b8fdeb5e01366f.jpg",
-    "static/media/Earth_texture.jpg": "/static/media/Earth_texture.326476b778bc50d46f15.jpg",
+    "static/media/astronaut_transparent.webp": "/static/media/astronaut_transparent.f765ef9daa538fe8470a.webp",
+    "static/media/verlet_large.png": "/static/media/verlet_large.0e5579eff76ef654f7c6.png",
     "static/media/astronaut-small.webp": "/static/media/astronaut-small.b88c47200223aa10d194.webp",
+    "static/media/verlet_small.png": "/static/media/verlet_small.adc5d54e33f458e374e2.png",
+    "static/media/nasa_large.png": "/static/media/nasa_large.753bdc545fcfd6f66685.png",
+    "static/media/nasa_small.png": "/static/media/nasa_small.0e4382d13dbf59e4437a.png",
     "index.html": "/index.html",
-    "main.0cc1de4d.css.map": "/static/css/main.0cc1de4d.css.map",
-    "main.8215c643.js.map": "/static/js/main.8215c643.js.map"
+    "static/media/hamburgerMenu.svg": "/static/media/hamburgerMenu.a83301b993d328253337afe4c1460b75.svg",
+    "main.3eaaa4fd.css.map": "/static/css/main.3eaaa4fd.css.map",
+    "main.6e1309cb.js.map": "/static/js/main.6e1309cb.js.map"
   },
   "entrypoints": [
-    "static/css/main.0cc1de4d.css",
-    "static/js/main.8215c643.js"
+    "static/css/main.3eaaa4fd.css",
+    "static/js/main.6e1309cb.js"
   ]
 }
