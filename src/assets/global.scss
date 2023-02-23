@@ -10,6 +10,51 @@
     box-sizing: border-box;
 }
 
+:root {
+    font-family: 'Roboto', sans-serif;
+}
+
 body {
 
+}
+
+.desktopMaxWidth {
+    max-width: breakpoints.$max-desktop-width;
+    margin: 0 auto;
+}
+
+.centerColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.horizontalCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+// hide scrollbar
+/*
+html::-webkit-scrollbar {
+    display: none;
+}
+// IE and Firefox
+html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+*/
+
+
+h1 {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 1.5rem;
 }

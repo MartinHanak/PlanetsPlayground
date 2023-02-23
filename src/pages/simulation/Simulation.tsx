@@ -145,7 +145,6 @@ export default function Simulation() {
 
     return (
         <div>
-            <h1>Simulation</h1>
             <div className={styles.canvasContainer}>
                 {initialPositionsVelocities.length === 0 ? <Loading /> :
                     <Suspense fallback={<Loading />}>

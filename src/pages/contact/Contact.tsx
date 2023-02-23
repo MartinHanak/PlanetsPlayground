@@ -1,6 +1,6 @@
 export default function Contact() {
     return (
-        <div>
+        <div className="desktopMaxWidth">
             <h1>Contact</h1>
             <p>Hi, my name is Martin Hanák and I hope to become a web developer. My main skills include JavaScript and its related technologies such as Node.js, Express and TypeScript.  </p>
 

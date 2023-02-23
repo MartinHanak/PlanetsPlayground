@@ -1,3 +1,44 @@
 .intro {
     background-color: var(--grey);
 }
+
+.introLinkButton {
+    display: inline-block;
+    background-color: var(--yellow);
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.introPicture {
+    width: 66%;
+}
+
+.introPicture > img {
+    max-width: 600px;
+
+}
+
+.infoRight {
+    display: flex;
+}
+
+.info {
+    display: flex;
+
+    img {
+        width: 300px;
+    }
+}
+
+
+
+.footer {
+    background-color: var(--grey);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--white);
+    padding: 1rem 0 1rem 0;
+    font-size: 1.2rem;
+}

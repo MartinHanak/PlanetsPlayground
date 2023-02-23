@@ -84,10 +84,9 @@ export default function Import() {
     }
 
     return (
-        <>
-            <h1>Import</h1>
-            {errorMessage && <p>{errorMessage}</p>}
-            <form onSubmit={handleSubmit}>
+        <div className="desktopMaxWidth centerColumn">
+            <form onSubmit={handleSubmit} className="centerColumn">
+                {errorMessage && <p>{errorMessage}</p>}
 
                 <label htmlFor="date">Choose when to start the simulation:</label><br />
 
@@ -103,6 +102,6 @@ export default function Import() {
                 <button type="submit">Start Simulation</button>
             </form>
 
-        </>
+        </div>
     )
 }

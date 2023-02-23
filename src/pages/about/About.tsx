@@ -1,6 +1,6 @@
 export default function About() {
     return (
-        <div>
+        <div className="desktopMaxWidth">
             <h1>About</h1>
             <p>
                 Planets Playground is an online simulation of our solar system dynamics.

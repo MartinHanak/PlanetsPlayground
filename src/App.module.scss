@@ -7,7 +7,7 @@
 .header {
  display: flex;
  justify-content: space-between;
- background-color: var(--blue-vibrant);
+ background-color: var(--grey);
 }
 
 @media (max-width: breakpoints.$mobile-breakpoint) {
