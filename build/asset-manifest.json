@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.3eaaa4fd.css",
-    "main.js": "/static/js/main.6e1309cb.js",
+    "main.css": "/static/css/main.d0939168.css",
+    "main.js": "/static/js/main.de17d7fe.js",
     "static/media/sun_large.png": "/static/media/sun_large.7fd4b970f53447592998.png",
     "static/media/Earth_texture_unmodified.jpg": "/static/media/Earth_texture_unmodified.981cc3e3660e809249a3.jpg",
     "static/media/sun_small.png": "/static/media/sun_small.bf33bbd8ebd6e255d101.png",
@@ -18,11 +18,11 @@
     "static/media/nasa_small.png": "/static/media/nasa_small.0e4382d13dbf59e4437a.png",
     "index.html": "/index.html",
     "static/media/hamburgerMenu.svg": "/static/media/hamburgerMenu.a83301b993d328253337afe4c1460b75.svg",
-    "main.3eaaa4fd.css.map": "/static/css/main.3eaaa4fd.css.map",
-    "main.6e1309cb.js.map": "/static/js/main.6e1309cb.js.map"
+    "main.d0939168.css.map": "/static/css/main.d0939168.css.map",
+    "main.de17d7fe.js.map": "/static/js/main.de17d7fe.js.map"
   },
   "entrypoints": [
-    "static/css/main.3eaaa4fd.css",
-    "static/js/main.6e1309cb.js"
+    "static/css/main.d0939168.css",
+    "static/js/main.de17d7fe.js"
   ]
 }

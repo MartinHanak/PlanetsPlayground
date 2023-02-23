@@ -1,12 +1,23 @@
 @use './assets/breakpoints';
 
 .logo {
+    display: block;
+    padding: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--white);
+    font-size: 1.5rem;
+    padding: 1rem 2rem 1rem 2rem;
+    background-color: var(--brown);
+    margin-left: 2rem;
 
+    border-radius: 0 0 1rem 1rem;
 }
 
 .header {
  display: flex;
  justify-content: space-between;
+ align-items: center;
  background-color: var(--grey);
 }
 
