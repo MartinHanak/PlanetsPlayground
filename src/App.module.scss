@@ -2,23 +2,25 @@
 
 .logo {
     display: block;
-    padding: 1rem;
     font-weight: bold;
     text-decoration: none;
     color: var(--white);
     font-size: 1.5rem;
     padding: 1rem 2rem 1rem 2rem;
-    background-color: var(--brown);
-    margin-left: 2rem;
-
+    background-color: var(--red-1);
+    letter-spacing:0.15rem ;
     border-radius: 0 0 1rem 1rem;
 }
 
 .header {
+ position: sticky;
+ top: 0;
+ z-index: 1000000000;
  display: flex;
  justify-content: space-between;
  align-items: center;
- background-color: var(--grey);
+ background-color: var(--primary-1);
+ height: var(--navbar-height);
 }
 
 @media (max-width: breakpoints.$mobile-breakpoint) {
@@ -33,4 +35,11 @@
             order: 1
         }
     }
+}
+
+@media(min-width: breakpoints.$mobile-breakpoint) {
+    .logo {
+        margin-left: 2rem;
+    }
+   
 }

@@ -1,10 +1,10 @@
 import { CameraControls, Html } from "@react-three/drei"
-import { Camera, useThree } from "@react-three/fiber"
+import { Camera, ThreeEvent, useThree } from "@react-three/fiber"
 import styles from "./Controls.module.scss"
 import { ChangeEvent, MouseEventHandler, MutableRefObject, RefObject, SetStateAction, useEffect } from "react";
 import MassObjectData from "./computation/MassObjectData";
 import { RootState } from "@react-three/fiber";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Dispatch } from "react";
 import { Object3D, Vector3 } from "three";
 import MassObjectController from "./MassObjectController";
@@ -18,6 +18,7 @@ import displayShiftedPosition from "./computation/displayShiftedPosition";
 import updateMeshPosition from "./computation/updateMeshPosition";
 import updateLight from "./computation/updateLight";
 import { PointLight } from "three";
+import arrowLeftImage from "../../assets/images/arrow_left.svg";
 
 type vector = [number, number, number];
 
@@ -54,6 +55,17 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
     const forceUpdate = () => setForcedCounter((previous: number) => previous + 1);
 
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [hidden, setHidden] = useState<boolean>(() => {
+        const translateXHidden = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateX-controls-hidden'));
+        // NaN = calc function from CSS
+        if (isNaN(translateXHidden)) {
+            return false
+        } else {
+            return true;
+        }
+    });
+
+    const arrowImageRef = useRef<HTMLImageElement>(null);
 
 
     useEffect(() => {
@@ -61,14 +73,6 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
         onMount([selectedObjects, setSelectedObjects, forceUpdate])
     }, [onMount, selectedObjects, frameloop])
 
-    const handleClick = () => {
-        const isMovingAfterToggle = toggleMoving();
-        if (isMovingAfterToggle) {
-            setFrameloop("always");
-        } else {
-            setFrameloop("demand");
-        }
-    }
 
     const handleSelect: MouseEventHandler<HTMLButtonElement> = (event) => {
         massObjectArray.current.forEach((object: MassObjectData) => {
@@ -105,6 +109,22 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
                 */
     }
 
+
+    const toggleControls = () => {
+
+        const translateX = getComputedStyle(document.documentElement).getPropertyValue('--translateX-controls');
+        const translateXHidden = getComputedStyle(document.documentElement).getPropertyValue('--translateX-controls-hidden');
+
+
+        document.documentElement.style.setProperty('--translateX-controls', translateXHidden);
+        document.documentElement.style.setProperty('--translateX-controls-hidden', translateX);
+
+        //arrowImageRef.current?.classList.toggle(styles.rotateArrow);
+        setHidden((prevHidden: boolean) => !prevHidden)
+
+        console.log("changind css var");
+    }
+
     const handleTimestepChange = (event: ChangeEvent<HTMLInputElement>) => {
         const inputValue = Number(event.target.value);
 
@@ -115,25 +135,43 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
         }
     }
 
+    const handleClick = () => {
+        const isMovingAfterToggle = toggleMoving();
+        if (isMovingAfterToggle) {
+            toggleControls();
+            setFrameloop("always");
+        } else {
+            setFrameloop("demand");
+        }
+    }
 
     return (
         <>
-            <Html as="div" wrapperClass={`${styles.wrapper} canvas-controls`} occlude >
-                <div className={styles.start}>
+            <Html as="div" wrapperClass={`${styles.wrapper} canvas-controls`} occlude>
+                <div className={styles.toggleControls} onClick={toggleControls}>
+                    <div className={styles.arrowContainer}>
+                        <img ref={arrowImageRef} src={arrowLeftImage}
+                            className={!hidden ? styles.rotateArrow : undefined}
+                            alt="Arrow" />
+                    </div>
+                </div>
+
+                <div className={styles.controls} >
+                    <div className={styles.start}>
 
 
-                    <h1>Timestep</h1>
-                    <label htmlFor="timestep">
-                        <input name="timestep" id="timestep" type="text" placeholder="1.0" onChange={handleTimestepChange} />
-                    </label>
+                        <h3>Timestep</h3>
+                        <label htmlFor="timestep">
+                            <input name="timestep" id="timestep" type="text" placeholder="1.0" onChange={handleTimestepChange} />
+                        </label>
 
 
 
-                    <h1>Center</h1>
-                    <button onClick={handleSelect}>
-                        SSB / Earth
-                    </button>
-                    {/*
+                        <h3>Center</h3>
+                        <button onClick={handleSelect}>
+                            SSB / Earth
+                        </button>
+                        {/*
 
                     <select name="center" id="center" onChange={handleSelect}>
                         <option value="SSB">SSB</option>
@@ -142,39 +180,40 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
                     </select>
                     */}
 
-                    <h1>Start / stop</h1>
-                    <button onClick={handleClick}> Start/Stop </button>
-                </div>
+                        <h3>Start / stop</h3>
+                        <button onClick={handleClick}> Start/Stop </button>
+                    </div>
 
-                <div className={styles.objectInfo}>
-                    <h1>Mass Object Info</h1>
+                    <div className={styles.objectInfo}>
+                        <h4>Mass Object Info</h4>
 
-                    <button onClick={() => setShowNewObject((show: boolean) => !show)}>Add Object</button>
+                        <button onClick={() => setShowNewObject((show: boolean) => !show)}>Add Object</button>
 
-                    {showNewObject ? <NewObjectController
-                        hide={() => setShowNewObject(false)}
-                        addMassObject={addMassObject}
-                        setErrorMessage={setErrorMessage}
-                    /> : null}
+                        {showNewObject ? <NewObjectController
+                            hide={() => setShowNewObject(false)}
+                            addMassObject={addMassObject}
+                            setErrorMessage={setErrorMessage}
+                        /> : null}
 
-                    {massObjectArray.current.map((object: MassObjectData) => {
-                        if (selectedObjects.includes(object.name)) {
-                            return (
-                                <MassObjectController
-                                    key={`${object.name}_controls`}
-                                    name={object.name}
-                                    massObject={object}
-                                    massObjectsRef={massObjectArray}
-                                    deleteMassObject={deleteMassObject}
-                                    modifyMassObject={modifyMassObject}
-                                    setSelectedObjects={setSelectedObjects}
-                                    setErrorMessage={setErrorMessage}
-                                />
-                            )
-                        } else {
-                            return null;
-                        }
-                    })}
+                        {massObjectArray.current.map((object: MassObjectData) => {
+                            if (selectedObjects.includes(object.name)) {
+                                return (
+                                    <MassObjectController
+                                        key={`${object.name}_controls`}
+                                        name={object.name}
+                                        massObject={object}
+                                        massObjectsRef={massObjectArray}
+                                        deleteMassObject={deleteMassObject}
+                                        modifyMassObject={modifyMassObject}
+                                        setSelectedObjects={setSelectedObjects}
+                                        setErrorMessage={setErrorMessage}
+                                    />
+                                )
+                            } else {
+                                return null;
+                            }
+                        })}
+                    </div>
                 </div>
 
             </Html>

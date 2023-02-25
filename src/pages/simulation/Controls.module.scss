@@ -1,13 +1,44 @@
 .wrapper {
     height: 100%;
-    background-color: grey;
+    //background-color: grey;
+    transition: transform 1s cubic-bezier(0,1,0,1);
+}
+
+.toggleControls {
+    height: 100%;
+    background-color: var(--grey-transparent-1);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggleControls:hover {
+    background-color: var(--grey-transparent-4);
+}
+
+.controls{
+    background-color: var(--grey-1);
+    width: 100%;
+}
+
+.arrowContainer {
+    width: 1rem;
+    height: 1rem;
+    margin: 0.5rem;
+    //padding: 1rem;
+}
+
+.rotateArrow {
+    transform: rotate(180deg);
 }
 
 .start {
     display: block;
     min-width: 100px;
     min-height: 100px;
-    background-color: green;
+    
     left: 0%;
     position: relative;
 }
@@ -20,3 +51,5 @@
     position: relative;
     bottom: 1rem;
 }
+
+

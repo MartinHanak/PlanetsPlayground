@@ -10,7 +10,7 @@ export default function CurrentDay({ day }: currentDayProps) {
     const [currentDay, setCurrentDay] = useState(day.current);
 
     return (
-        <Html occlude wrapperClass="canvas-date">
+        <Html wrapperClass="canvas-date">
             <div>{`${day.current.getDate()}/${day.current.getMonth() + 1}/${day.current.getFullYear()}`}</div>
         </Html>
     )

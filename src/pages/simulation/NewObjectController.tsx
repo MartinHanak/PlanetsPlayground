@@ -88,17 +88,17 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
 
     return (
         <div className={styles.massObjectController}>
-            <h1>Input values for the new object:</h1>
+            <h3>Input values for the new object:</h3>
 
             <div>
-                <h2>Name</h2>
+                <h4>Name</h4>
                 <label htmlFor="name">
                     name: <input name="name" id="name" type="text" placeholder="name" value={formValues.name} onChange={handleChange} />
                 </label>
             </div>
 
             <div>
-                <h2>Position</h2>
+                <h4>Position</h4>
                 <label htmlFor="positionX">
                     x: <input name="positionX" id="positionX" type="text" placeholder="x" value={formValues.positionX} onChange={handleChange} /> AU
                 </label>
@@ -111,7 +111,7 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
             </div>
 
             <div>
-                <h2>Velocity</h2>
+                <h4>Velocity</h4>
                 <label htmlFor="velocityX">
                     x: <input name="velocityX" id="velocityX" type="text" placeholder="x" value={formValues.velocityX} onChange={handleChange} /> km/s
                 </label>
@@ -124,7 +124,7 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
             </div>
 
             <div>
-                <h2>Mass</h2>
+                <h4>Mass</h4>
                 <label htmlFor="mass">
                     mass: <input name="mass" id="mass" type="text" placeholder="mass" value={formValues.mass} onChange={handleChange} />
                 </label>

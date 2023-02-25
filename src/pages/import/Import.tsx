@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "./DatePicker";
 
@@ -17,6 +17,22 @@ export default function Import() {
     const [inputValue, setInputValue] = useState(`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`);
 
     const navigate = useNavigate();
+
+    // used for CSS animation for errors in and out
+    const oldError = useRef('');
+    const errorPlaceholderRef = useRef<HTMLParagraphElement>(null);
+
+    useEffect(() => {
+
+        if (errorMessage !== '') {
+            oldError.current = errorMessage;
+            errorPlaceholderRef.current?.classList.add('error');
+            errorPlaceholderRef.current?.classList.remove('errorOut')
+        } else {
+            errorPlaceholderRef.current?.classList.remove('error');
+            errorPlaceholderRef.current?.classList.add('errorOut');
+        }
+    }, [errorMessage])
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -85,10 +101,12 @@ export default function Import() {
 
     return (
         <div className="desktopMaxWidth centerColumn">
-            <form onSubmit={handleSubmit} className="centerColumn">
-                {errorMessage && <p>{errorMessage}</p>}
+            <form onSubmit={handleSubmit} className={`${styles.form} centerColumn`}>
 
-                <label htmlFor="date">Choose when to start the simulation:</label><br />
+                <label htmlFor="date"><h3>Choose when to start the simulation:</h3></label><br />
+                <p ref={errorPlaceholderRef} className={`errorPlaceholder`}>
+                    {oldError.current === '' ? errorMessage : oldError.current}
+                </p>
 
                 <DatePicker id="date" value={inputValue} setValue={setInputValue}
                     validateInput={validateInput}

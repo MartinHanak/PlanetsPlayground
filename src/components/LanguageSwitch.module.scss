@@ -1,0 +1,19 @@
+@use '../assets/breakpoints';
+
+.switch {
+    align-self: flex-start;
+    display: flex;
+    gap: 0.2rem;
+}
+
+.switch button {
+    font-size: 1rem;
+}
+
+
+@media(min-width: breakpoints.$mobile-breakpoint) {
+    .switch {
+        margin-right: 2rem;
+    }
+   
+}

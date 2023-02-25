@@ -141,7 +141,7 @@ export default function DatePicker({ id, value, setValue, validateInput, setErro
 
     return (
         <>
-            <input id={id} name={id} type="text" value={value} placeholder="dd/mm/yyyy"
+            <input id={id} name={id} type="text" value={value} placeholder="dd/mm/yyyy" autoComplete="off"
                 onChange={handleChange}
                 onFocus={() => setDisplayCalendar(true)}
             />

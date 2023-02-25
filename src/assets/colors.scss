@@ -1,5 +1,7 @@
 :root {
 
+    /*
+
     --orange: #ff7613;
     --orange-vibrant: #ff4601;
 
@@ -10,11 +12,56 @@
     --white: #ffffff;
     --black: #00001c;
 
+    --blue-light: #2E4057;// rgb(42, 105, 177);
+
     --blue-vibrant: #0ec2d3;
-    --blue-light: #e0fefd;
+    --blue-light: #2E4057;// #e0fefd;
 
     --grey: #1c2028;
     --grey-2: #1d2129;
     --grey-3: #1f222a;
     --grey-4: #20232b;
+    */
+
+
+    // test
+    --primary-1: rgba( 28, 32, 40,1);
+    --primary-2: rgba( 85, 92,106,1);
+    --primary-3:  rgba( 56, 62, 72,1);
+    --primary-4: rgba( 19, 25, 37,1);
+    --primary-5: rgba( 11, 17, 30,1);
+    
+    --grey-1: rgb(225, 226, 228) ;
+    --grey-2: rgba( 84, 91,104,1) ;
+    --grey-3: rgba( 75, 80, 91,1) ;
+    --grey-4: rgba( 65, 71, 84,1) ;
+    --grey-5: rgba( 49, 56, 70,1) ;
+
+    --grey-transparent-1: rgba(225, 226, 228,0.5) ;
+    --grey-transparent-2: rgba( 84, 91,104,0.5) ;
+    --grey-transparent-3: rgba( 75, 80, 91,0.5) ;
+    --grey-transparent-4: rgba( 65, 71, 84,0.5) ;
+    --grey-transparent-5: rgba( 49, 56, 70,0.5) ;
+
+    --white:rgba(255, 255, 255, 1);
+    --black: rgba(0,0,0,1);
+
+    --red-1: rgba(143, 71, 64,1); 
+    --red-2: rgba(223,158,152,1); 
+    --red-3: rgba(182,105, 97,1); 
+    --red-4: rgba(120, 43, 35,1); 
+    --red-5: rgba( 83, 18, 11,1); 
+
+    --red-transparent-1: rgba(143, 71, 64,0.5); 
+    --red-transparent-2: rgba(223,158,152,0.5); 
+    --red-transparent-3: rgba(182,105, 97,0.5); 
+    --red-transparent-4: rgba(120, 43, 35,0.5); 
+    --red-transparent-5: rgba( 83, 18, 11,0.5); 
+
+    --secondary-1: rgba(236,206,142,1) ;
+    --secondary-2: rgba(255,244,222,1) ;
+    --secondary-3: rgba(255,234,190,1) ;
+    --secondary-4: rgba(195,160, 86,1) ;
+    --secondary-5: rgba(151,116, 41,1) ;
+
 }

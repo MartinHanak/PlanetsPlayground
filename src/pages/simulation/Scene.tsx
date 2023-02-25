@@ -259,11 +259,13 @@ export default function Scene({ initialMassObjectDataArray, initialDate }: scene
     useLayoutEffect(() => {
         console.log("log from use layout effect")
 
+
         resetCamera({
             conversionFactor: conversionFactorBetweenCanvasUnitsAndAU.current,
             cameraControlsRef: cameraControlsRef,
             camera: camera
         })
+
 
         // initial object values
         initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary);

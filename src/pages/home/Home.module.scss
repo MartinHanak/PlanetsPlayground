@@ -1,12 +1,28 @@
 .intro {
-    background-color: var(--grey);
+    background-color: var(--primary-1);
+    color: white;
+}
+
+.intro  p {
+    color: var(--grey-1);
+    margin: 1rem 0 1rem 0;
 }
 
 .introLinkButton {
     display: inline-block;
-    background-color: var(--yellow);
-    padding: 1rem;
-    border-radius: 5px;
+    background-color: var(--secondary-1);
+    padding: 1rem 2rem 1rem 2rem; 
+    border-radius: 1rem;
+    font-weight: bold;
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+.introLinkButton:hover {
+    background-color: var(--red-1);
+    color: var(--white);
 }
 
 .introPicture {
@@ -33,7 +49,7 @@
 
 
 .footer {
-    background-color: var(--grey);
+    background-color: var(--primary-1);
     display: flex;
     justify-content: center;
     align-items: center;

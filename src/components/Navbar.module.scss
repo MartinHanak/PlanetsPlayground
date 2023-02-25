@@ -17,12 +17,12 @@
     font-weight: bold;
     text-decoration: none;
     color: var(--white);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     padding: 1rem 2rem 1rem 2rem;
 }
 
 .link:hover {
-    background-color: var(--brown);
+    background-color: var(--red-1);
     color: var(--white)
 
     //border-style: solid;
@@ -44,7 +44,7 @@
 
     .link {
         display: none;
-        background-color: var(--blue-vibrant);
+        background-color: var(--primary-1);
     }
 
     .display {

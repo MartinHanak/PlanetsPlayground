@@ -15,20 +15,23 @@ export default function resetCamera({ conversionFactor, cameraControlsRef, camer
 
     camera.up.set(0, 0, 1);
 
-    camera.near = 0.00001;
+    camera.near = 0.0000001;
     camera.far = cameraAUDistInCanvasUnits * 10;
 
-    camera.zoom = 1;
-    camera.updateProjectionMatrix();
-
     if (cameraControlsRef.current) {
-        cameraControlsRef.current.setPosition(-cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits)
 
         cameraControlsRef.current.setTarget(0, 0, 0);
 
         cameraControlsRef.current.enabled = true;
 
-        cameraControlsRef.current.updateCameraUp()
+        cameraControlsRef.current.updateCameraUp();
+
+        cameraControlsRef.current.zoom(1.5);
+
+
+        cameraControlsRef.current.setPosition(-cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits)
+        console.log("current camera controls")
+        console.log(cameraControlsRef.current)
 
     }
 
