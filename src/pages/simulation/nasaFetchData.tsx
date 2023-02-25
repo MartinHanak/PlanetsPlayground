@@ -12,7 +12,7 @@ export default async function nasaFetchData(time: number) {
 
         // add delay between fetch requests
         // API returns 503 if too many requests at once
-        const ms = 400;
+        const ms = 200;
         await (new Promise((resolve: (value: unknown) => void) => setTimeout(resolve, ms)))
 
         responseArray.push(responsePromise);
@@ -23,7 +23,8 @@ export default async function nasaFetchData(time: number) {
 }
 
 function createFetchPromise(name: string, time: number) {
-    return fetch('http://localhost:5000/nasaAPI', {
+    console.log(generateApiUrl(name, time))
+    return fetch('http://206.189.55.241:5000/nasaAPI', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: generateApiUrl(name, time) })
