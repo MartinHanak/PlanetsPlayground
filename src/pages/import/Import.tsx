@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "./DatePicker";
+import { AnimationEvent } from "react";
 
 import styles from './Import.module.scss';
 
@@ -19,20 +20,16 @@ export default function Import() {
     const navigate = useNavigate();
 
     // used for CSS animation for errors in and out
-    const oldError = useRef('');
     const errorPlaceholderRef = useRef<HTMLParagraphElement>(null);
 
     useEffect(() => {
-
         if (errorMessage !== '') {
-            oldError.current = errorMessage;
             errorPlaceholderRef.current?.classList.add('error');
-            errorPlaceholderRef.current?.classList.remove('errorOut')
         } else {
             errorPlaceholderRef.current?.classList.remove('error');
-            errorPlaceholderRef.current?.classList.add('errorOut');
         }
     }, [errorMessage])
+
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -99,13 +96,14 @@ export default function Import() {
         return dateObject.getTime()
     }
 
+
     return (
         <div className="desktopMaxWidth centerColumn">
             <form onSubmit={handleSubmit} className={`${styles.form} centerColumn`}>
 
                 <label htmlFor="date"><h3>Choose when to start the simulation:</h3></label><br />
-                <p ref={errorPlaceholderRef} className={`errorPlaceholder`}>
-                    {oldError.current === '' ? errorMessage : oldError.current}
+                <p ref={errorPlaceholderRef} className={`errorPlaceholder`} >
+                    {errorMessage !== '' ? errorMessage : null}
                 </p>
 
                 <DatePicker id="date" value={inputValue} setValue={setInputValue}
@@ -117,7 +115,7 @@ export default function Import() {
                     className={styles.dateInput}
                     onChange={(e) => setInputValue(e.target.value)} /><br />
                 */}
-                <button type="submit">Start Simulation</button>
+                <button type="submit" className={styles.submitButton}>Start Simulation</button>
             </form>
 
         </div>

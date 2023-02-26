@@ -115,36 +115,34 @@ button:hover {
 @keyframes opacityIn {
     0% {
         opacity: 0;
+        display: none;
     }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes opacityOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
+    1% {
+        display: block;
         opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        display: block;
     }
 }
 
 
 .errorPlaceholder {
     padding: 1rem 2rem 1rem 2rem;
+    margin: 0.5rem 0 0.5rem 0;
     opacity: 0;
+    display: none;
     color: var(--red-5);
     background-color: var(--red-transparent-2);
+    cursor:default;
+    user-select: none;
 }   
 
 .error {
     opacity: 1;
+    display: block;
     //transition: opacity 10s ease-in-out;
     animation: opacityIn 1s;
 }
 
-
-.errorOut {
-    animation: opacityOut 0.5s linear;
-}

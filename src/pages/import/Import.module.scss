@@ -1,23 +1,92 @@
 .form {
     margin-top:2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.inputContainer {
+    position: relative;
+    //width: 100%;
 }
 
 .dateInput {
 }
 
+.calendarContainer {
+    //min-height: calc(3rem + 8*1rem + 16*0.4rem);
+    position: absolute;
+    top: 3rem; // shift from top by the input height
+    left: -25%;
+    background-color: var(--white);
+}
+
+.calendarContainer button {
+    font-size: 1rem;
+    background-color: var(--grey-1);
+}
+
+.calendarContainer button:hover {
+     background-color: var(--red-1);
+        color: var(--white)
+}
+
+.topRowButtonsContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.topRowButtonsContainer span {
+    text-align: center;
+    user-select: none;
+    margin: 0 auto;
+}
+
+
+.datePickerTable {
+    th, td {
+        width: 14.286%;
+        text-align: center;
+        padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+        cursor: pointer;
+        user-select: none;
+    }
+}
+
 .datePickerTable td:hover {
-    background-color: yellow;
+    background-color: var(--red-1);
 }
 
 
 .previousMonth {
-    background-color: red;
+    background-color: var(--grey-transparent-1);
 }
 
 .currentMonth {
-    background-color: blue;
+    background-color: var(--secondary-1);
 }
 
 .nextMonth {
-    background-color: green;
+    background-color: var(--grey-transparent-1);
+}
+
+.lastRowButtonsContainer {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 0.2rem
+}
+
+
+.submitButton {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    //border-radius: 0.5rem;
+    padding: 1rem 2rem 1rem 2rem;
 }

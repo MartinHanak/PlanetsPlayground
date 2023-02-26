@@ -63,6 +63,7 @@ export default function DatePicker({ id, value, setValue, validateInput, setErro
 
             setSelectedDate(newSelectedDate)
             setValue(`${newSelectedDate.getDate()}/${newSelectedDate.getMonth() + 1}/${newSelectedDate.getFullYear()}`)
+            setDisplayCalendar(false)
         }
     }
 
@@ -140,17 +141,17 @@ export default function DatePicker({ id, value, setValue, validateInput, setErro
 
 
     return (
-        <>
+        <div className={styles.inputContainer}>
             <input id={id} name={id} type="text" value={value} placeholder="dd/mm/yyyy" autoComplete="off"
                 onChange={handleChange}
                 onFocus={() => setDisplayCalendar(true)}
             />
             {displayCalendar ?
-                <div>
-                    <div>
+                <div className={styles.calendarContainer}>
+                    <div className={styles.topRowButtonsContainer}>
                         <button onClick={(e) => shiftCurrentlySelectedDate(e, -msPerYear)}>yb</button>
                         <button onClick={(e) => shiftCurrentlySelectedDate(e, -msPerMonth)}>mb</button>
-                        <span>{monthNames[selectedDate.getMonth()]}</span>
+                        <span>{monthNames[selectedDate.getMonth()]}<br />{selectedDate.getFullYear()}</span>
                         <button onClick={(e) => shiftCurrentlySelectedDate(e, +msPerMonth)}>mf</button>
                         <button onClick={(e) => shiftCurrentlySelectedDate(e, +msPerYear)}>yf</button>
                     </div>
@@ -166,11 +167,12 @@ export default function DatePicker({ id, value, setValue, validateInput, setErro
                             }) : null}
                         </tbody>
                     </table>
-
-                    <button onClick={() => setDisplayCalendar(false)}>Confirm</button>
-                    <button onClick={() => setDisplayCalendar(false)}>Cancel</button>
+                    <div className={styles.lastRowButtonsContainer}>
+                        <button type="submit">Confirm</button>
+                        <button onClick={() => setDisplayCalendar(false)}>Cancel</button>
+                    </div>
                 </div> : null}
-        </>
+        </div>
     )
 }
 
