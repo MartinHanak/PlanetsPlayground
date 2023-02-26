@@ -1,5 +1,6 @@
 import MassObjectData from './computation/MassObjectData'
 import styles from './MassObjectController.module.scss'
+import controlsStyles from './Controls.module.scss';
 import { convertSItoDisplayed, convertDisplayedToSI } from '../../utils/convertVectorSI'
 import { useState, Dispatch, SetStateAction } from 'react'
 import ModifyMassObject from './ModifyMassObject'
@@ -34,44 +35,49 @@ export default function MassObjectController({ name, massObject, massObjectsRef,
 
     if (displayedPosition && displayedVelocity && displayedMass) {
         return (
-            <div className={styles.massObjectController}>
-                <h3>{name}</h3>
-                <div>
-                    <h4>Position</h4>
-                    <div>x: <span>{displayedPosition[0]}</span> AU</div>
-                    <div>y: <span>{displayedPosition[1]}</span> AU</div>
-                    <div>z: <span>{displayedPosition[2]}</span> AU</div>
+            <div className={`desktopMaxWidth ${styles.massObjectController}  ${controlsStyles.commonBackground}`}>
+                <div className={`${controlsStyles.nameContainer}`}>
+                    <h3>{name}</h3>
+                    <button onClick={() => deleteMassObject(name)} className={controlsStyles.deleteButton}>Delete</button>
                 </div>
 
-                <div>
-                    <h4>Velocity</h4>
-                    <div>vx: <span>{displayedVelocity[0]}</span> km/s</div>
-                    <div>vy: <span>{displayedVelocity[1]}</span> km/s</div>
-                    <div>vz: <span>{displayedVelocity[2]}</span> km/s</div>
+                <div className={controlsStyles.dataContainer}>
+                    <div>
+                        <h4>Position</h4>
+                        <div>x: <span>{displayedPosition[0]}</span> AU</div>
+                        <div>y: <span>{displayedPosition[1]}</span> AU</div>
+                        <div>z: <span>{displayedPosition[2]}</span> AU</div>
+                    </div>
+
+                    <div>
+                        <h4>Velocity</h4>
+                        <div>vx: <span>{displayedVelocity[0]}</span> km/s</div>
+                        <div>vy: <span>{displayedVelocity[1]}</span> km/s</div>
+                        <div>vz: <span>{displayedVelocity[2]}</span> km/s</div>
+                    </div>
+
+                    <div>
+                        <h4>Mass</h4>
+                        <div>m: <span>{displayedMass}</span> M</div>
+                    </div>
                 </div>
 
-                <div>
-                    <h4>Mass</h4>
-                    <div>m: <span>{displayedMass}</span> M</div>
-                </div>
-
-                <div>
-                    <button onClick={() => deleteMassObject(name)}>Delete</button>
+                <div className={controlsStyles.buttonsContainer}>
 
                     <button onClick={() => setDisplayModify((previous: boolean) => !previous)}>Modify</button>
 
                     <button onClick={() => unselectObject()}>Unselect</button>
-
-                    {displayModify ?
-                        <ModifyMassObject
-                            massObject={massObject}
-                            massObjectsRef={massObjectsRef}
-                            modifyMassObject={modifyMassObject}
-                            setErrorMessage={setErrorMessage}
-                            onCancel={() => setDisplayModify(false)}
-                        />
-                        : null}
                 </div>
+
+                {displayModify ?
+                    <ModifyMassObject
+                        massObject={massObject}
+                        massObjectsRef={massObjectsRef}
+                        modifyMassObject={modifyMassObject}
+                        setErrorMessage={setErrorMessage}
+                        onCancel={() => setDisplayModify(false)}
+                    />
+                    : null}
             </div >
         )
     } else {

@@ -23,8 +23,10 @@ import arrowLeftImage from "../../assets/images/arrow_left.svg";
 type vector = [number, number, number];
 
 interface controlsProps {
+    moving: MutableRefObject<boolean>,
     toggleMoving: () => boolean,
     stopMoving: () => void,
+    center: MutableRefObject<string>,
     setCenter: (center: string) => string,// Dispatch<SetStateAction<string>>,  (center: string) => void,
     setTimestep: (timestep: number) => number,
     massObjectArray: MutableRefObject<MassObjectData[]>,
@@ -38,7 +40,7 @@ interface controlsProps {
     pointLightRef: RefObject<PointLight>
 }
 
-export default function Controls({ toggleMoving, stopMoving, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject, deleteMassObject, modifyMassObject, currentDayRef, cameraControlsRef, pointLightRef }: controlsProps) {
+export default function Controls({ toggleMoving, moving, stopMoving, center, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject, deleteMassObject, modifyMassObject, currentDayRef, cameraControlsRef, pointLightRef }: controlsProps) {
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
@@ -157,37 +159,47 @@ export default function Controls({ toggleMoving, stopMoving, setCenter, setTimes
                 </div>
 
                 <div className={styles.controls} >
-                    <div className={styles.start}>
+                    <div className={` ${styles.underline}`}>
+                        <div className={`${styles.start} ${styles.commonBackground} ${styles.commonSpacing} desktopThirdMaxWidth`}>
+                            <div className={`gridRow`}>
+
+                                <span className={styles.inputLabel}>Timestep</span>
+                                <div className={`${styles.timestep}`}>
+                                    <input name="timestep" id="timestep" type="text" placeholder="1.0" onChange={handleTimestepChange} />
+                                    days
+                                </div>
+
+                            </div>
 
 
-                        <h3>Timestep</h3>
-                        <label htmlFor="timestep">
-                            <input name="timestep" id="timestep" type="text" placeholder="1.0" onChange={handleTimestepChange} />
-                        </label>
-
-
-
-                        <h3>Center</h3>
-                        <button onClick={handleSelect}>
-                            SSB / Earth
-                        </button>
-                        {/*
-
-                    <select name="center" id="center" onChange={handleSelect}>
-                        <option value="SSB">SSB</option>
-                        <option value="Sun">Sun</option>
-                        <option value="Earth">Earth</option>
-                    </select>
-                    */}
-
-                        <h3>Start / stop</h3>
-                        <button onClick={handleClick}> Start/Stop </button>
+                            <div className={`gridRow`}>
+                                <span className={styles.inputLabel}>Center</span>
+                                <div>
+                                    <button onClick={handleSelect}
+                                        className={center.current !== 'Earth' ? styles.chosenCenter : styles.inactiveCenter}>
+                                        SSB
+                                    </button>
+                                    <button onClick={handleSelect}
+                                        className={center.current === 'Earth' ? styles.chosenCenter : styles.inactiveCenter}>
+                                        Earth
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <button onClick={handleClick} className={`${styles.startstopButton} ${moving.current ? styles.stopButton : styles.startButton}`}>
+                                    {moving.current ? 'Stop' : 'Start'}
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div className={styles.objectInfo}>
-                        <h4>Mass Object Info</h4>
 
-                        <button onClick={() => setShowNewObject((show: boolean) => !show)}>Add Object</button>
+                        <div className={`${styles.commonBackground} desktopMaxWidth flexRow`}>
+                            <h4>Mass Object Info</h4>
+
+                            <button onClick={() => setShowNewObject((show: boolean) => !show)}>Add Object</button>
+                        </div>
 
                         {showNewObject ? <NewObjectController
                             hide={() => setShowNewObject(false)}

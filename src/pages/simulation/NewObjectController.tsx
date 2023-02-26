@@ -1,6 +1,7 @@
 import { match } from 'assert'
 import { SetStateAction, Dispatch, useState, ChangeEvent } from 'react'
 import styles from './MassObjectController.module.scss'
+import controlsStyles from './Controls.module.scss';
 
 import { convertDisplayedToSI } from '../../utils/convertVectorSI';
 
@@ -34,7 +35,7 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
         velocityX: 0,
         velocityY: -30,
         velocityZ: 0,
-        mass: 1
+        mass: 1.0
     })
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -87,52 +88,54 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
     }
 
     return (
-        <div className={styles.massObjectController}>
-            <h3>Input values for the new object:</h3>
+        <div className={`${styles.massObjectController} desktopMaxWidth ${controlsStyles.commonBackground}`}>
 
-            <div>
-                <h4>Name</h4>
+            <h3 className={controlsStyles.newObjectLegend}>Input values for the new object:</h3>
+            <div className={controlsStyles.nameContainer}>
                 <label htmlFor="name">
-                    name: <input name="name" id="name" type="text" placeholder="name" value={formValues.name} onChange={handleChange} />
+                    <input name="name" id="name" type="text" placeholder="name" value={formValues.name} onChange={handleChange} />
                 </label>
             </div>
 
-            <div>
-                <h4>Position</h4>
-                <label htmlFor="positionX">
-                    x: <input name="positionX" id="positionX" type="text" placeholder="x" value={formValues.positionX} onChange={handleChange} /> AU
-                </label>
-                <label htmlFor="positionY">
-                    y: <input name="positionY" id="positionY" type="text" placeholder="y" value={formValues.positionY} onChange={handleChange} /> AU
-                </label>
-                <label htmlFor="positionZ">
-                    z: <input name="positionZ" id="positionZ" type="text" placeholder="z" value={formValues.positionZ} onChange={handleChange} /> AU
-                </label>
+            <div className={controlsStyles.dataContainer}>
+                <div>
+                    <h4>Position</h4>
+                    <label htmlFor="positionX">
+                        x: <input name="positionX" id="positionX" type="text" placeholder="x" value={formValues.positionX} onChange={handleChange} /> AU
+                    </label>
+                    <label htmlFor="positionY">
+                        y: <input name="positionY" id="positionY" type="text" placeholder="y" value={formValues.positionY} onChange={handleChange} /> AU
+                    </label>
+                    <label htmlFor="positionZ">
+                        z: <input name="positionZ" id="positionZ" type="text" placeholder="z" value={formValues.positionZ} onChange={handleChange} /> AU
+                    </label>
+                </div>
+
+                <div>
+                    <h4>Velocity</h4>
+                    <label htmlFor="velocityX">
+                        vx: <input name="velocityX" id="velocityX" type="text" placeholder="x" value={formValues.velocityX} onChange={handleChange} /> km/s
+                    </label>
+                    <label htmlFor="velocityY">
+                        vy: <input name="velocityY" id="velocityY" type="text" placeholder="y" value={formValues.velocityY} onChange={handleChange} /> km/s
+                    </label>
+                    <label htmlFor="velocityZ">
+                        vz: <input name="velocityZ" id="velocityZ" type="text" placeholder="z" value={formValues.velocityZ} onChange={handleChange} /> km/s
+                    </label>
+                </div>
+
+                <div>
+                    <h4>Mass</h4>
+                    <label htmlFor="mass">
+                        m: <input name="mass" id="mass" type="text" placeholder="mass" value={formValues.mass} onChange={handleChange} /> M
+                    </label>
+                </div>
             </div>
 
-            <div>
-                <h4>Velocity</h4>
-                <label htmlFor="velocityX">
-                    x: <input name="velocityX" id="velocityX" type="text" placeholder="x" value={formValues.velocityX} onChange={handleChange} /> km/s
-                </label>
-                <label htmlFor="velocityY">
-                    y: <input name="velocityY" id="velocityY" type="text" placeholder="y" value={formValues.velocityY} onChange={handleChange} /> km/s
-                </label>
-                <label htmlFor="velocityZ">
-                    z: <input name="velocityZ" id="velocityZ" type="text" placeholder="z" value={formValues.velocityZ} onChange={handleChange} /> km/s
-                </label>
+            <div className={controlsStyles.buttonsContainer}>
+                <button onClick={handleConfirm}>Confirm</button>
+                <button onClick={hide}>Cancel</button>
             </div>
-
-            <div>
-                <h4>Mass</h4>
-                <label htmlFor="mass">
-                    mass: <input name="mass" id="mass" type="text" placeholder="mass" value={formValues.mass} onChange={handleChange} />
-                </label>
-            </div>
-
-
-            <button onClick={handleConfirm}>Confirm</button>
-            <button onClick={hide}>Cancel</button>
         </div>
     )
 }

@@ -391,8 +391,10 @@ export default function Scene({ initialMassObjectDataArray, initialDate }: scene
 
 
             <Controls
+                moving={moving}
                 toggleMoving={toggleMoving}
                 stopMoving={stopMoving}
+                center={center}
                 setCenter={setCenter}
                 setTimestep={setTimestep}
                 massObjectArray={massObjectArray}
