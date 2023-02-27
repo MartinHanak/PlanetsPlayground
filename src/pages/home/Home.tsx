@@ -4,16 +4,18 @@ import Picture from "../../components/Picture";
 import Footer from "../../components/Footer";
 
 import astronaut from '../../assets/astronaut_transparent.webp';
-import astronautSmall from '../../assets/astronaut-small.webp';
+import astronautCropped from '../../assets/images/astronaut_transparent_cropped.png';
+import astronautCroppedSmall from '../../assets/images/astronaut_transparent_cropped_small.png';
+
 
 import sun from '../../assets/images/sun_large.png'
-import sunSmall from '../../assets/images/sun_small.png'
+import sunSmall from '../../assets/images/sun_small_3.png'
 
 import verlet from '../../assets/images/verlet_large.png'
 import verletSmall from '../../assets/images/verlet_small.png'
 
 import nasa from '../../assets/images/nasa_large.png'
-import nasaSmall from '../../assets/images/nasa_small.png'
+import nasaSmall from '../../assets/images/nasa_small_2.png'
 
 
 import styles from './Home.module.scss'
@@ -25,9 +27,9 @@ export default function Home() {
     return (
         <div>
             <div className={styles.intro}>
-                <div className={`${styles.infoRight} desktopMaxWidth`}>
-                    <Picture className={styles.introPicture} desktopSource={astronaut} mobileSource={astronautSmall} alt="Astronaut picture" />
-                    <div className="horizontalCenter">
+                <div className={`${styles.introContainer} desktopMaxWidth`}>
+                    <Picture className={styles.introPicture} desktopSource={astronaut} mobileSource={astronautCropped} alt="Astronaut picture" />
+                    <div className={`${styles.introText} horizontalCenter`}>
                         <h1>{t('title')}</h1>
                         <p>{t('underTitle')}</p>
                         <Link to="/import" className={styles.introLinkButton}>{t('startButton')}</Link>
@@ -45,16 +47,16 @@ export default function Home() {
                 </div>
 
                 <div className={styles.info}>
+                    <Picture desktopSource={nasa} mobileSource={nasaSmall} alt="NASA logo" />
                     <div>
                         <h2>{t('secondParTitle')}</h2>
                         <p>{t('secondParContent')}</p>
                     </div>
-                    <Picture desktopSource={nasa} mobileSource={nasaSmall} alt="NASA logo" />
                 </div>
 
                 <div className={styles.info}>
 
-                    <Picture desktopSource={verlet} mobileSource={verletSmall} alt="Velocity Verlet equations" />
+                    <Picture desktopSource={verlet} mobileSource={verlet} alt="Velocity Verlet equations" />
                     <div>
                         <h2>{t('thirdParTitle')}</h2>
                         <p>{t('thirdParContent')}</p>

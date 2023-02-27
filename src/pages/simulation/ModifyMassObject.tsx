@@ -35,7 +35,7 @@ export default function ModifyMassObject({ massObject, massObjectsRef, modifyMas
 
 
     const [formValues, setFormValues] = useState<formValues>({
-        name: i18n.exists(`simulation:planetNames.${massObject.name}`) ? t(`planetNames.${massObject.name}`) : massObject.name,
+        name: massObject.name,
         positionX: convertSIComponentToDisplayed({ type: 'position', component: massObject.shiftedPosition[0] }),
         positionY: convertSIComponentToDisplayed({ type: 'position', component: massObject.shiftedPosition[1] }),
         positionZ: convertSIComponentToDisplayed({ type: 'position', component: massObject.shiftedPosition[2] }),

@@ -1,0 +1,21 @@
+.intro {
+    padding: 1rem;
+
+    h1 {
+        margin-bottom: 1rem;
+    }
+}
+
+.rowGrid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 1rem;
+    margin: 1rem 0 0.5rem 0;
+}
+
+.rowGrid span:first-child {
+    text-align: end;
+    font-weight: bold;
+}
+
+

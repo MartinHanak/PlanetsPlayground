@@ -1,7 +1,10 @@
 {
   "title": "About",
   "underTitle": "Gravitorium is an online simulation of our solar system dynamics.",
+  "firstParTitle": "Timestep definition",
   "firstParContent": "It solves equations of motion for all the planets in real time inside your browser. In order to achieve this, a finite time step is chosen. Time is thus divided into discrete steps and the motion is approximated for each one of them.",
+  "secondParTitle": "Choosing timestep",
   "secondParContent": "Timestep should always be chosen by the fastest motion in your system. If you set too big of a timestep, the approximation for the motion will be worse and you will get wrong results. If you observe fast-moving objects in your simulation, consider decreasing the timestep value.",
+  "thirdParTitle": "Technologies used",
   "thirdParContent": "This simulation was built using React for the core website and React Three Fiber for the 3D implementation. The main calculation is done inside Fiber's useFrame hook that executes its code approximately 60 times per second. The algorithm for solving the equations of motion was chosen to be the Verlet's Velocity algorithm. It provides a good compromise between speed and accuracy."
 }
