@@ -1,0 +1,7 @@
+{
+  "title": "Info",
+  "underTitle": "Gravitorium je online simulace dynamiky našeho solárního systému.",
+  "firstParContent": "Za běhu řeší pohybové rovnice pro všechny planety uvnitř prohlížeče. Aby bylo možné tento problém řešit, tak se volí konečný časový krok. Čas je tak rozdělen na malá časová okénka a pohyb planet je přibližně popsán v každém kroku.",
+  "secondParContent": "Časový krok by měl být vždy vybrán podle nejrychlejšího pohybu ve studovaném systému. Pokud nastavíte příliš velký časový krok, tak přibližný popis nebude dostatečný a výsledky budou chybné. Pokud pozorujete rychle se pohybující objekty ve vaší simulaci, zvažte snížení časového kroku.",
+  "thirdParContent": "Tato simulace byla vytvořena pomocí React knihovny pro základ webu a React Three Fiber knihovny pro 3D zobrazení. Hlavní výpočet je prováděn uvnitř useFrame hook z knihovny Fiber, takže je přibližně spouštěn 60 krát za sekundu. Algoritmus pro řešení pohybových rovnic byl zvolen rychlostní Verlet, který poskytuje dobrý kompromis mezi rychlostí a přesností výpočtu."
+}

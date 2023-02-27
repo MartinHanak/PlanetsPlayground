@@ -4,6 +4,7 @@ import styles from './MassObjectController.module.scss'
 import controlsStyles from './Controls.module.scss';
 
 import { convertDisplayedToSI } from '../../utils/convertVectorSI';
+import { useTranslation } from 'react-i18next';
 
 type vector = [number, number, number];
 
@@ -26,6 +27,8 @@ interface formValues {
 }
 
 export default function NewObjectController({ hide, addMassObject, setErrorMessage }: newObjectControllerProps) {
+
+    const { t } = useTranslation('simulation');
 
     const [formValues, setFormValues] = useState<formValues>({
         name: '',
@@ -90,16 +93,16 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
     return (
         <div className={`${styles.massObjectController} desktopMaxWidth ${controlsStyles.commonBackground}`}>
 
-            <h3 className={controlsStyles.newObjectLegend}>Input values for the new object:</h3>
+            <h3 className={controlsStyles.newObjectLegend}>{t('newObjectLegend')}</h3>
             <div className={controlsStyles.nameContainer}>
                 <label htmlFor="name">
-                    <input name="name" id="name" type="text" placeholder="name" value={formValues.name} onChange={handleChange} />
+                    <input name="name" id="name" type="text" placeholder={`${t('name')}`} value={formValues.name} onChange={handleChange} />
                 </label>
             </div>
 
             <div className={controlsStyles.dataContainer}>
                 <div>
-                    <h4>Position</h4>
+                    <h4>{t('position')}</h4>
                     <label htmlFor="positionX">
                         x: <input name="positionX" id="positionX" type="text" placeholder="x" value={formValues.positionX} onChange={handleChange} /> AU
                     </label>
@@ -112,7 +115,7 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
                 </div>
 
                 <div>
-                    <h4>Velocity</h4>
+                    <h4>{t('velocity')}</h4>
                     <label htmlFor="velocityX">
                         vx: <input name="velocityX" id="velocityX" type="text" placeholder="x" value={formValues.velocityX} onChange={handleChange} /> km/s
                     </label>
@@ -125,7 +128,7 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
                 </div>
 
                 <div>
-                    <h4>Mass</h4>
+                    <h4>{t('mass')}</h4>
                     <label htmlFor="mass">
                         m: <input name="mass" id="mass" type="text" placeholder="mass" value={formValues.mass} onChange={handleChange} /> M
                     </label>
@@ -133,8 +136,8 @@ export default function NewObjectController({ hide, addMassObject, setErrorMessa
             </div>
 
             <div className={controlsStyles.buttonsContainer}>
-                <button onClick={handleConfirm}>Confirm</button>
-                <button onClick={hide}>Cancel</button>
+                <button onClick={handleConfirm}>{t('confirm')}</button>
+                <button onClick={hide}>{t('cancel')}</button>
             </div>
         </div>
     )

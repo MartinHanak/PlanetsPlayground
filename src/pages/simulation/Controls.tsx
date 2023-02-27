@@ -20,6 +20,7 @@ import updateLight from "./computation/updateLight";
 import { PointLight } from "three";
 import arrowLeftImage from "../../assets/images/arrow_left.svg";
 import { UIEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 type vector = [number, number, number];
 
@@ -42,6 +43,8 @@ interface controlsProps {
 }
 
 export default function Controls({ toggleMoving, moving, stopMoving, center, setCenter, setTimestep, massObjectArray, onMount, conversionFactor, addMassObject, deleteMassObject, modifyMassObject, currentDayRef, cameraControlsRef, pointLightRef }: controlsProps) {
+
+    const { t, i18n } = useTranslation('simulation');
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
@@ -187,25 +190,25 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
                         <div className={`${styles.start} ${styles.commonBackground} ${styles.commonSpacing} desktopThirdMaxWidth`}>
                             <div className={`gridRow`}>
 
-                                <span className={styles.inputLabel}>Timestep</span>
+                                <span className={styles.inputLabel}>{t('timestep')}</span>
                                 <div className={`${styles.timestep}`}>
                                     <input name="timestep" id="timestep" type="text" placeholder="1.0" onChange={handleTimestepChange} />
-                                    days
+                                    {t('days')}
                                 </div>
 
                             </div>
 
 
                             <div className={`gridRow`}>
-                                <span className={styles.inputLabel}>Center</span>
+                                <span className={styles.inputLabel}>{t('center')}</span>
                                 <div>
                                     <button onClick={handleSelect}
                                         className={center.current !== 'Earth' ? styles.chosenCenter : styles.inactiveCenter}>
-                                        SSB
+                                        {t('centerSSB')}
                                     </button>
                                     <button onClick={handleSelect}
                                         className={center.current === 'Earth' ? styles.chosenCenter : styles.inactiveCenter}>
-                                        Earth
+                                        {t('centerEarth')}
                                     </button>
                                 </div>
                             </div>
@@ -221,14 +224,13 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
                     <div className={styles.objectInfo}
                         onPointerDown={disableCameraControls}
                         onTouchStart={disableCameraControls}
-                        onScroll={disableCameraControls}
                         onMouseEnter={disableCameraControls}
                         onMouseLeave={enableCameraControls}>
 
                         <div className={`${styles.commonBackground} desktopMaxWidth flexRow`}>
-                            <h4>Mass Object Info</h4>
+                            <h4>{t('massObjectInfo')}</h4>
 
-                            <button onClick={() => setShowNewObject((show: boolean) => !show)}>Add Object</button>
+                            <button onClick={() => setShowNewObject((show: boolean) => !show)}>{t('addObject')}</button>
                         </div>
 
                         {showNewObject ? <NewObjectController
@@ -288,7 +290,9 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
                                 center
                                 position={convertedPosition}
                             >
-                                <div className={styles.label}>{massObject.name}</div>
+                                <div className={styles.label}>{
+                                    i18n.exists(`simulation:planetNames.${massObject.name}`) ? t(`planetNames.${massObject.name}`) : massObject.name
+                                }</div>
                             </Html>
                         )
                     }

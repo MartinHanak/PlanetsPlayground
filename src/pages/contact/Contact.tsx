@@ -1,12 +1,17 @@
+import { useTranslation } from "react-i18next"
+
 export default function Contact() {
+
+    const { t } = useTranslation('contact')
+
     return (
         <div className="desktopMaxWidth">
-            <h1>Contact</h1>
-            <p>Hi, my name is Martin Hanák and I hope to become a web developer. My main skills include JavaScript and its related technologies such as Node.js, Express and TypeScript.  </p>
+            <h1>{t('title')}</h1>
+            <p>{t('underTitle')}  </p>
 
             <div>
                 <div>
-                    <span>Name:</span> <span>Martin Hanák</span>
+                    <span>{t('nameTitle')}:</span> <span>Martin Hanák</span>
                 </div>
                 <div>
                     <span>Email:</span> <span>martinhanak97@gmail.com</span>

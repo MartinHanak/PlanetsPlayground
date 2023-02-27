@@ -1,0 +1,34 @@
+{
+  "legend": "Choose when to start the simulation",
+  "dayNames": {
+    "Monday": "Mon",
+    "Tuesday": "Tue",
+    "Wednesday": "Wed",
+    "Thursday": "Thr",
+    "Friday": "Fri",
+    "Saturday": "Sat",
+    "Sunday": "Sun"
+  },
+  "monthNames": {
+    "January": "January",
+    "February": "February",
+    "March": "March",
+    "April": "April",
+    "May": "May",
+    "June": "June",
+    "July": "July",
+    "August": "August",
+    "September": "September",
+    "October": "October",
+    "November": "November",
+    "December": "December"
+  },
+  "confirmButton": "Confirm",
+  "cancelButton": "Cancel",
+  "startButton": "Start Simulation",
+  "errors": {
+    "empty": "Input field cannot be empty",
+    "range": "Input values are outside range for days 1-31 or months 1-12",
+    "format": "Input is not in the correct format dd/mm/yyyy"
+  }
+}

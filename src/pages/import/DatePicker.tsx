@@ -1,8 +1,16 @@
 import { ChangeEvent, ReactElement, useEffect, useState, useRef, EventHandler, MouseEventHandler, MouseEvent, Dispatch, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 import styles from './Import.module.scss';
 
 import { inputRegExp } from "./Import";
+
+
+import arrowLeft from '../../assets/images/line-angle-left-icon.svg';
+import arrowRight from '../../assets/images/line-angle-right-icon.svg';
+
+import doubleArrowLeft from '../../assets/images/double-arrow-left-icon.svg';
+import doubleArrowRight from '../../assets/images/double-arrow-right-icon.svg';
 
 interface datePickerInterface {
     id: string;
@@ -12,20 +20,31 @@ interface datePickerInterface {
     setErrorMessage: Dispatch<SetStateAction<string>>,
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
+let monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+let dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const msPerDay = 24 * 60 * 60 * 1000;
-
 const msPerMonth = msPerDay * 30;
 const msPerYear = msPerDay * 365;
 
 export default function DatePicker({ id, value, setValue, validateInput, setErrorMessage, onChange }: datePickerInterface) {
 
+    const { t, i18n } = useTranslation('import');
+
     const [displayCalendar, setDisplayCalendar] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState(new Date())
 
     const [tableRows, setTableRows] = useState<ReactElement[][]>([])
+
+    useEffect(() => {
+        monthNames = [t('monthNames.January'), t('monthNames.February'), t('monthNames.March'), t('monthNames.April'),
+        t('monthNames.May'), t('monthNames.June'), t('monthNames.July'), t('monthNames.August'),
+        t('monthNames.September'), t('monthNames.October'), t('monthNames.November'), t('monthNames.December'),];
+        dayNames = [t('dayNames.Monday'), t('dayNames.Tuesday'), t('dayNames.Wednesday'), t('dayNames.Thursday'), t('dayNames.Friday'), t('dayNames.Saturday'), t('dayNames.Sunday')];
+        setDisplayCalendar(false)
+    }, [i18n.language])
+
+
 
     // change by typing or selecting table data
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -149,11 +168,11 @@ export default function DatePicker({ id, value, setValue, validateInput, setErro
             {displayCalendar ?
                 <div className={styles.calendarContainer}>
                     <div className={styles.topRowButtonsContainer}>
-                        <button onClick={(e) => shiftCurrentlySelectedDate(e, -msPerYear)}>yb</button>
-                        <button onClick={(e) => shiftCurrentlySelectedDate(e, -msPerMonth)}>mb</button>
+                        <button onClick={(e) => shiftCurrentlySelectedDate(e, -msPerYear)}> &laquo; </button>
+                        <button onClick={(e) => shiftCurrentlySelectedDate(e, -msPerMonth)}>&lsaquo;</button>
                         <span>{monthNames[selectedDate.getMonth()]}<br />{selectedDate.getFullYear()}</span>
-                        <button onClick={(e) => shiftCurrentlySelectedDate(e, +msPerMonth)}>mf</button>
-                        <button onClick={(e) => shiftCurrentlySelectedDate(e, +msPerYear)}>yf</button>
+                        <button onClick={(e) => shiftCurrentlySelectedDate(e, +msPerMonth)}>&rsaquo;</button>
+                        <button onClick={(e) => shiftCurrentlySelectedDate(e, +msPerYear)}>&raquo;</button>
                     </div>
                     <table className={styles.datePickerTable} onClick={handleTableDataClick}>
                         <thead>
@@ -168,8 +187,8 @@ export default function DatePicker({ id, value, setValue, validateInput, setErro
                         </tbody>
                     </table>
                     <div className={styles.lastRowButtonsContainer}>
-                        <button type="submit">Confirm</button>
-                        <button onClick={() => setDisplayCalendar(false)}>Cancel</button>
+                        <button type="submit">{t('confirmButton')}</button>
+                        <button onClick={() => setDisplayCalendar(false)}>{t('cancelButton')}</button>
                     </div>
                 </div> : null}
         </div>

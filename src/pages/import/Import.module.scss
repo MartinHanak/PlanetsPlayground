@@ -1,3 +1,5 @@
+@use '../../assets/breakpoints.scss';
+
 .form {
     margin-top:2rem;
     display: flex;
@@ -9,17 +11,27 @@
 
 .inputContainer {
     position: relative;
-    //width: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 1rem 0;
+}
+
+.inputContainer input {
+    text-align: center;
+    width: 8rem;
 }
 
 .dateInput {
+    margin: 1rem 2rem 1rem 2rem;
+
 }
 
 .calendarContainer {
     //min-height: calc(3rem + 8*1rem + 16*0.4rem);
     position: absolute;
     top: 3rem; // shift from top by the input height
-    left: -25%;
+    //left: -25%;
     background-color: var(--white);
 }
 
@@ -48,18 +60,33 @@
 }
 
 
+.topRowButtonsContainer button {
+    display: inline-block;
+    height: 2rem;
+    width: 3rem;
+    padding: 0 0 0 0;
+    padding-bottom: 2.7rem;
+   // margin-bottom: 1rem;
+    font-size: 2rem;
+    //line-height: 0rem;
+    text-align: center;
+}
+
 .datePickerTable {
     th, td {
         width: 14.286%;
+        min-width: 3rem;
         text-align: center;
         padding: 0.4rem 0.4rem 0.4rem 0.4rem;
         cursor: pointer;
         user-select: none;
+        font-weight: bold;
     }
 }
 
 .datePickerTable td:hover {
     background-color: var(--red-1);
+    color: var(--white)
 }
 
 
@@ -89,4 +116,33 @@
     font-size: 1.5rem;
     //border-radius: 0.5rem;
     padding: 1rem 2rem 1rem 2rem;
+}
+
+
+@media(max-width: breakpoints.$mobile-breakpoint-small) {
+   .calendarContainer {
+    width: 100%;
+   }
+
+   label {
+    text-align: center;
+   }
+
+   .datePickerTable {
+    width: 100%;
+   }
+
+   .datePickerTable {
+        th, td {
+            min-width: 14.286%;
+            width: 14.286%;
+        }
+    }
+
+    .topRowButtonsContainer button {
+        min-width: 14.286%;
+            width: 14.286%;
+    }
+
+
 }

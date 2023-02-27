@@ -1,19 +1,22 @@
+import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 
 
 export default function NoData() {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const { t } = useTranslation('nodata');
 
 
     return (
         <div className="desktopMaxWidth">
-            <h1>No data found</h1>
-            <p>Do you wish to import new data or load default values?</p>
+            <h1>{t('title')}</h1>
+            <p>{t('underTitle')}</p>
 
-            <button onClick={() => { navigate('/import') }}>Import New</button>
-            <button onClick={() => { navigate('/simulation', { state: { actionType: "load", data: "default" } }) }}>Load Default</button>
+            <button onClick={() => { navigate('/import') }}>{t('newButton')}</button>
+            <button onClick={() => { navigate('/simulation', { state: { actionType: "load", data: "default" } }) }}>{t('defaultButton')}</button>
         </div>
     )
 }

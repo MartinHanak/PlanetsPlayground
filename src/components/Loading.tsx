@@ -1,6 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import styles from './Loading.module.scss'
 
 export default function Loading() {
+
+    const { t } = useTranslation('loading')
+
     return (
         <div className={styles.loadingContainer}>
             <div className={styles.svgContainer}>
@@ -93,7 +97,7 @@ export default function Loading() {
                     </g>
                 </svg>
             </div>
-            <h1>Loading....</h1>
+            <h1 className={styles.loading}>{t('loading')}...</h1>
         </div>
     )
 }

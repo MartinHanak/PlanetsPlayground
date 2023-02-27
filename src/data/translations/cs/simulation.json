@@ -1,0 +1,28 @@
+{
+  "timestep": "Krok",
+  "days": "den",
+  "center": "Střed",
+  "centerSSB": "SSB",
+  "centerEarth": "Země",
+  "start": "Start",
+  "stop": "Stop",
+  "planetNames": {
+    "Sun": "Slunce",
+    "Mercury": "Merkur",
+    "Venus": "Venuše",
+    "Earth": "Země",
+    "Mars": "Mars"
+  },
+  "massObjectInfo": "Info o planetách",
+  "addObject": "Přidat objekt",
+  "newObjectLegend": "Zadejte hodnoty pro nový objekt:",
+  "position": "Pozice",
+  "velocity": "Rychlost",
+  "mass": "Hmotnost",
+  "confirm": "Potvrdit",
+  "cancel": "Zrušit",
+  "name": "Jméno",
+  "delete": "Vymazat",
+  "modify": "Upravit",
+  "unselect": "Schovat"
+}

@@ -4,12 +4,15 @@ import DatePicker from "./DatePicker";
 import { AnimationEvent } from "react";
 
 import styles from './Import.module.scss';
+import { useTranslation } from "react-i18next";
 
 
 export const inputRegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/;
 
 
 export default function Import() {
+
+    const { t, i18n } = useTranslation('import')
 
     const currentDate = new Date();
 
@@ -53,15 +56,15 @@ export default function Import() {
         let result = '';
 
         if (!input) {
-            result = "Input field cannot be empty";
+            result = t('errors.empty');
             return result;
         } else {
             const trimmedInput = input.trim();
 
             if (!isCorrectFormat(trimmedInput)) {
-                result = "Input is not in the correct format dd/mm/yyyy"
+                result = t('errors.format')
             } else if (!isCorrectRange(trimmedInput)) {
-                result = "Input values are outside range for days 1-31 or months 1-12"
+                result = t('errors.range')
             }
         }
 
@@ -101,7 +104,7 @@ export default function Import() {
         <div className="desktopMaxWidth centerColumn">
             <form onSubmit={handleSubmit} className={`${styles.form} centerColumn`}>
 
-                <label htmlFor="date"><h3>Choose when to start the simulation:</h3></label><br />
+                <label htmlFor="date"><h3>{t('legend')}</h3></label><br />
                 <p ref={errorPlaceholderRef} className={`errorPlaceholder`} >
                     {errorMessage !== '' ? errorMessage : null}
                 </p>
@@ -115,7 +118,7 @@ export default function Import() {
                     className={styles.dateInput}
                     onChange={(e) => setInputValue(e.target.value)} /><br />
                 */}
-                <button type="submit" className={styles.submitButton}>Start Simulation</button>
+                <button type="submit" className={styles.submitButton}>{t('startButton')}</button>
             </form>
 
         </div>

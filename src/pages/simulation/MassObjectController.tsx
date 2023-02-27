@@ -5,6 +5,7 @@ import { convertSItoDisplayed, convertDisplayedToSI } from '../../utils/convertV
 import { useState, Dispatch, SetStateAction } from 'react'
 import ModifyMassObject from './ModifyMassObject'
 import { MutableRefObject } from 'react'
+import { useTranslation } from 'react-i18next';
 
 type vector = [number, number, number]
 
@@ -20,6 +21,8 @@ interface MassObjectControllerProps {
 
 
 export default function MassObjectController({ name, massObject, massObjectsRef, deleteMassObject, modifyMassObject, setErrorMessage, setSelectedObjects }: MassObjectControllerProps) {
+
+    const { t, i18n } = useTranslation('simulation');
 
     const unselectObject = () => {
         massObject.selected = false;
@@ -37,36 +40,36 @@ export default function MassObjectController({ name, massObject, massObjectsRef,
         return (
             <div className={`desktopMaxWidth ${styles.massObjectController}  ${controlsStyles.commonBackground}`}>
                 <div className={`${controlsStyles.nameContainer}`}>
-                    <h3>{name}</h3>
-                    <button onClick={() => deleteMassObject(name)} className={controlsStyles.deleteButton}>Delete</button>
+                    <h3>{i18n.exists(`simulation:planetNames.${name}`) ? t(`planetNames.${name}`) : name}</h3>
+                    <button onClick={() => deleteMassObject(name)} className={controlsStyles.deleteButton}>{t('delete')}</button>
                 </div>
 
                 <div className={controlsStyles.dataContainer}>
                     <div>
-                        <h4>Position</h4>
+                        <h4>{t('position')}</h4>
                         <div>x: <span>{displayedPosition[0]}</span> AU</div>
                         <div>y: <span>{displayedPosition[1]}</span> AU</div>
                         <div>z: <span>{displayedPosition[2]}</span> AU</div>
                     </div>
 
                     <div>
-                        <h4>Velocity</h4>
+                        <h4>{t('velocity')}</h4>
                         <div>vx: <span>{displayedVelocity[0]}</span> km/s</div>
                         <div>vy: <span>{displayedVelocity[1]}</span> km/s</div>
                         <div>vz: <span>{displayedVelocity[2]}</span> km/s</div>
                     </div>
 
                     <div>
-                        <h4>Mass</h4>
+                        <h4>{t('mass')}</h4>
                         <div>m: <span>{displayedMass}</span> M</div>
                     </div>
                 </div>
 
                 <div className={controlsStyles.buttonsContainer}>
 
-                    <button onClick={() => setDisplayModify((previous: boolean) => !previous)}>Modify</button>
+                    <button onClick={() => setDisplayModify((previous: boolean) => !previous)}>{t('modify')}</button>
 
-                    <button onClick={() => unselectObject()}>Unselect</button>
+                    <button onClick={() => unselectObject()}>{t('unselect')}</button>
                 </div>
 
                 {displayModify ?

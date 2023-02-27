@@ -5,6 +5,7 @@ import MassObjectData from "./computation/MassObjectData";
 import { convertSIComponentToDisplayed, convertSItoDisplayed, convertDisplayedToSI } from "../../utils/convertVectorSI";
 import { MutableRefObject } from "react";
 import controlsStyles from './Controls.module.scss';
+import { useTranslation } from "react-i18next";
 
 type vector = [number, number, number];
 
@@ -30,9 +31,11 @@ interface modifyMassObjectInterface {
 
 export default function ModifyMassObject({ massObject, massObjectsRef, modifyMassObject, setErrorMessage, onCancel }: modifyMassObjectInterface) {
 
+    const { t, i18n } = useTranslation('simulation');
+
 
     const [formValues, setFormValues] = useState<formValues>({
-        name: massObject.name,
+        name: i18n.exists(`simulation:planetNames.${massObject.name}`) ? t(`planetNames.${massObject.name}`) : massObject.name,
         positionX: convertSIComponentToDisplayed({ type: 'position', component: massObject.shiftedPosition[0] }),
         positionY: convertSIComponentToDisplayed({ type: 'position', component: massObject.shiftedPosition[1] }),
         positionZ: convertSIComponentToDisplayed({ type: 'position', component: massObject.shiftedPosition[2] }),
@@ -115,15 +118,17 @@ export default function ModifyMassObject({ massObject, massObjectsRef, modifyMas
 
     return (
         <div>
+            {/*     name modification breaks when using translation
             <div className={controlsStyles.nameContainer}>
                 <label htmlFor="name">
                     <input type="text" name="name" id="name" onChange={handleChange} value={formValues.name} />
                 </label>
             </div>
+            */}
 
             <div className={controlsStyles.dataContainer}>
                 <div>
-                    <h4>Position</h4>
+                    <h4>{t('position')}</h4>
                     <label htmlFor="positionX">
                         x: <input type="text" name="positionX" id="positionX" onChange={handleChange} value={formValues.positionX} /> AU
                     </label>
@@ -136,7 +141,7 @@ export default function ModifyMassObject({ massObject, massObjectsRef, modifyMas
                 </div>
 
                 <div>
-                    <h4>Velocity</h4>
+                    <h4>{t('velocity')}</h4>
                     <label htmlFor="velocityX">
                         vx: <input type="text" name="velocityX" id="velocityX" onChange={handleChange} value={formValues.velocityX} /> km/s
                     </label>
@@ -149,7 +154,7 @@ export default function ModifyMassObject({ massObject, massObjectsRef, modifyMas
                 </div>
 
                 <div>
-                    <h4>Mass</h4>
+                    <h4>{t('mass')}</h4>
                     <label htmlFor="mass">
                         m: <input type="text" name="mass" id="mass" onChange={handleChange} value={formValues.mass} /> M
                     </label>
@@ -158,8 +163,8 @@ export default function ModifyMassObject({ massObject, massObjectsRef, modifyMas
 
 
             <div className={controlsStyles.buttonsContainer}>
-                <button onClick={handleConfirm}>Confirm</button>
-                <button onClick={onCancel}>Cancel</button>
+                <button onClick={handleConfirm}>{t('confirm')}</button>
+                <button onClick={onCancel}>{t('cancel')}</button>
             </div>
         </div>
     )

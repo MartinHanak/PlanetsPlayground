@@ -1,0 +1,6 @@
+{
+  "title": "No data found",
+  "underTitle": "No data found in your local storage. Do you wish to import new data or load default values?",
+  "newButton": "Import New",
+  "defaultButton": "Load Default"
+}

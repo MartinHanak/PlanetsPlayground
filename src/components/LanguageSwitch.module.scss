@@ -17,3 +17,20 @@
     }
    
 }
+
+@media (max-width: breakpoints.$mobile-breakpoint) {
+    .switch {
+        flex-direction: column;
+        padding: 0;
+        margin: 0;
+        width: var(--navbar-height);
+        height: var(--navbar-height);
+
+        button {
+            padding: 0;
+            margin: 0;
+            width: calc(var(--navbar-height) / 3*2);
+        }
+    }
+
+}

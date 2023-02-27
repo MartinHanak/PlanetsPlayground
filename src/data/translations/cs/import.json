@@ -1,0 +1,34 @@
+{
+  "legend": "Vyberte den začátku simulace",
+  "dayNames": {
+    "Monday": "Po",
+    "Tuesday": "Út",
+    "Wednesday": "St",
+    "Thursday": "Čt",
+    "Friday": "Pá",
+    "Saturday": "So",
+    "Sunday": "Ne"
+  },
+  "monthNames": {
+    "January": "Leden",
+    "February": "Únor",
+    "March": "Březen",
+    "April": "Duben",
+    "May": "Květen",
+    "June": "Červen",
+    "July": "Červenec",
+    "August": "Srpen",
+    "September": "Září",
+    "October": "Říjen",
+    "November": "Listopad",
+    "December": "Prosinec"
+  },
+  "confirmButton": "Potvrdit",
+  "cancelButton": "Zrušit",
+  "startButton": "Začít simulaci",
+  "errors": {
+    "empty": "Zadané datum nemůže být prázdné",
+    "range": "Zadané datum má buďto dny mimo rozsah 1-31 nebo měsíce 1-12",
+    "format": "Zadané datum není ve správném formátu dd/mm/yyyy"
+  }
+}

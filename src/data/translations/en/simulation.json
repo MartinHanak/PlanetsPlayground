@@ -1,0 +1,28 @@
+{
+  "timestep": "Timestep",
+  "days": "days",
+  "center": "Center",
+  "centerSSB": "SSB",
+  "centerEarth": "Earth",
+  "start": "Start",
+  "stop": "Stop",
+  "planetNames": {
+    "Sun": "Sun",
+    "Mercury": "Mercury",
+    "Venus": "Venus",
+    "Earth": "Earth",
+    "Mars": "Mars"
+  },
+  "massObjectInfo": "Mass Object Info",
+  "addObject": "Add Object",
+  "newObjectLegend": "Input values for the new object:",
+  "position": "Position",
+  "velocity": "Velocity",
+  "mass": "Mass",
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "name": "Name",
+  "delete": "Delete",
+  "modify": "Modify",
+  "unselect": "Unselect"
+}

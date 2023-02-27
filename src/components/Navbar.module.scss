@@ -5,6 +5,7 @@
     display: none;
     width: 2rem;
     height: 2rem;
+    margin: calc((var(--navbar-height) - 2rem) /2 );
 }
 
 .linkList {

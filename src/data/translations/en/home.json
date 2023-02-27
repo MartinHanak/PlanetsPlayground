@@ -1,3 +1,11 @@
 {
-  "title": "home"
+  "title": "Explore planets dynamics",
+  "underTitle": "Embark on a journey to explore motion of orbital bodies under unusual circumstances.",
+  "startButton": "Start Exploring",
+  "firstParTitle": "Ever wondered what would happen...",
+  "firstParContent": "If the Sun disappeared? What if there were two Suns instead? What if the Earth suddenly stopped orbiting around the Sun? All of these questions and more can be answered by playing around with this simulation that accurately describes the orbital mechanics.",
+  "secondParTitle": "NASA data",
+  "secondParContent": " We cannot start the simulation if we do not know where the planets are, how far they are from each other and how fast they move. To get all of this simulation we can make use of NASA data provided by the Jet Propulsion Laboratory Horizons API. Once we have the initial coordinates and velocities, we can finally start the simulation. ",
+  "thirdParTitle": "Guaranteed precision",
+  "thirdParContent": "Newton's equations of motion are solved by employing the Velocity Verlet integrator. Complicated differential equations describing the N-body problem are thus approximated using a finite timestep. Every timestep involves calculating forces between all of the N bodies in the simulation and updating their position and velocity. "
 }
