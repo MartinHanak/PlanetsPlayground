@@ -2,6 +2,7 @@
     height: 100%;
     //background-color: grey;
     transition: transform 1s cubic-bezier(0,1,0,1);
+    //pointer-events: none;
 }
 
 .wrapper input { 
@@ -117,8 +118,12 @@
 }
 
 .objectInfo {
-    overflow: scroll;
+    height: 100%;
+    overflow-y: scroll;
+    
 }
+
+
 
 .newObjectLegend {
     margin-bottom: 0.5rem;

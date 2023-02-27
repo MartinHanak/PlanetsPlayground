@@ -19,6 +19,7 @@ import updateMeshPosition from "./computation/updateMeshPosition";
 import updateLight from "./computation/updateLight";
 import { PointLight } from "three";
 import arrowLeftImage from "../../assets/images/arrow_left.svg";
+import { UIEvent } from "react";
 
 type vector = [number, number, number];
 
@@ -122,7 +123,13 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
         document.documentElement.style.setProperty('--translateX-controls-hidden', translateX);
 
         //arrowImageRef.current?.classList.toggle(styles.rotateArrow);
-        setHidden((prevHidden: boolean) => !prevHidden)
+        setHidden((prevHidden: boolean) => {
+            if (!prevHidden && cameraControlsRef.current) {
+                cameraControlsRef.current.enabled = true;
+            }
+
+            return !prevHidden
+        })
 
         console.log("changind css var");
     }
@@ -144,6 +151,23 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
             setFrameloop("always");
         } else {
             setFrameloop("demand");
+        }
+    }
+
+    const handleScroll = (event: UIEvent<HTMLDivElement, UIEvent>) => {
+        event.stopPropagation()
+        console.log(event);
+    }
+
+    const disableCameraControls = () => {
+        if (cameraControlsRef.current) {
+            cameraControlsRef.current.enabled = false;
+        }
+    }
+
+    const enableCameraControls = () => {
+        if (cameraControlsRef.current) {
+            cameraControlsRef.current.enabled = true;
         }
     }
 
@@ -193,7 +217,13 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
                         </div>
                     </div>
 
-                    <div className={styles.objectInfo}>
+                    {/*disable camera controls to enable scrolling*/}
+                    <div className={styles.objectInfo}
+                        onPointerDown={disableCameraControls}
+                        onTouchStart={disableCameraControls}
+                        onScroll={disableCameraControls}
+                        onMouseEnter={disableCameraControls}
+                        onMouseLeave={enableCameraControls}>
 
                         <div className={`${styles.commonBackground} desktopMaxWidth flexRow`}>
                             <h4>Mass Object Info</h4>

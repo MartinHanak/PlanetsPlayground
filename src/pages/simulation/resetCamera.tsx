@@ -22,14 +22,15 @@ export default function resetCamera({ conversionFactor, cameraControlsRef, camer
 
         cameraControlsRef.current.setTarget(0, 0, 0);
 
-        cameraControlsRef.current.enabled = true;
-
         cameraControlsRef.current.updateCameraUp();
 
         cameraControlsRef.current.zoom(1.5);
 
 
         cameraControlsRef.current.setPosition(-cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits)
+
+        cameraControlsRef.current.enabled = true;
+
         console.log("current camera controls")
         console.log(cameraControlsRef.current)
 

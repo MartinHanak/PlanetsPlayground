@@ -37,8 +37,17 @@
 //      parent div
 //          div with canvas
 //          div with controls
+
+.canvas-render-screen {
+    //z-index: -1; // disables canvas controls
+    //pointer-events: none  !important;
+    //user-select: all !important;
+}
 .canvas-render-screen > div:first-child {
     width: var(--canvas-width) !important;
+    //width: 50% !important;
+    //position: relative;
+    //z-index: -1;
 }
 
 // set on div with controls
