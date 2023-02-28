@@ -25,6 +25,18 @@ body {
     margin: 0 auto;
 }
 
+
+.desktopHalfMaxWidth {
+    max-width: calc(breakpoints.$max-desktop-width / 2);
+    margin: 0 auto;
+}
+
+.desktopTwoThirdsMaxWidth {
+    max-width: calc(breakpoints.$max-desktop-width * 2 / 3);
+    margin: 0 auto;
+}
+
+
 .desktopThirdMaxWidth {
     max-width: calc(breakpoints.$max-desktop-width /3);
     margin: 0 auto;
@@ -53,6 +65,7 @@ body {
 .gridRow {
     display: grid;
     grid-template-columns: 1fr 2fr;
+    align-items: center;
 }
 
 

@@ -39,7 +39,7 @@ export default function Home() {
 
             <div className="desktopMaxWidth">
                 <div className={styles.info}>
-                    <Picture desktopSource={sun} mobileSource={sunSmall} alt="Smiling Sun" />
+                    <Picture desktopSource={sunSmall} mobileSource={sunSmall} alt="Smiling Sun" />
                     <div>
                         <h2>{t('firstParTitle')}</h2>
                         <p>{t('firstParContent')}</p>

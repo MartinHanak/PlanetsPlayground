@@ -34,7 +34,7 @@
 }
 
 .introPicture > img {
-    max-width: 600px;
+    //max-width: 600px;
     width: 100%
 }
 
@@ -42,6 +42,7 @@
     background-color: var(--white);
     color:black;
     position: absolute;
+    top: clamp(3rem, 50% ,75%);
     bottom: 0;
     width: 100%;
     padding: 1rem;

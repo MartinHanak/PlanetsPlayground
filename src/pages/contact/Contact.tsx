@@ -6,7 +6,7 @@ export default function Contact() {
     const { t } = useTranslation('contact')
 
     return (
-        <div className="desktopMaxWidth">
+        <div className="desktopTwoThirdsMaxWidth">
             <div className={styles.intro}>
                 <h1>{t('title')}</h1>
                 <p>{t('underTitle')}  </p>

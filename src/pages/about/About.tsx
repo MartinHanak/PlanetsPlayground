@@ -7,7 +7,7 @@ export default function About() {
     const { t } = useTranslation('about')
 
     return (
-        <div className={`${styles.about} desktopMaxWidth`}>
+        <div className={`${styles.about} desktopTwoThirdsMaxWidth`}>
             <h1>{t('title')}</h1>
             <p>
                 {t('underTitle')}
