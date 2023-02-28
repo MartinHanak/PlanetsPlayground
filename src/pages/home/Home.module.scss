@@ -1,3 +1,12 @@
+@use '../../assets/breakpoints.scss';
+
+.home {
+    p {
+        line-height: 1.6;
+    }
+}
+
+
 .intro {
     background-color: var(--primary-1);
     color: white;
@@ -16,7 +25,7 @@
     display: inline-block;
     background-color: var(--secondary-1);
     padding: 1rem 2rem 1rem 2rem; 
-    border-radius: 1rem;
+    border-radius: 0rem;
     font-weight: bold;
     font-size: 2rem;
     text-decoration: none;
@@ -41,8 +50,8 @@
 .introText {
     background-color: var(--white);
     color:black;
-    position: absolute;
-    top: clamp(3rem, 50% ,75%);
+    //position: absolute;
+    //top: clamp(3rem, 50% ,75%);
     bottom: 0;
     width: 100%;
     padding: 1rem;
@@ -85,4 +94,78 @@
     color: var(--white);
     padding: 1rem 0 1rem 0;
     font-size: 1.2rem;
+}
+
+@media (min-width: breakpoints.$mobile-breakpoint) {
+
+    .home{
+        background-color: var(--grey-transparent-1);
+    }
+
+    .info, .introContainer {
+        display: grid;
+        //min-height: 300px;
+    }
+
+    .introContainer {
+        grid-template-columns: 3fr 2fr;
+        align-items: center;
+    }
+
+    .introText {
+        border-radius: 1rem;
+        padding: 2rem;
+
+        .introLinkButton {
+            border-radius: 0;
+        }
+    }
+
+    .info {
+        grid-template-columns: 2fr 3fr;
+       background-color: var(--white);
+       border-radius: 2rem;
+       overflow: hidden;
+
+       p {
+        font-size: 1rem;
+        padding-bottom: 3rem;
+       }
+
+       div {
+        h2 {
+             margin-top: 2rem;
+             border-width: 0 0 0.2rem 0;
+        }
+       }
+    }
+
+    .infoLeft {
+        grid-template-columns: 3fr 2fr;
+
+        :nth-child(2) {
+            order: 1;
+            //width: 80%;
+            //margin: 0 0 0 auto;
+            width: 100%;
+
+        }
+
+        img {
+            // height: 20px;
+            margin: 0 0 0 3rem;
+            padding: 1rem 0 1rem 0;
+            width: 80%;
+        }
+
+        :nth-child(1) {
+            order: 2;
+        }
+    }
+
+    .home div:nth-child(1) {
+        //margin-top: 0;
+    }
+
+
 }

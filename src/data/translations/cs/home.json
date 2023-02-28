@@ -3,7 +3,7 @@
   "underTitle": "Vydejte se na dobrodružství zkoumání pohybu orbitálních těles pod neobvyklými podmínkami.",
   "startButton": "Začít objevovat",
   "firstParTitle": "Napadlo vás co by se stalo kdyby...",
-  "firstParContent": "Kdyby Slunce najednou zmizelo? Co kdyby existovaly dvě Slunce? Nebo co kdyby se Země najednou přestala obíhat kolem Slunce? Všechny tyto otázky a více může být zodpovězeno hraním si s touto simulací, která přesně popisuje pohyb orbitálních těles",
+  "firstParContent": "Kdyby Slunce najednou zmizelo? Co kdyby existovaly dvě Slunce? Nebo co kdyby Země najednou přestala obíhat kolem Slunce? Všechny tyto otázky a více mohou být zodpovězeny hraním si s touto simulací, která přesně popisuje pohyb orbitálních těles",
   "secondParTitle": "Data od NASA",
   "secondParContent": "Simulaci nemůžeme začít, pokud nevíme, kde přesně se planety nacházejí a jak rychle se pohybují. Pro získání těchto dat můžeme využít veřejně dostupná data poskytovaná od NASA díky jejich Jet Propulsion Laboratory Horizons API. Jakmile máme počáteční souřadnice a rychlosti, tak můžeme začít simulaci.",
   "thirdParTitle": "Garantovaná přesnost",

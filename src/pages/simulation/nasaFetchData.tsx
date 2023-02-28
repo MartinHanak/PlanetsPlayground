@@ -24,11 +24,11 @@ export default async function nasaFetchData(time: number) {
 
 function createFetchPromise(name: string, time: number) {
     console.log(generateApiUrl(name, time))
-    return fetch('http://206.189.55.241:5000/nasaAPI', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: generateApiUrl(name, time) })
-    });
+
+    const gravitoriumBackendURL = 'http://206.189.55.241:5000/nasaAPI?url=' + encodeURIComponent(generateApiUrl(name, time));
+
+    return fetch(gravitoriumBackendURL);
+
 }
 
 

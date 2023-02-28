@@ -4,7 +4,7 @@ import Picture from "../../components/Picture";
 import Footer from "../../components/Footer";
 
 import astronaut from '../../assets/astronaut_transparent.webp';
-import astronautCropped from '../../assets/images/astronaut_transparent_cropped.png';
+import astronautCropped from '../../assets/images/astronaut_transparent_cropped_3.png';
 import astronautCroppedSmall from '../../assets/images/astronaut_transparent_cropped_small.png';
 
 
@@ -14,7 +14,7 @@ import sunSmall from '../../assets/images/sun_small_3.png'
 import verlet from '../../assets/images/verlet_large.png'
 import verletSmall from '../../assets/images/verlet_small.png'
 
-import nasa from '../../assets/images/nasa_large.png'
+import nasa from '../../assets/images/nasa_large_cropped.png'
 import nasaSmall from '../../assets/images/nasa_small_2.png'
 
 
@@ -25,7 +25,7 @@ export default function Home() {
     const { t } = useTranslation('home');
 
     return (
-        <div>
+        <div className={styles.home}>
             <div className={styles.intro}>
                 <div className={`${styles.introContainer} desktopMaxWidth`}>
                     <Picture className={styles.introPicture} desktopSource={astronaut} mobileSource={astronautCropped} alt="Astronaut picture" />
@@ -46,7 +46,7 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div className={styles.info}>
+                <div className={`${styles.info} ${styles.infoLeft} `}>
                     <Picture desktopSource={nasa} mobileSource={nasaSmall} alt="NASA logo" />
                     <div>
                         <h2>{t('secondParTitle')}</h2>
