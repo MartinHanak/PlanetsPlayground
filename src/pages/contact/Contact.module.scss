@@ -1,3 +1,18 @@
+.contact {
+    a {
+        color: var(--red-1);
+        font-weight: bold;
+    }
+
+    a:visited {
+        color: var(--red-1);
+    }
+
+    a:hover {
+        color: var(--black)
+    }
+}
+
 .intro {
     padding: 1rem;
 
@@ -18,4 +33,10 @@
     font-weight: bold;
 }
 
+
+.coffee {
+    margin-top: 2rem;
+    margin-left: 1rem;
+
+}
 

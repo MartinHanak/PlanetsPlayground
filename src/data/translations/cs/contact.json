@@ -1,5 +1,7 @@
 {
   "title": "Kontakt",
   "underTitle": "Zdravím, jmenuji se Martin Hanák. Věnuji se tvorbě webu. Moje hlavní zkušenosti zahrnují především JavaScript a všechny s ním spojené technologie jako je React, Node.js, Express a Typescript ",
-  "nameTitle": "Jméno"
+  "nameTitle": "Jméno",
+  "coffeeIntro": "Pokud se vám stránka líbila a chcete mě podpořit, ",
+  "coffeeLink": "kupte mi kafe."
 }

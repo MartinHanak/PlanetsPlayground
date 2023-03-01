@@ -1,5 +1,7 @@
 {
   "title": "Contact",
   "underTitle": "Hi, my name is Martin Hanák and I hope to become a web developer one day. My main skills include JavaScript and its related technologies such as React, Node.js, Express and TypeScript. ",
-  "nameTitle": "Name"
+  "nameTitle": "Name",
+  "coffeeIntro": "If you liked the website consider ",
+  "coffeeLink": "buying me a coffee."
 }

@@ -6,7 +6,7 @@ export default function Contact() {
     const { t } = useTranslation('contact')
 
     return (
-        <div className="desktopTwoThirdsMaxWidth">
+        <div className={`desktopTwoThirdsMaxWidth ${styles.contact}`}>
             <div className={styles.intro}>
                 <h1>{t('title')}</h1>
                 <p>{t('underTitle')}  </p>
@@ -22,6 +22,10 @@ export default function Contact() {
                 <div className={styles.rowGrid}>
                     <span>Github:</span> <span><a href="https://github.com/MartinHanak/PlanetsPlayground">/Gravitorium</a></span>
                 </div>
+            </div>
+
+            <div className={styles.coffee}>
+                {t('coffeeIntro')} <a href="https://www.buymeacoffee.com/martinhanak">{t('coffeeLink')}</a>
             </div>
         </div>
     )

@@ -1,0 +1,16 @@
+.link {
+    color: var(--white);
+
+    a {
+        color: var(--secondary-1);
+        font-weight: bold;
+    }
+
+    a:visited {
+        color: var(--secondary-1);
+    }
+
+    a:hover {
+        color: var(--red-1) 
+    }
+}
