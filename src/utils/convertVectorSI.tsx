@@ -1,5 +1,3 @@
-import { NumberKeyframeTrack } from "three"
-
 export type vectorTypes = {
     vector: [number, number, number]
     type: 'velocity' | 'position'

@@ -1,6 +1,10 @@
+import { Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
+import i18n from './i18n';
+
 import LanguageSwitch from './components/LanguageSwitch';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Loading from './components/Loading';
 
 import Home from './pages/home/Home';
 import Import from './pages/import/Import';
@@ -9,15 +13,8 @@ import Contact from './pages/contact/Contact';
 import About from './pages/about/About';
 import NotFound from './pages/notfound/NotFound';
 import NoData from './pages/simulation/NoData';
-import Loading from './components/Loading';
-
-
-import { Route, Routes } from 'react-router-dom';
 
 import styles from "./App.module.scss"
-
-import { useEffect, useState } from 'react';
-import i18n from './i18n';
 
 function App() {
 
@@ -32,8 +29,6 @@ function App() {
     document.documentElement.lang = i18n.language;
     setLanguage(i18n.language)
   }
-
-
 
   return (
     <>
@@ -55,7 +50,6 @@ function App() {
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </main>
-
 
     </ >
   );

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
+import styles from './NoData.module.scss'
 
 
 export default function NoData() {
@@ -11,7 +12,7 @@ export default function NoData() {
 
 
     return (
-        <div className="desktopMaxWidth">
+        <div className={`desktopTwoThirdsMaxWidth ${styles.nodata}`} >
             <h1>{t('title')}</h1>
             <p>{t('underTitle')}</p>
 

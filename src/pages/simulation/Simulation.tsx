@@ -1,40 +1,18 @@
-import { Suspense, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { Canvas } from "@react-three/fiber"
 
 import styles from "./Simulation.module.scss"
 
 import Loading from "../../components/Loading"
-import NoData from "./NoData"
-
 import Scene from "./Scene"
-import { Canvas } from "@react-three/fiber"
-
 import nasaFetchData from "./nasaFetchData"
 import nasaExtractData from "./nasaExtractData"
 import { initialMassObjectData } from "./Scene"
-import initializeMassObjectArray from "./computation/initializeMassObjectArray"
-
 
 import defaultInitialData from "../../assets/initialData.json"
 import defaultInitialDate from "../../assets/initialDate.json"
 import MassObjectData from "./computation/MassObjectData"
-
-
-interface loadType {
-    actionType: "load",
-    data: "default" | "storage"
-}
-
-interface importType {
-    actionType: "import",
-    date: number
-}
-
-interface nodataType {
-    actionType: "noData"
-}
-
-type locationStateType = loadType | importType | nodataType;
 
 export default function Simulation() {
 

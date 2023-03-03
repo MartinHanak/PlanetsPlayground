@@ -1,4 +1,3 @@
-
 import { vectorOrScalar } from "./convertVectorSI"
 
 export default function roundUpDisplayedNumbers(props: vectorOrScalar) {

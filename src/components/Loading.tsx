@@ -1,9 +1,23 @@
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom';
 import styles from './Loading.module.scss'
 
 export default function Loading() {
 
-    const { t } = useTranslation('loading')
+    const { t } = useTranslation('loading');
+
+    const [displayDefault, setDisplayDefault] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timeoutID = setTimeout(() => {
+            setDisplayDefault(true);
+        }, 5000);
+
+
+        return () => clearTimeout(timeoutID);
+    }, [])
 
     return (
         <div className={styles.loadingContainer}>
@@ -98,6 +112,14 @@ export default function Loading() {
                 </svg>
             </div>
             <h1 className={styles.loading}>{t('loading')}...</h1>
+            {displayDefault ?
+                <div>
+                    <p className={styles.waiting}>{t('waiting')}</p>
+                    <button onClick={
+                        () => { navigate('/nodata') }}>
+                        {t('default')}
+                    </button>
+                </div> : null}
         </div>
     )
 }
