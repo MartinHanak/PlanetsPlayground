@@ -1,14 +1,14 @@
 import styles from './LanguageSwitch.module.scss';
 
 interface LanguageSwitchProps {
-    onClick(newLanguage: string): void
+    toggleLanguage: () => void,
 }
 
-export default function LanguageSwitch({ onClick }: LanguageSwitchProps) {
+export default function LanguageSwitch({ toggleLanguage }: LanguageSwitchProps) {
     return (
         <div className={styles.switch}>
-            <button onClick={() => onClick('cs')}>CZ</button>
-            <button onClick={() => onClick('en')}>EN</button>
+            <button onClick={() => toggleLanguage()}>CZ</button>
+            <button onClick={() => toggleLanguage()}>EN</button>
 
         </div >
     )

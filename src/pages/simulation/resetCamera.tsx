@@ -1,6 +1,5 @@
 import { CameraControls } from "@react-three/drei";
-import { Camera, useThree } from "@react-three/fiber";
-import { RootState } from "@react-three/fiber";
+import { Camera } from "@react-three/fiber";
 import { MutableRefObject } from "react";
 
 interface resetCameraInterface {
@@ -14,7 +13,6 @@ export default function resetCamera({ conversionFactor, cameraControlsRef, camer
     const cameraAUDistInCanvasUnits = 4 * 149597870700 * conversionFactor;
 
     camera.up.set(0, 0, 1);
-
     camera.near = 0.0000001;
     camera.far = cameraAUDistInCanvasUnits * 10;
 
@@ -30,11 +28,5 @@ export default function resetCamera({ conversionFactor, cameraControlsRef, camer
         cameraControlsRef.current.setPosition(-cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits, -cameraAUDistInCanvasUnits)
 
         cameraControlsRef.current.enabled = true;
-
-        console.log("current camera controls")
-        console.log(cameraControlsRef.current)
-
     }
-
-
 }

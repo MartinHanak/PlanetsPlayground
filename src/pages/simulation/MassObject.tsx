@@ -1,10 +1,6 @@
-import { ForwardedRef } from 'react';
-import { BackSide, DoubleSide, FrontSide, Mesh, Vector3 } from 'three'
-import { Texture } from 'three'
-
-import { forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
+import { Texture, Mesh, Vector3 } from 'three'
 import { ThreeEvent } from '@react-three/fiber';
-import { Html, meshBounds } from '@react-three/drei';
 
 
 interface massObjectProps {
@@ -14,7 +10,6 @@ interface massObjectProps {
     texture: Texture | null,
     onClick: (event: ThreeEvent<MouseEvent>) => void
 }
-
 
 
 export default forwardRef(function MassObject({ name, position, args, texture, onClick }: massObjectProps, ref: ForwardedRef<Mesh>) {

@@ -1,10 +1,10 @@
-import { match } from 'assert'
 import { SetStateAction, Dispatch, useState, ChangeEvent } from 'react'
+import { useTranslation } from 'react-i18next';
+
 import styles from './MassObjectController.module.scss'
 import controlsStyles from './Controls.module.scss';
 
 import { convertDisplayedToSI } from '../../utils/convertVectorSI';
-import { useTranslation } from 'react-i18next';
 
 type vector = [number, number, number];
 

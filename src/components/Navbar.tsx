@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
 import hamburger from "../assets/images/hamburgerMenu.svg"
-
 import styles from './Navbar.module.scss';
 
 export default function Navbar() {
@@ -18,7 +17,7 @@ export default function Navbar() {
 
     return (
         <nav>
-            <div className={styles.hamburgerDiv} onClick={(e) => setShowMobileLinks(show => !show)}>
+            <div className={styles.hamburgerDiv} onClick={() => setShowMobileLinks(show => !show)}>
                 <img src={hamburger} alt="hamburger-menu" />
             </div>
 

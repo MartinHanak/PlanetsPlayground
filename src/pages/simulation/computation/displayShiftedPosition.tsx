@@ -1,6 +1,6 @@
 import { MutableRefObject } from "react"
 import MassObjectData from "./MassObjectData"
-import { multiplyVectorWithScalar, addVector, vector, subtractVector } from "./updatePosition"
+import { multiplyVectorWithScalar, addVector, vector } from "./updatePosition"
 
 const allowedCenters = ['Sun', 'Earth']
 

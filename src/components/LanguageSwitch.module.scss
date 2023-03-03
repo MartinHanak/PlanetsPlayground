@@ -29,7 +29,8 @@
         button {
             padding: 0;
             margin: 0;
-            width: calc(var(--navbar-height) / 3*2);
+            width: calc(var(--navbar-height) * 1);
+            height: calc(var(--navbar-height) / 3*2);
         }
     }
 

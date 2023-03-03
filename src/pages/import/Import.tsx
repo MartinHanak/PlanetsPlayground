@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "./DatePicker";
-import { AnimationEvent } from "react";
 
 import styles from './Import.module.scss';
 import { useTranslation } from "react-i18next";
@@ -12,10 +11,9 @@ export const inputRegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/;
 
 export default function Import() {
 
-    const { t, i18n } = useTranslation('import')
+    const { t } = useTranslation('import')
 
     const currentDate = new Date();
-
 
     const [errorMessage, setErrorMessage] = useState('');
     const [inputValue, setInputValue] = useState(`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`);
@@ -113,11 +111,7 @@ export default function Import() {
                     validateInput={validateInput}
                     setErrorMessage={setErrorMessage}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)} /> <br />
-                {/*
-                <input id="date" type="text" value={inputValue} placeholder="dd/mm/yyyy" autoComplete="off"
-                    className={styles.dateInput}
-                    onChange={(e) => setInputValue(e.target.value)} /><br />
-                */}
+
                 <button type="submit" className={styles.submitButton}>{t('startButton')}</button>
             </form>
 

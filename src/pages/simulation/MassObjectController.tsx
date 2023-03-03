@@ -1,11 +1,12 @@
-import MassObjectData from './computation/MassObjectData'
+import { useState, Dispatch, SetStateAction, MutableRefObject } from 'react'
+import { useTranslation } from 'react-i18next';
+
 import styles from './MassObjectController.module.scss'
 import controlsStyles from './Controls.module.scss';
-import { convertSItoDisplayed, convertDisplayedToSI } from '../../utils/convertVectorSI'
-import { useState, Dispatch, SetStateAction } from 'react'
+
+import MassObjectData from './computation/MassObjectData'
+import { convertSItoDisplayed } from '../../utils/convertVectorSI'
 import ModifyMassObject from './ModifyMassObject'
-import { MutableRefObject } from 'react'
-import { useTranslation } from 'react-i18next';
 
 type vector = [number, number, number]
 

@@ -5,8 +5,6 @@ import Footer from "../../components/Footer";
 
 import astronaut from '../../assets/astronaut_transparent.webp';
 import astronautCropped from '../../assets/images/astronaut_transparent_cropped_3.png';
-import astronautCroppedSmall from '../../assets/images/astronaut_transparent_cropped_small.png';
-
 
 import sun from '../../assets/images/sun_large.png'
 import sunSmall from '../../assets/images/sun_small_3.png'

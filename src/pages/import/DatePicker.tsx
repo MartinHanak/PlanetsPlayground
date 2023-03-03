@@ -1,16 +1,9 @@
-import { ChangeEvent, ReactElement, useEffect, useState, useRef, EventHandler, MouseEventHandler, MouseEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, ReactElement, useEffect, useState, MouseEventHandler, MouseEvent, Dispatch, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 
 import styles from './Import.module.scss';
 
 import { inputRegExp } from "./Import";
-
-
-import arrowLeft from '../../assets/images/line-angle-left-icon.svg';
-import arrowRight from '../../assets/images/line-angle-right-icon.svg';
-
-import doubleArrowLeft from '../../assets/images/double-arrow-left-icon.svg';
-import doubleArrowRight from '../../assets/images/double-arrow-right-icon.svg';
 
 interface datePickerInterface {
     id: string;
@@ -20,6 +13,7 @@ interface datePickerInterface {
     setErrorMessage: Dispatch<SetStateAction<string>>,
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
+
 let monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 let dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 

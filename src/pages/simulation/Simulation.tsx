@@ -9,7 +9,6 @@ import Scene from "./Scene"
 import nasaFetchData from "./nasaFetchData"
 import nasaExtractData from "./nasaExtractData"
 import { initialMassObjectData } from "./Scene"
-
 import defaultInitialData from "../../assets/initialData.json"
 import defaultInitialDate from "../../assets/initialDate.json"
 import MassObjectData from "./computation/MassObjectData"

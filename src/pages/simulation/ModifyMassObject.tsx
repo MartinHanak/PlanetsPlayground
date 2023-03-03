@@ -1,11 +1,10 @@
-import { useState } from "react"
-import { ChangeEvent } from "react";
-import { Dispatch, SetStateAction } from "react";
-import MassObjectData from "./computation/MassObjectData";
-import { convertSIComponentToDisplayed, convertSItoDisplayed, convertDisplayedToSI } from "../../utils/convertVectorSI";
-import { MutableRefObject } from "react";
-import controlsStyles from './Controls.module.scss';
+import { useState, ChangeEvent, Dispatch, SetStateAction, MutableRefObject } from "react"
 import { useTranslation } from "react-i18next";
+
+import MassObjectData from "./computation/MassObjectData";
+import { convertSIComponentToDisplayed, convertDisplayedToSI } from "../../utils/convertVectorSI";
+
+import controlsStyles from './Controls.module.scss';
 
 type vector = [number, number, number];
 
@@ -31,7 +30,7 @@ interface modifyMassObjectInterface {
 
 export default function ModifyMassObject({ massObject, massObjectsRef, modifyMassObject, setErrorMessage, onCancel }: modifyMassObjectInterface) {
 
-    const { t, i18n } = useTranslation('simulation');
+    const { t } = useTranslation('simulation');
 
 
     const [formValues, setFormValues] = useState<formValues>({

@@ -19,7 +19,7 @@ export default function ErrorNotification({ message, setErrorMessage }: ErrorNot
                 <h1>Error</h1>
                 <p>{message}</p>
 
-                <button onClick={(e) => setErrorMessage('')}>Hide</button>
+                <button onClick={() => setErrorMessage('')}>Hide</button>
             </div>
         </Html>)
 }

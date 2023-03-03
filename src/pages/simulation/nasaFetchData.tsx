@@ -1,4 +1,3 @@
-import { json } from "stream/consumers";
 
 // time in format getTime(): returns the number of milliseconds since January 1, 1970 00:00:00.
 export default async function nasaFetchData(time: number) {

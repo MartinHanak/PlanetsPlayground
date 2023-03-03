@@ -1,7 +1,8 @@
 import React from "react";
+import { Texture } from "three";
+
 import { initialMassObjectData } from "../Scene";
 import MassObjectData from "./MassObjectData";
-import { Texture } from "three";
 
 interface textureDictionary {
     [key: string]: Texture,

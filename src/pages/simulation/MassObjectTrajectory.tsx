@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useReducer, useState } from "react"
+import { useEffect, useReducer, useState, MutableRefObject } from "react"
 import { Vector3 } from "three"
-import MassObjectData from "./computation/MassObjectData"
-import { Html } from "@react-three/drei"
-import { MutableRefObject } from "react"
-import { useThree } from "@react-three/fiber"
-import { RootState } from "@react-three/fiber"
+import { useThree, RootState } from "@react-three/fiber"
 import { Line } from "@react-three/drei"
+
+import MassObjectData from "./computation/MassObjectData"
 
 interface MassObjectTrajectoryProps {
     trajectory: Array<[number, number, number] | Vector3>,

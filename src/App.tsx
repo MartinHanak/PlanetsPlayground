@@ -30,12 +30,24 @@ function App() {
     setLanguage(i18n.language)
   }
 
+  const toggleLanguage = () => {
+    let newLanguage = '';
+
+    if (i18n.language === 'cs') {
+      newLanguage = 'en';
+    } else {
+      newLanguage = 'cs'
+    }
+
+    handleLanguageChange(newLanguage)
+  }
+
   return (
     <>
       <header className={styles.header}>
         <div className={styles.logo}>Gravitorium</div>
         <Navbar />
-        <LanguageSwitch onClick={handleLanguageChange} />
+        <LanguageSwitch toggleLanguage={toggleLanguage} />
       </header>
 
       <main>

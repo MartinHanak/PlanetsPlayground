@@ -1,26 +1,22 @@
-import { CameraControls, Html } from "@react-three/drei"
-import { Camera, ThreeEvent, useThree } from "@react-three/fiber"
-import styles from "./Controls.module.scss"
 import { ChangeEvent, MouseEventHandler, MutableRefObject, RefObject, SetStateAction, useEffect } from "react";
+import { useState, useRef, Dispatch, UIEvent } from "react";
+import { useTranslation } from "react-i18next";
+import { CameraControls, Html } from "@react-three/drei"
+import { useThree, RootState } from "@react-three/fiber"
+import { Vector3, PointLight } from "three";
+
+import styles from "./Controls.module.scss"
+
 import MassObjectData from "./computation/MassObjectData";
-import { RootState } from "@react-three/fiber";
-import { useState, useRef } from "react";
-import { Dispatch } from "react";
-import { Object3D, Vector3 } from "three";
 import MassObjectController from "./MassObjectController";
 import NewObjectController from "./NewObjectController";
 import ErrorNotification from "./ErrorNotification";
 import CurrentDay from "./CurrentDay";
-import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer";
-import { updateCamera } from "@react-three/fiber/dist/declarations/src/core/utils";
-import resetCamera from "./resetCamera";
 import displayShiftedPosition from "./computation/displayShiftedPosition";
 import updateMeshPosition from "./computation/updateMeshPosition";
 import updateLight from "./computation/updateLight";
-import { PointLight } from "three";
+
 import arrowLeftImage from "../../assets/images/arrow_left.svg";
-import { UIEvent } from "react";
-import { useTranslation } from "react-i18next";
 
 type vector = [number, number, number];
 
@@ -29,7 +25,7 @@ interface controlsProps {
     toggleMoving: () => boolean,
     stopMoving: () => void,
     center: MutableRefObject<string>,
-    setCenter: (center: string) => string,// Dispatch<SetStateAction<string>>,  (center: string) => void,
+    setCenter: (center: string) => string,
     setTimestep: (timestep: number) => number,
     massObjectArray: MutableRefObject<MassObjectData[]>,
     onMount: ([controlsState, setControlsState, updateControls]: [string[], Dispatch<SetStateAction<string[]>>, () => void]) => void,
@@ -48,12 +44,10 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
 
     const setFrameloop = useThree((state: RootState) => state.setFrameloop);
     const frameloop = useThree((state: RootState) => state.frameloop);
-    const invalidate = useThree((state: RootState) => state.invalidate)
     const camera = useThree((state: RootState) => state.camera);
     const cameraPositionX = useThree((state: RootState) => state.camera.position.x) // state change for label position update
 
     const [selectedObjects, setSelectedObjects] = useState<string[]>([]);
-
     const [showNewObject, setShowNewObject] = useState<boolean>(false);
 
     // for forcing render
@@ -75,7 +69,6 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
 
 
     useEffect(() => {
-        console.log("controls state changed")
         onMount([selectedObjects, setSelectedObjects, forceUpdate])
     }, [onMount, selectedObjects, frameloop])
 
@@ -106,13 +99,7 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
 
             setFrameloop("always")
         }
-        /*
-                resetCamera({
-                    conversionFactor: conversionFactor,
-                    cameraControlsRef: cameraControlsRef,
-                    camera: camera
-                })
-                */
+
     }
 
 
@@ -155,11 +142,6 @@ export default function Controls({ toggleMoving, moving, stopMoving, center, set
         } else {
             setFrameloop("demand");
         }
-    }
-
-    const handleScroll = (event: UIEvent<HTMLDivElement, UIEvent>) => {
-        event.stopPropagation()
-        console.log(event);
     }
 
     const disableCameraControls = () => {

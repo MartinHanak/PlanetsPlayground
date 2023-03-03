@@ -1,8 +1,10 @@
+import { useEffect, useRef, Dispatch, SetStateAction, useState, useLayoutEffect } from "react"
+
 import { useLoader, useFrame, useThree } from "@react-three/fiber"
 import { TextureLoader } from "three/src/loaders/TextureLoader"
-import { Html, TrackballControls, OrbitControls, ArcballControls, FlyControls, CameraControls } from "@react-three/drei"
-import { RootState } from "@react-three/fiber"
-import { ThreeEvent } from "@react-three/fiber"
+import { CameraControls } from "@react-three/drei"
+import { RootState, ThreeEvent } from "@react-three/fiber"
+import { Mesh, PointLight } from "three"
 
 
 import SunTextureImage from "../../assets/textures/1k_textures/Sun_texture.jpg"
@@ -11,20 +13,13 @@ import VenusTextureImage from "../../assets/textures/1k_textures/Venus_texture.j
 import EarthTextureImage from "../../assets/textures/1k_textures/Earth_texture_unmodified.jpg"
 import MarsTextureImage from "../../assets/textures/1k_textures/Mars_texture.jpg"
 import DefaultTextureImage from "../../assets/textures/1k_textures/Default_texture.jpg"
-import { useEffect, useRef, Dispatch, SetStateAction, useState, useLayoutEffect, MutableRefObject } from "react"
 
 import MassObject from "./MassObject"
 import Grid from "./Grid"
-import { Group, Mesh, PointLight, Vector3 } from "three"
-import { Line } from "three"
-
 import Controls from "./Controls"
-import CurrentDay from "./CurrentDay"
-
 import MassObjectData from "./computation/MassObjectData";
 import initializeMassObjectArray from "./computation/initializeMassObjectArray"
 import MassObjectTrajectory from "./MassObjectTrajectory"
-import { Root } from "@react-three/fiber/dist/declarations/src/core/renderer"
 import updatePosition, { addVector, multiplyVectorWithScalar } from "./computation/updatePosition"
 import displayShiftedPosition from "./computation/displayShiftedPosition"
 import updateMeshPosition from "./computation/updateMeshPosition"
@@ -55,7 +50,6 @@ export default function Scene({ initialMassObjectDataArray, initialDate }: scene
 
     const camera = useThree((state: RootState) => state.camera)
     const canvasSize = useThree((state: RootState) => state.size)
-    const rendererDOM = useThree((state: RootState) => state.gl.domElement)
     const frameloop = useThree((state: RootState) => state.frameloop)
     const invalidate = useThree((state: RootState) => state.invalidate)
     const setFrameloop = useThree((state: RootState) => state.setFrameloop)
@@ -72,9 +66,6 @@ export default function Scene({ initialMassObjectDataArray, initialDate }: scene
         return center.current
     };
 
-    /*
-    const [center, setCenter] = useState<string>('SSB')
-    */
 
     const timestep = useRef<number>(1.0);
     const setTimestep = (value: number) => {
@@ -259,13 +250,11 @@ export default function Scene({ initialMassObjectDataArray, initialDate }: scene
     useLayoutEffect(() => {
         console.log("log from use layout effect")
 
-
         resetCamera({
             conversionFactor: conversionFactorBetweenCanvasUnitsAndAU.current,
             cameraControlsRef: cameraControlsRef,
             camera: camera
         })
-
 
         // initial object values
         initializeMassObjectArray(massObjectArray, initialMassObjectDataArray, textureDictionary);
@@ -274,9 +263,6 @@ export default function Scene({ initialMassObjectDataArray, initialDate }: scene
 
     }, [])
 
-    const handleCameraControlsChange = () => {
-        invalidate()
-    }
 
     const handleCameraControlsChangeStart = () => {
         if (frameloop !== "always") {
@@ -286,23 +272,9 @@ export default function Scene({ initialMassObjectDataArray, initialDate }: scene
 
     const pointLightRef = useRef<PointLight>(null);
 
-    const getSunPosition: (() => [number, number, number]) = () => {
-        const sunData = massObjectArray.current.filter((massObject: MassObjectData) => {
-            return massObject.name === "Sun"
-        })
-
-        if (sunData.length > 0 && sunData[0].meshRef) {
-            return sunData[0].meshRef.position.toArray();
-        } else {
-            return [0, 0, 0]
-        }
-    }
-
-
     useEffect(() => {
         console.log("scene rerendered")
     })
-
 
     // main render loop
     useFrame((state: RootState, delta: number) => {
