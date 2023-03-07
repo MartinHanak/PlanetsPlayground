@@ -40,9 +40,9 @@ export default function Import() {
         fetch(gravitoriumBackendURL)
             .then((res: Response) => {
                 if (res.ok) {
-                    console.log("Backend connection is ok")
+                    console.log("Backend connection is ok.")
                 } else {
-                    throw new Error('Backend connection failed at import')
+                    throw new Error('Backend connection failed at import.')
                 }
             })
             .catch((error: unknown) => console.log(error));
