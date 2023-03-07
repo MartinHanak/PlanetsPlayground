@@ -31,6 +31,23 @@ export default function Import() {
         }
     }, [errorMessage])
 
+    // first request
+    useEffect(() => {
+        const nasaAPIUrl = 'https://ssd.jpl.nasa.gov/api/horizons.api?COMMAND=%2710%27&OBJ_DATA=%27YES%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&EMAIL_ADDR=%27none%27&CENTER=%27%400%27&REF_PLANE=%27ECLIPTIC%27&COORD_TYPE=%27GEODETIC%27&START_TIME=%272023-3-16%27&STOP_TIME=%272023-3-17%27&STEP_SIZE=%272%20d%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&VEC_TABLE=%273%27&VEC_CORR=%27NONE%27&TIME_DIGITS=%27MINUTES%27&CSV_FORMAT=%27NO%27&VEC_LABELS=%27YES';
+
+        const gravitoriumBackendURL = 'https://www.martinhanak.com/nasaAPI?url=' + encodeURIComponent(nasaAPIUrl);
+
+        fetch(gravitoriumBackendURL)
+            .then((res: Response) => {
+                if (res.ok) {
+                    console.log("Backend connection is ok")
+                } else {
+                    throw new Error('Backend connection failed at import')
+                }
+            })
+            .catch((error: unknown) => console.log(error));
+    }, [])
+
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
