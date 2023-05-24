@@ -12,7 +12,8 @@ export default function Footer({ className }: footerInterface) {
 
     return (
         <footer className={className}>
-            <span className={styles.link}>{t('support')} <a href="https://www.buymeacoffee.com/martinhanak">{t('linkText')}</a></span>
+            <span className={styles.white}>{t('creatorIntro')}&nbsp;</span>
+            <span className={styles.whiteBold}>{t('authorName')}</span>
         </footer>
     )
 }

@@ -1,5 +1,7 @@
 {
   "author": "Vytvořil Martin Hanák",
   "support": "Líbí se vám stránka?",
-  "linkText": "Kupte mi kafe"
+  "linkText": "Kupte mi kafe",
+  "creatorIntro": "Vytvořil ",
+  "authorName": "Martin Hanák"
 }

@@ -24,9 +24,6 @@ export default function Contact() {
                 </div>
             </div>
 
-            <div className={styles.coffee}>
-                {t('coffeeIntro')} <a href="https://www.buymeacoffee.com/martinhanak">{t('coffeeLink')}</a>
-            </div>
         </div>
     )
 }
