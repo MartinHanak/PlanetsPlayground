@@ -1,3 +1,4 @@
+import { BACKEND_URL } from "../../utils/config";
 
 // time in format getTime(): returns the number of milliseconds since January 1, 1970 00:00:00.
 export default async function nasaFetchData(time: number) {
@@ -24,7 +25,7 @@ export default async function nasaFetchData(time: number) {
 function createFetchPromise(name: string, time: number) {
     console.log(generateApiUrl(name, time))
 
-    const gravitoriumBackendURL = 'https://www.martinhanak.com/nasaAPI?url=' + encodeURIComponent(generateApiUrl(name, time));
+    const gravitoriumBackendURL = BACKEND_URL + '?url=' + encodeURIComponent(generateApiUrl(name, time));
 
     return fetch(gravitoriumBackendURL);
 

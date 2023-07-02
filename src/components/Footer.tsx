@@ -13,7 +13,7 @@ export default function Footer({ className }: footerInterface) {
     return (
         <footer className={className}>
             <span className={styles.white}>{t('creatorIntro')}&nbsp;</span>
-            <span className={styles.whiteBold}>{t('authorName')}</span>
+            <span className={styles.whiteBold}><a href="https://www.martinhanak.com/">{t('authorName')}</a></span>
         </footer>
     )
 }

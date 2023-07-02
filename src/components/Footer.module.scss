@@ -19,7 +19,8 @@
     color: var(--white);
 }
 
-.whiteBold {
+.whiteBold a {
     color: var(--white);
     font-weight: bold;
+    text-underline-offset: 4px;
 }
