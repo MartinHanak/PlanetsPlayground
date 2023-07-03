@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3d379150.css",
+    "main.js": "/static/js/main.035f7fb6.js",
+    "static/media/sun_small_3.png": "/static/media/sun_small_3.977f70d3f2ad25c49e53.png",
+    "static/media/Earth_texture_unmodified.jpg": "/static/media/Earth_texture_unmodified.981cc3e3660e809249a3.jpg",
+    "static/media/Default_texture.jpg": "/static/media/Default_texture.16f8ef10b1013236596b.jpg",
+    "static/media/Sun_texture.jpg": "/static/media/Sun_texture.f37efa46da6cbd1c9601.jpg",
+    "static/media/Venus_texture.jpg": "/static/media/Venus_texture.4b6958d11ff7878fb414.jpg",
+    "static/media/Mars_texture.jpg": "/static/media/Mars_texture.b1f6c1b6798ec9ba54ab.jpg",
+    "static/media/Mercury_texture.jpg": "/static/media/Mercury_texture.355e25b8fdeb5e01366f.jpg",
+    "static/media/astronaut_transparent_cropped_3.png": "/static/media/astronaut_transparent_cropped_3.05964bda937a4245bf54.png",
+    "static/media/astronaut_transparent.webp": "/static/media/astronaut_transparent.f765ef9daa538fe8470a.webp",
+    "static/media/nasa_large_cropped.png": "/static/media/nasa_large_cropped.0ff994bc0d6b5b352373.png",
+    "static/media/verlet_large.png": "/static/media/verlet_large.0e5579eff76ef654f7c6.png",
+    "static/media/nasa_small_2.png": "/static/media/nasa_small_2.42ad4eebfe14ae638f24.png",
+    "index.html": "/index.html",
+    "static/media/hamburgerMenu.svg": "/static/media/hamburgerMenu.d5bfbda8ddbee2691dce0e8b9dbef814.svg",
+    "static/media/arrow_left.svg": "/static/media/arrow_left.7289e6e15765f8ee9a27026251d97a2e.svg",
+    "main.3d379150.css.map": "/static/css/main.3d379150.css.map",
+    "main.035f7fb6.js.map": "/static/js/main.035f7fb6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3d379150.css",
+    "static/js/main.035f7fb6.js"
+  ]
+}
