@@ -14,7 +14,7 @@ export default function Contact() {
 
             <div>
                 <div className={styles.rowGrid}>
-                    <span>{t('nameTitle')}:</span> <span><a href="https://www.martinhanak.com/">Martin Hanák</a></span>
+                    <span>{t('nameTitle')}:</span> <span><a href="https://martinhanak.com/">Martin Hanák</a></span>
                 </div>
                 <div className={styles.rowGrid}>
                     <span>Email:</span> <span>martinhanak97@gmail.com</span>
